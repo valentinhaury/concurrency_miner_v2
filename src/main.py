@@ -9,6 +9,10 @@ from src.data_structures.trace import Trace
 from src.data_structures.log import Log
 from src.concurrency_miner import concurrency_miner
 
+
+#TODO
+# exclusive choice so wie im Pseudocode umschreiben (combinations von traces und nicht von partitions)
+
 #TODO Fallthroughs,
 # done  Empty Log -> Tau
 # done  Empty Trace -> x(Tau,...)
@@ -20,8 +24,9 @@ from src.concurrency_miner import concurrency_miner
 #       if there is only one activity in the fall through dont return ^(a) -> instead return a or loop(tau, a) or x(tau,a) respectively
 
 #TODO data handling
-#       infrequent
-#       incompletness
+#       infrequent : wenn kein cuut gefunden wird edges zählen in den graphen -> directly follows, overlappping und ganz seltene entfernen (ganze Traces oder nur edges?)
+#       incompleteness : Wenn kein cut gefunden wird edges in dfg und overlapping hinzufügen
+#                       dafür werden wahrscheinlichkeiten für jede mögliche edge berechnet
 
 #TODO Add good test cases (bigger constructs with all operators mixed)
 #TODO correct and incorrect test cases
