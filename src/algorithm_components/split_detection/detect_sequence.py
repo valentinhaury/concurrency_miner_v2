@@ -61,7 +61,7 @@ def create_sequence_partitions(event_log):
                 changed = True
                 break
 
-    # connect partitions that are eventually connected in both directions
+    # connect partitions that are eventually connected in both directions or in no direction
     changed = True
     while changed:
         changed = False

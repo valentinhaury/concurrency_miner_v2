@@ -12,7 +12,7 @@ from src.concurrency_miner import concurrency_miner
 
 #TODO
 # exclusive choice so wie im Pseudocode umschreiben (combinations von traces und nicht von partitions)
-
+# sequence detection so wie im Pseudocode umschreiben (combinations von activities nicht partitions -> ein loop)
 #TODO Fallthroughs,
 # done  Empty Log -> Tau
 # done  Empty Trace -> x(Tau,...)
