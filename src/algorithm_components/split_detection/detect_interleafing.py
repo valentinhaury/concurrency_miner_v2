@@ -16,8 +16,8 @@ def get_interleafing_sublogs(log):
 
 def create_interleafing_partitions(event_log):
     log = copy.deepcopy(event_log)
-    directly_follows_relations = log.get_directly_follows_relations_by_label()
-    overlapping_relations = log.get_overlapping_relations_by_label()
+    directly_follows_relations = log.get_directly_follows_relations()
+    overlapping_relations = log.get_overlapping_relations()
     activities = log.get_activities_by_label()
     partitions = []
 
@@ -40,8 +40,8 @@ def create_interleafing_partitions(event_log):
         connect_partitions(relation.get_first_activity(), relation.get_second_activity(), partitions)
 
     # connect partitions with no start or no end activity to an arbitrary partition
-    start_activities = log.get_start_activities_by_label()
-    end_activities = log.get_end_activities_by_label()
+    start_activities = log.get_start_activities()
+    end_activities = log.get_end_activities()
     partitions = add_partitions_with_no_start_or_end_to_arbitrary(partitions, start_activities, end_activities)
 
     return partitions

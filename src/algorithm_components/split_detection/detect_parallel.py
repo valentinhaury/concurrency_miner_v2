@@ -30,8 +30,8 @@ def create_parallel_partitions(event_log):
         for p1, p2 in combinations(partitions, 2):
             for a, b in product(p1, p2):
                 for trace in traces:
-                    if not (OverlappingRelation(a, b).relation_exists_by_label(trace.get_overlapping_relations_by_label())
-                        or OverlappingRelation(b, a).relation_exists_by_label(trace.get_overlapping_relations_by_label())):
+                    if not (OverlappingRelation(a, b).relation_exists_by_label(trace.get_overlapping_relations())
+                        or OverlappingRelation(b, a).relation_exists_by_label(trace.get_overlapping_relations())):
                         changed = True
                         break
                 if changed: break

@@ -14,8 +14,8 @@ def get_arbitrary_order_sublogs(log):
 
 def create_arbitrary_order_partitions(event_log):
     log = copy.deepcopy(event_log)
-    log_eventually_follows_relations = log.get_eventually_follows_relations_by_label()
-    log_overlapping_relations =log.get_overlapping_relations_by_label()
+    log_eventually_follows_relations = log.get_eventually_follows_relations()
+    log_overlapping_relations =log.get_overlapping_relations()
     partitions = []
     activities = log.get_activities_by_label()
 
@@ -39,7 +39,7 @@ def create_arbitrary_order_partitions(event_log):
 
     # connect partitions if they are fully eventually connected in one trace
     for trace in log.get_traces():
-        trace_eventually_follows_relations = trace.get_eventually_follows_relations_by_label()
+        trace_eventually_follows_relations = trace.get_eventually_follows_relations()
         changed = True
         while changed:
             changed = False

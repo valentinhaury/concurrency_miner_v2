@@ -17,7 +17,7 @@ def get_loop_sublogs(log):
         new_sublog = Log([])
         for trace in log.get_traces():
             trace_directly_follows_relation = trace.get_directly_follows_relations()
-            trace_overlapping_relation = trace.get_overlapping_relations_by_id()
+            trace_overlapping_relation = trace.get_overlapping_relations()
 
             activities = trace.get_activities()
             partition_activities = []
@@ -59,10 +59,10 @@ def get_loop_sublogs(log):
 def create_loop_partitions(event_log):
     log = copy.deepcopy(event_log)
     activities = log.get_activities_by_label()
-    start_activities = log.get_start_activities_by_label()
-    end_activities = log.get_end_activities_by_label()
-    eventually_follows_relations = log.get_eventually_follows_relations_by_label()
-    directly_follows_relations = log.get_directly_follows_relations_by_label()
+    start_activities = log.get_start_activities()
+    end_activities = log.get_end_activities()
+    eventually_follows_relations = log.get_eventually_follows_relations()
+    directly_follows_relations = log.get_directly_follows_relations()
 
     partitions = []
     partition_1 = []

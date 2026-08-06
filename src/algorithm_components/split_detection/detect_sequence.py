@@ -13,7 +13,7 @@ def detect_sequence(log):
 def get_sequence_sublogs(log):
     partitions = create_sequence_partitions(log)
 
-    return _sort_sublogs(create_sublogs_sequential(log, partitions), log.get_eventually_follows_relations_by_label())
+    return _sort_sublogs(create_sublogs_sequential(log, partitions), log.get_eventually_follows_relations())
 
 def _sort_sublogs(sublogs, eventually_follows_relations):
     n = len(sublogs)
@@ -41,8 +41,8 @@ def _follows(log_a, log_b, eventually_follows_relations):
 
 def create_sequence_partitions(event_log):
     log = copy.deepcopy(event_log)
-    eventually_follows_relations = log.get_eventually_follows_relations_by_label()
-    overlapping_relations = log.get_overlapping_relations_by_label()
+    eventually_follows_relations = log.get_eventually_follows_relations()
+    overlapping_relations = log.get_overlapping_relations()
     activities = log.get_activities_by_label()
 
     partitions = []

@@ -12,7 +12,7 @@ def detect_single_activity(event_log):
         if len(trace.get_activities()) > 1:
             for a1 in trace.get_activities():
                 for a2 in trace.get_activities():
-                    if a1 != a2 and EventuallyFollowsRelation(a1, a2).relation_exists_by_label(trace.get_eventually_follows_relations_by_label()):
+                    if a1 != a2 and EventuallyFollowsRelation(a1, a2).relation_exists_by_label(trace.get_eventually_follows_relations()):
                         return False
     return True
 

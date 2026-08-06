@@ -89,65 +89,17 @@ class Trace:
                 end_activities.add(e1.get_activity())
         return end_activities
 
+    def get_overlapping_relations(self):
+        overlapping_relations = set()
+        for e1, e2 in product(self.events, repeat=2):
+            if not StrictPartialOrder(e1, e2) in self.strict_partial_order \
+                and not StrictPartialOrder(e2, e1) in self.strict_partial_order \
+                and not e1 == e2:
+                overlapping_relations.add(OverlappingRelation(e1.get_activity(), e2.get_activity()))
+
+        return overlapping_relations
 
 
-
-    def get_directly_follows_relations(self):
-        return self.directly_follows_relations
-
-    def get_directly_follows_relations_by_label(self):
-        dfg_by_label = []
-        if self.directly_follows_relations:
-            for relation in self.directly_follows_relations:
-                if not relation.relation_exists_by_label(dfg_by_label):
-                    dfg_by_label.append(Relation(Activity(relation.get_first_activity().get_label()), Activity(relation.get_second_activity().get_label()))) # Relation(Activity(relation.get_first_activity().get_label()), Activity(relation.get_second_activity().get_label()))
-        return dfg_by_label
-
-    def get_overlapping_relations_by_label(self):
-        overlapping_by_label = []
-        for relation in self.get_overlapping_relations_by_id():
-            if not relation.relation_exists_by_label(overlapping_by_label):
-                overlapping_by_label.append(Relation(Activity(relation.get_first_activity().get_label()), Activity(relation.get_second_activity().get_label())))
-        return overlapping_by_label
-
-    def get_overlapping_relations_by_id(self):
-        eventually_follows_relations = self.get_eventually_follows_relations_by_id()
-        return [
-            OverlappingRelation(a1, a2)
-            for a1, a2 in product(self.activities, repeat = 2)
-            if not EventuallyFollowsRelation(a1, a2).relation_exists_by_id(eventually_follows_relations)
-               and not EventuallyFollowsRelation(a2, a1).relation_exists_by_id(eventually_follows_relations)
-               and not a1 == a2
-        ]
-
-    def get_eventually_follows_relations_by_label(self):
-        eventually_follows_by_label = []
-        for relation in self.get_eventually_follows_relations_by_id():
-            if not relation.relation_exists_by_label(eventually_follows_by_label):
-                eventually_follows_by_label.append(Relation(Activity(relation.get_first_activity().get_label()), Activity(relation.get_second_activity().get_label())))
-        return eventually_follows_by_label
-
-    def get_eventually_follows_relations_by_id(self):
-        eventually_follows_relations = []
-        for relation in self.directly_follows_relations:
-           eventually_follows_relations.append(EventuallyFollowsRelation(relation.get_first_activity(), relation.get_second_activity()))
-
-        added_relations = ["true"]
-        while added_relations:
-            added_relations = [
-                EventuallyFollowsRelation(a1, a2)
-                for a1, a2 in product(self.activities, repeat=2)
-                for a3 in self.activities
-                if not Relation(a1, a2).relation_exists_by_id(eventually_follows_relations)
-                   and Relation(a1, a3).relation_exists_by_id(eventually_follows_relations)
-                   and Relation(a3, a2).relation_exists_by_id(eventually_follows_relations)
-            ]
-
-            if added_relations:
-                for relation in added_relations:
-                    if not relation.relation_exists_by_id(eventually_follows_relations):
-                        eventually_follows_relations.append(relation)
-        return eventually_follows_relations
 
 
 

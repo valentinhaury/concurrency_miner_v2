@@ -3,6 +3,15 @@
   <component name="ChangeListManager">
     <list default="true" id="e3ce310f-a6cb-4654-8df9-4da22971cc3a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithm_components/base_cases/detect_single_activity.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/base_cases/detect_single_activity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_arbitrary_order.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_arbitrary_order.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_concurrent.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_concurrent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_interleafing.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_interleafing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_loop.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_multi_instance.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_multi_instance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_parallel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_parallel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_sequence.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_sequence.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data_structures/log.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_structures/log.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data_structures/trace.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_structures/trace.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
