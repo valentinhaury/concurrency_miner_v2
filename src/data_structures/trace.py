@@ -1,7 +1,7 @@
 from itertools import product, permutations
 
-from data_structures.relations.transitiv_reduction_strict_partial_order_relation import \
-    TransitivReductionStrictPartialOrder
+from data_structures.relations.transitiv_reduced_strict_partial_order_relation import \
+    TransitivReducedStrictPartialOrder
 from src.data_structures.relations.strict_partial_order_relation import StrictPartialOrder
 from src.data_structures.activity import Activity
 from data_structures.relations.relation import Relation
@@ -10,17 +10,17 @@ from data_structures.relations.overlapping_relation import OverlappingRelation
 from data_structures.relations.eventually_follows_relation import EventuallyFollowsRelation
 
 class Trace:
-    def __init__(self, events, transitive_reduction_strict_partial_order):
+    def __init__(self, events, transitive_reduced_strict_partial_order):
         self.events = set(events)
         self.activities = set()
         for event in events:
             self.activities.add(event.get_activity())
-        self.transitive_reduction_strict_partial_order = set(transitive_reduction_strict_partial_order)
+        self.transitive_reduced_strict_partial_order = set(transitive_reduced_strict_partial_order)
         self.strict_partial_order = self._compute_transitive_closure()
 
     def _compute_transitive_closure(self):
         closure = set()
-        for relation in self.transitive_reduction_strict_partial_order:
+        for relation in self.transitive_reduced_strict_partial_order:
             closure.add(StrictPartialOrder(relation.get_first(), relation.get_second()))
         changed = True
         while changed:
@@ -48,21 +48,21 @@ class Trace:
                 trace_string += str(activity) + ", "
             trace_string = trace_string[:-2]
         trace_string += "}, R{"
-        if self.transitive_reduction_strict_partial_order:
-            for relation in self.transitive_reduction_strict_partial_order:
+        if self.transitive_reduced_strict_partial_order:
+            for relation in self.transitive_reduced_strict_partial_order:
                 trace_string += str(relation) + ", "
             trace_string = trace_string[:-2]
         trace_string += "})"
         return trace_string
 
-    def get_activities(self):
-        return self.activities
-
     def get_events(self):
         return self.events
 
-    def get_transitive_closure_strict_partial_order(self):
-        return self.transitive_reduction_strict_partial_order
+    def get_activities(self):
+        return self.activities
+
+    def get_transitiv_reduced_strict_partial_order(self):
+        return self.transitive_reduced_strict_partial_order
 
     def get_strict_partial_order(self):
         return self.strict_partial_order
@@ -72,7 +72,7 @@ class Trace:
         for e1 in self.events:
             is_start = True
             for e2 in self.events:
-                if TransitivReductionStrictPartialOrder(e2, e1) in self.transitive_reduction_strict_partial_order:
+                if TransitivReducedStrictPartialOrder(e2, e1) in self.transitive_reduced_strict_partial_order:
                     is_start = False
             if is_start:
                 start_activities.add(e1.get_activity())
@@ -83,7 +83,7 @@ class Trace:
         for e1 in self.events:
             is_end = True
             for e2 in self.events:
-                if TransitivReductionStrictPartialOrder(e1, e2) in self.transitive_reduction_strict_partial_order:
+                if TransitivReducedStrictPartialOrder(e1, e2) in self.transitive_reduced_strict_partial_order:
                     is_end = False
             if is_end:
                 end_activities.add(e1.get_activity())

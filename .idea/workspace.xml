@@ -2,33 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e3ce310f-a6cb-4654-8df9-4da22971cc3a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/data_structures/event.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/data_structures/relations/directly_follows_relation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/data_structures/relations/eventually_follows_relation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/data_structures/relations/overlapping_relation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/data_structures/relations/relation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/data_structures/relations/strict_partial_order_relation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/data_structures/relations/transitiv_reduction_strict_partial_order_relation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/concurrency_miner.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/concurrency_miner.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/algorithm_components/base_cases/detect_single_activity.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/base_cases/detect_single_activity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/algorithm_components/base_cases/handle_empty_traces.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/base_cases/handle_empty_traces.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/algorithm_components/helper_functions/helper_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/helper_functions/helper_functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/algorithm_components/helper_functions/minimum_self_distance_relation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/helper_functions/minimum_self_distance_relation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/algorithm_components/helper_functions/sublog_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/helper_functions/sublog_functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_loop.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_multi_instance.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_multi_instance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_parallel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_parallel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_sequence.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_sequence.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data_structures/activity.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_structures/activity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data_structures/directly_follows_relation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data_structures/eventually_follows_relation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data_structures/overlapping_relation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data_structures/relation.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data_structures/trace.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_structures/trace.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/log_creation/log_creator.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/log_creation/log_creator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +28,7 @@
 }</component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
-    "url": "https://github.com/valentinhaury/concurrency_miner.git",
+    "url": "https://github.com/valentinhaury/concurrency_miner_v2.git",
     "accountId": "fc36c271-2c6e-4c6b-9edf-9e08a5e05a9a"
   }
 }]]></component>
