@@ -16,7 +16,7 @@ from src.concurrency_miner import concurrency_miner
 # sequence detection so wie im Pseudocode umschreiben (combinations von activities nicht partitions -> ein loop)
 # arbitrary order: muss zusätzlich noch gecheckt werden ob jede Partition mit jeder direct connected ist?
 # algorithmus so anpassen, dass nicht true/false von detect returned wird, sondern dass im main algorithmus die länge geprüft wird -> spart zeit
-
+# algorithmus so anpassen, dass dfg, efg, msd, ovl direkt übergeben werden und nur einmal am Anfang erstellt werden.
 #TODO Fallthroughs,
 # done  Empty Log -> Tau
 # done  Empty Trace -> x(Tau,...)
