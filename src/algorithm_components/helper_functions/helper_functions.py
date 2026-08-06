@@ -2,12 +2,12 @@ from itertools import product, combinations
 from src.data_structures.relations.relation import Relation
 from src.data_structures.relations.eventually_follows_relation import EventuallyFollowsRelation
 from src.data_structures.relations.overlapping_relation import OverlappingRelation
-from src.data_structures.relations.directly_follows_relation import DirectlyFollowsRelation
+from src.data_structures.relations.directly_follows_relation import TransitivReducedStrictPartialOrder
 
 
 def fully_direct_connected(a1, a2, directly_follows_relations):
-    if (DirectlyFollowsRelation(a1, a2).relation_exists_by_label(directly_follows_relations)
-     and DirectlyFollowsRelation(a2, a1).relation_exists_by_label(directly_follows_relations)
+    if (TransitivReducedStrictPartialOrder(a1, a2).relation_exists_by_label(directly_follows_relations)
+     and TransitivReducedStrictPartialOrder(a2, a1).relation_exists_by_label(directly_follows_relations)
      ):
         return True
     return False
@@ -15,15 +15,15 @@ def fully_direct_connected(a1, a2, directly_follows_relations):
 def not_fully_direct_connected_relation(activities, directly_follows_relations):
     relations = []
     for a1, a2 in combinations(activities, 2):
-        if not (DirectlyFollowsRelation(a1, a2).relation_exists_by_label(directly_follows_relations)
-                and DirectlyFollowsRelation(a2, a1).relation_exists_by_label(directly_follows_relations)
+        if not (TransitivReducedStrictPartialOrder(a1, a2).relation_exists_by_label(directly_follows_relations)
+                and TransitivReducedStrictPartialOrder(a2, a1).relation_exists_by_label(directly_follows_relations)
         ):
            relations.append(Relation(a1, a2))
     return relations
 
 def direct_connected_id(a1, a2, directly_follows_relations):
-    if (DirectlyFollowsRelation(a1, a2).relation_exists_by_id(directly_follows_relations)
-     or DirectlyFollowsRelation(a2, a1).relation_exists_by_id(directly_follows_relations)
+    if (TransitivReducedStrictPartialOrder(a1, a2).relation_exists_by_id(directly_follows_relations)
+     or TransitivReducedStrictPartialOrder(a2, a1).relation_exists_by_id(directly_follows_relations)
      ):
         return True
     return False

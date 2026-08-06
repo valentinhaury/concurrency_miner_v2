@@ -1,4 +1,4 @@
-from data_structures.relations.directly_follows_relation import DirectlyFollowsRelation
+from data_structures.relations.directly_follows_relation import TransitivReducedStrictPartialOrder
 from src.data_structures.activity import Activity
 from src.data_structures.trace import Trace
 from src.data_structures.log import Log
@@ -44,7 +44,7 @@ c2 = Activity("c")
 c3 = Activity("c")
 d1 = Activity("d")
 # a-c b-d a-d
-t1 = Trace([a1, b1, c1, d1, a2],[DirectlyFollowsRelation(a2,a1), DirectlyFollowsRelation(a1, c1), DirectlyFollowsRelation(a1, d1), DirectlyFollowsRelation(b1, d1)])
+t1 = Trace([a1, b1, c1, d1, a2], [TransitivReducedStrictPartialOrder(a2, a1), TransitivReducedStrictPartialOrder(a1, c1), TransitivReducedStrictPartialOrder(a1, d1), TransitivReducedStrictPartialOrder(b1, d1)])
 test_log = Log([t1])
 
 #get_log_without_activity

@@ -1,7 +1,7 @@
 import copy
 from itertools import combinations
 
-from src.data_structures.relations.directly_follows_relation import DirectlyFollowsRelation
+from src.data_structures.relations.directly_follows_relation import TransitivReducedStrictPartialOrder
 from src.data_structures.relations.eventually_follows_relation import EventuallyFollowsRelation
 from src.data_structures.log import Log
 from src.data_structures.trace import Trace
@@ -23,7 +23,7 @@ def get_log_without_activity(event_log, activity):
         #add relations, so that activities are connected that were previously connected through the removed activity
         for r1, r2 in combinations(trace.get_directly_follows_relations(), 2):
             if r1.get_second_activity().get_label() == activity_label and r1.get_second_activity() == r2.get_first_activity():
-                new_trace.add_directly_follows_relation(DirectlyFollowsRelation(r1.get_first_activity(), r2.get_second_activity()))
+                new_trace.add_directly_follows_relation(TransitivReducedStrictPartialOrder(r1.get_first_activity(), r2.get_second_activity()))
         new_log.add_trace(new_trace)
     return new_log
 
@@ -46,8 +46,8 @@ def create_sublogs_concurrent(log, partitions):
                         for a3 in new_trace.get_activities():
                             if  not (EventuallyFollowsRelation(a1, a3).relation_exists_by_id(eventually_follows_relation_id)
                                     and EventuallyFollowsRelation(a3, a2).relation_exists_by_id(eventually_follows_relation_id))\
-                                and not DirectlyFollowsRelation(a1, a2).relation_exists_by_id(new_trace.get_directly_follows_relations()):
-                                new_trace.add_directly_follows_relation(DirectlyFollowsRelation(a1, a2))
+                                and not TransitivReducedStrictPartialOrder(a1, a2).relation_exists_by_id(new_trace.get_directly_follows_relations()):
+                                new_trace.add_directly_follows_relation(TransitivReducedStrictPartialOrder(a1, a2))
             sub_log.append(new_trace)
         sublogs.append(Log(sub_log))
 

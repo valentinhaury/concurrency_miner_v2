@@ -1,8 +1,8 @@
 from itertools import product, permutations
 
-from src.data_structures.relations.transitiv_reduced_strict_partial_order_relation import \
+from src.data_structures.relations.transitiv_reduced_strict_partial_order import \
     TransitivReducedStrictPartialOrder
-from src.data_structures.relations.strict_partial_order_relation import StrictPartialOrder
+from src.data_structures.relations.strict_partial_order import StrictPartialOrder
 from src.data_structures.relations.overlapping_relation import OverlappingRelation
 
 

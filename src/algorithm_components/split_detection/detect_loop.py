@@ -2,7 +2,7 @@ import copy
 from itertools import product, combinations
 from src.data_structures.log import Log
 from src.data_structures.trace import Trace
-from src.data_structures.relations.directly_follows_relation import DirectlyFollowsRelation
+from src.data_structures.relations.directly_follows_relation import TransitivReducedStrictPartialOrder
 from src.algorithm_components.helper_functions.helper_functions import direct_connected_id, overlapping
 from src.algorithm_components.helper_functions.partition_functions import connect_partitions
 
@@ -86,8 +86,8 @@ def create_loop_partitions(event_log):
         changed = False
         for p1, p2 in combinations(partitions, 2):
             for a, b in product(p1, p2):
-                if DirectlyFollowsRelation(a, b).relation_exists_by_label(directly_follows_relations) \
-                    or DirectlyFollowsRelation(b, a).relation_exists_by_label(directly_follows_relations):
+                if TransitivReducedStrictPartialOrder(a, b).relation_exists_by_label(directly_follows_relations) \
+                    or TransitivReducedStrictPartialOrder(b, a).relation_exists_by_label(directly_follows_relations):
                     changed = True
                     break
             if changed:
@@ -111,12 +111,12 @@ def create_loop_partitions(event_log):
         merge = False
         for activity in partition:
             for start_activity in start_and_not_end_activities:
-                if DirectlyFollowsRelation(start_activity, activity).relation_exists_by_label(directly_follows_relations):
+                if TransitivReducedStrictPartialOrder(start_activity, activity).relation_exists_by_label(directly_follows_relations):
                     merge = True
                     break
             if merge: break
             for end_activity in end_and_not_start_activities:
-                if DirectlyFollowsRelation(activity, end_activity).relation_exists_by_label(directly_follows_relations):
+                if TransitivReducedStrictPartialOrder(activity, end_activity).relation_exists_by_label(directly_follows_relations):
                     merge = True
                     break
             if merge: break
@@ -135,12 +135,12 @@ def create_loop_partitions(event_log):
         reached_by_end_count = 0
         for start in start_activities:
             for activity in partition:
-                if DirectlyFollowsRelation(activity, start).relation_exists_by_label(directly_follows_relations):
+                if TransitivReducedStrictPartialOrder(activity, start).relation_exists_by_label(directly_follows_relations):
                     reaches_start_count += 1
                     break
         for end in end_activities:
             for activity in partition:
-                if DirectlyFollowsRelation(end, activity).relation_exists_by_label(directly_follows_relations):
+                if TransitivReducedStrictPartialOrder(end, activity).relation_exists_by_label(directly_follows_relations):
                     reached_by_end_count += 1
                     break
         if 0 < reaches_start_count < len(start_activities):
