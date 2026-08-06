@@ -18,22 +18,6 @@ class Trace:
         self.transitive_reduced_strict_partial_order = set(transitive_reduced_strict_partial_order)
         self.strict_partial_order = self._compute_transitive_closure()
 
-    def _compute_transitive_closure(self):
-        closure = set()
-        for relation in self.transitive_reduced_strict_partial_order:
-            closure.add(StrictPartialOrder(relation.get_first(), relation.get_second()))
-        changed = True
-        while changed:
-            changed = False
-            for e1, e2, e3 in permutations(self.events, 3):
-                relation = StrictPartialOrder(e1, e3)
-                if (StrictPartialOrder(e1, e2) in closure and
-                        StrictPartialOrder(e2, e3) in closure and
-                        relation not in closure):
-                    closure.add(relation)
-                    changed = True
-        return closure
-
     def __str__(self):
         if not self.events:
             return "(empty-trace)"
@@ -99,7 +83,18 @@ class Trace:
 
         return overlapping_relations
 
-
-
-
-
+    def _compute_transitive_closure(self):
+        closure = set()
+        for relation in self.transitive_reduced_strict_partial_order:
+            closure.add(StrictPartialOrder(relation.get_first(), relation.get_second()))
+        changed = True
+        while changed:
+            changed = False
+            for e1, e2, e3 in permutations(self.events, 3):
+                relation = StrictPartialOrder(e1, e3)
+                if (StrictPartialOrder(e1, e2) in closure and
+                        StrictPartialOrder(e2, e3) in closure and
+                        relation not in closure):
+                    closure.add(relation)
+                    changed = True
+        return closure
