@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e3ce310f-a6cb-4654-8df9-4da22971cc3a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_sequence.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_sequence.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +99,7 @@
       <workItem from="1783664960281" duration="11444000" />
       <workItem from="1784184715027" duration="10987000" />
       <workItem from="1784269293196" duration="461000" />
-      <workItem from="1785849734604" duration="3976000" />
+      <workItem from="1785849734604" duration="10044000" />
     </task>
     <servers />
   </component>

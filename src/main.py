@@ -11,8 +11,12 @@ from src.concurrency_miner import concurrency_miner
 
 
 #TODO
+# alle anpassen so wie im pseudocode zB.:
 # exclusive choice so wie im Pseudocode umschreiben (combinations von traces und nicht von partitions)
 # sequence detection so wie im Pseudocode umschreiben (combinations von activities nicht partitions -> ein loop)
+# arbitrary order: muss zusätzlich noch gecheckt werden ob jede Partition mit jeder direct connected ist?
+# algorithmus so anpassen, dass nicht true/false von detect returned wird, sondern dass im main algorithmus die länge geprüft wird -> spart zeit
+
 #TODO Fallthroughs,
 # done  Empty Log -> Tau
 # done  Empty Trace -> x(Tau,...)
