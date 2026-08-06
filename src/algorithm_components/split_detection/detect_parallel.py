@@ -1,6 +1,6 @@
 import copy
 from itertools import combinations, product
-from src.data_structures.overlapping_relation import OverlappingRelation
+from data_structures.relations.overlapping_relation import OverlappingRelation
 from src.algorithm_components.helper_functions.partition_functions import connect_partitions
 from src.algorithm_components.helper_functions.sublog_functions import create_sublogs_concurrent
 

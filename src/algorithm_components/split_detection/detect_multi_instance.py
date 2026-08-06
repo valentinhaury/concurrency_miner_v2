@@ -1,5 +1,5 @@
 import copy
-from src.data_structures.overlapping_relation import OverlappingRelation
+from data_structures.relations.overlapping_relation import OverlappingRelation
 
 
 def get_multi_instance_activities(event_log):

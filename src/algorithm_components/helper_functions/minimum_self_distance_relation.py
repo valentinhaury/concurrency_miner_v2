@@ -1,7 +1,7 @@
 from collections import deque
 import copy
 from src.data_structures.activity import Activity
-from src.data_structures.relation import Relation
+from data_structures.relations.relation import Relation
 
 
 def get_minimum_self_distance_relations(log):

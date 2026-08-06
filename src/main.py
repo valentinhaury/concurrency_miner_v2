@@ -1,9 +1,4 @@
-from src.algorithm_components.fall_throughs.activitiy_once_per_trace import get_activities_once_per_trace, \
-    detect_activity_once_per_trace
-from src.algorithm_components.helper_functions.sublog_functions import get_log_without_activity
-from src.data_structures.directly_follows_relation import DirectlyFollowsRelation
-from src.algorithm_components.split_detection.detect_arbitrary_order import create_arbitrary_order_partitions
-from src.algorithm_components.split_detection.detect_sequence import get_sequence_sublogs
+from data_structures.relations.directly_follows_relation import DirectlyFollowsRelation
 from src.data_structures.activity import Activity
 from src.data_structures.trace import Trace
 from src.data_structures.log import Log

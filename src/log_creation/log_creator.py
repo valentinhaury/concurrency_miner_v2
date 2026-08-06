@@ -1,5 +1,5 @@
 from src.data_structures.activity import Activity
-from src.data_structures.directly_follows_relation import DirectlyFollowsRelation
+from data_structures.relations.directly_follows_relation import DirectlyFollowsRelation
 from src.data_structures.log import Log
 from src.data_structures.trace import Trace
 
