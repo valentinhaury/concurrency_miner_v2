@@ -1,13 +1,10 @@
 from itertools import product, permutations
 
-from data_structures.relations.transitiv_reduced_strict_partial_order_relation import \
+from src.data_structures.relations.transitiv_reduced_strict_partial_order_relation import \
     TransitivReducedStrictPartialOrder
 from src.data_structures.relations.strict_partial_order_relation import StrictPartialOrder
-from src.data_structures.activity import Activity
-from data_structures.relations.relation import Relation
-from data_structures.relations.directly_follows_relation import DirectlyFollowsRelation
-from data_structures.relations.overlapping_relation import OverlappingRelation
-from data_structures.relations.eventually_follows_relation import EventuallyFollowsRelation
+from src.data_structures.relations.overlapping_relation import OverlappingRelation
+
 
 class Trace:
     def __init__(self, events, transitive_reduced_strict_partial_order):

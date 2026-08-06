@@ -1,6 +1,6 @@
 import copy
 from src.data_structures.activity import Activity
-from data_structures.relations.eventually_follows_relation import EventuallyFollowsRelation
+from src.data_structures.relations.eventually_follows_relation import EventuallyFollowsRelation
 
 def detect_single_activity(event_log):
     log = copy.deepcopy(event_log)

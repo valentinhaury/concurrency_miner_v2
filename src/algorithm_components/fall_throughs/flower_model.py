@@ -1,6 +1,5 @@
 import copy
 
-
 def get_loop_activities(event_log):
     log = copy.deepcopy(event_log)
     activities = []

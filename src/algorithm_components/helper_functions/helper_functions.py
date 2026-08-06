@@ -1,8 +1,8 @@
 from itertools import product, combinations
-from data_structures.relations.relation import Relation
-from data_structures.relations.eventually_follows_relation import EventuallyFollowsRelation
-from data_structures.relations.overlapping_relation import OverlappingRelation
-from data_structures.relations.directly_follows_relation import DirectlyFollowsRelation
+from src.data_structures.relations.relation import Relation
+from src.data_structures.relations.eventually_follows_relation import EventuallyFollowsRelation
+from src.data_structures.relations.overlapping_relation import OverlappingRelation
+from src.data_structures.relations.directly_follows_relation import DirectlyFollowsRelation
 
 
 def fully_direct_connected(a1, a2, directly_follows_relations):

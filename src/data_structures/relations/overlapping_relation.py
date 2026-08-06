@@ -1,4 +1,4 @@
-from data_structures.relations.relation import Relation
+from src.data_structures.relations.relation import Relation
 
 class OverlappingRelation(Relation):
     def __init__(self, first, second):

@@ -1,6 +1,5 @@
 import copy
 from itertools import product, combinations
-
 from src.data_structures.log import Log
 
 

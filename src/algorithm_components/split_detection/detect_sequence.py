@@ -1,6 +1,6 @@
 import copy
 from itertools import combinations
-from data_structures.relations.eventually_follows_relation import EventuallyFollowsRelation
+from src.data_structures.relations.eventually_follows_relation import EventuallyFollowsRelation
 from src.algorithm_components.helper_functions.helper_functions import overlapping_partitions, \
     eventually_connected_in_only_one_direction_partitions
 from src.algorithm_components.helper_functions.partition_functions import connect_partitions
