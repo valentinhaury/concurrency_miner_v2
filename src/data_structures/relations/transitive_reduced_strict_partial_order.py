@@ -1,6 +1,6 @@
 from src.data_structures.relations.relation import Relation
 
-class TransitivReducedStrictPartialOrder(Relation):
+class TransitiveReducedStrictPartialOrder(Relation):
     def __init__(self, first, second):
         super().__init__(first, second)
 

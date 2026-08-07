@@ -1,7 +1,7 @@
 from itertools import product, permutations
 
-from src.data_structures.relations.transitiv_reduced_strict_partial_order import \
-    TransitivReducedStrictPartialOrder
+from src.data_structures.relations.transitive_reduced_strict_partial_order import \
+    TransitiveReducedStrictPartialOrder
 from src.data_structures.relations.strict_partial_order import StrictPartialOrder
 from src.data_structures.relations.overlapping_relation import OverlappingRelation
 
@@ -42,7 +42,7 @@ class Trace:
     def get_activities(self):
         return self.activities
 
-    def get_transitiv_reduced_strict_partial_order(self):
+    def get_transitive_reduced_strict_partial_order(self):
         return self.transitive_reduced_strict_partial_order
 
     def get_strict_partial_order(self):
@@ -53,7 +53,7 @@ class Trace:
         for e1 in self.events:
             is_start = True
             for e2 in self.events:
-                if TransitivReducedStrictPartialOrder(e2, e1) in self.transitive_reduced_strict_partial_order:
+                if TransitiveReducedStrictPartialOrder(e2, e1) in self.transitive_reduced_strict_partial_order:
                     is_start = False
             if is_start:
                 start_activities.add(e1.get_activity())
@@ -64,7 +64,7 @@ class Trace:
         for e1 in self.events:
             is_end = True
             for e2 in self.events:
-                if TransitivReducedStrictPartialOrder(e1, e2) in self.transitive_reduced_strict_partial_order:
+                if TransitiveReducedStrictPartialOrder(e1, e2) in self.transitive_reduced_strict_partial_order:
                     is_end = False
             if is_end:
                 end_activities.add(e1.get_activity())

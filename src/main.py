@@ -1,6 +1,8 @@
+from algorithm_components.split_detection.detect_sequence import detect_sequence, get_sequence_sublogs, \
+    create_sequence_partitions
 from src.algorithm_components.split_detection.detect_exclusive import detect_exclusive, \
     create_exclusive_choice_partitions
-from src.data_structures.relations.transitiv_reduced_strict_partial_order import TransitivReducedStrictPartialOrder
+from src.data_structures.relations.transitive_reduced_strict_partial_order import TransitiveReducedStrictPartialOrder
 from src.log_creation.log_creator import get_log
 from src.data_structures.activity import Activity
 from src.data_structures.trace import Trace
@@ -36,24 +38,21 @@ from src.concurrency_miner import concurrency_miner
 
 
 
-# arbitrary, concurrent, interleaving by exclusive testen
 print("-----------------------------------------------------------------------------------------------------------")
 
-if detect_exclusive(get_log("arbitrary")):
-    print("FALSE - Arbitrary")
-
-print("-----------------------------------------------------------------------------------------------------------")
-
-#if detect_exclusive(get_log("interleafing")):
-#    print("FALSE - Interleaving")
+#prepare log and relations
+test_log = get_log("sequence")
+eventually_follows_relations = test_log.get_eventually_follows_relations()
+overlapping_relations = test_log.get_overlapping_relations()
+activities = test_log.get_activities()
 
 print("-----------------------------------------------------------------------------------------------------------")
 
-#if detect_exclusive(get_log("concurrent")):
-#    print("FALSE - Concurrent")
+sequence_partitions = create_sequence_partitions(eventually_follows_relations, overlapping_relations, activities)
+for sublog in get_sequence_sublogs(test_log, sequence_partitions, eventually_follows_relations):
+    print("Sublog: " + str(sublog))
 
 print("-----------------------------------------------------------------------------------------------------------")
-
 
 
 if False:
@@ -70,7 +69,7 @@ if False:
     c3 = Activity("c")
     d1 = Activity("d")
     # a-c b-d a-d
-    t1 = Trace([a1, b1, c1, d1, a2], [TransitivReducedStrictPartialOrder(a2, a1), TransitivReducedStrictPartialOrder(a1, c1), TransitivReducedStrictPartialOrder(a1, d1), TransitivReducedStrictPartialOrder(b1, d1)])
+    t1 = Trace([a1, b1, c1, d1, a2], [TransitiveReducedStrictPartialOrder(a2, a1), TransitiveReducedStrictPartialOrder(a1, c1), TransitiveReducedStrictPartialOrder(a1, d1), TransitiveReducedStrictPartialOrder(b1, d1)])
     test_log = Log([t1])
 
     #get_log_without_activity

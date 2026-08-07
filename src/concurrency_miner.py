@@ -13,13 +13,19 @@ from src.algorithm_components.split_detection.detect_parallel import detect_para
 from src.algorithm_components.split_detection.detect_concurrent import detect_concurrent, get_concurrent_sublogs
 from src.algorithm_components.split_detection.detect_interleafing import get_interleafing_sublogs, detect_interleafing
 from src.algorithm_components.split_detection.detect_exclusive import detect_exclusive, get_exclusive_choice_sublogs
-from src.algorithm_components.split_detection.detect_sequence import detect_sequence, get_sequence_sublogs
+from src.algorithm_components.split_detection.detect_sequence import detect_sequence, get_sequence_sublogs, \
+    create_sequence_partitions
 from src.algorithm_components.split_detection.detect_multi_instance import get_multi_instance_activities
 
 
 def concurrency_miner(log, multi_instance_activities=None):
     if not log.get_traces():
         return Node(Activity("tau"))
+
+# prepare relations
+    eventually_follows_relations = log.get_eventually_follows_relations()
+    overlapping_relations = log.get_overlapping_relations()
+    activities = log.get_activities()
 
 # check for multi_instance activities
     if not multi_instance_activities:
@@ -40,15 +46,17 @@ def concurrency_miner(log, multi_instance_activities=None):
 
 ##### OPERATORS Exclusive, Sequence, Arbitrary Order, Interleaving, Concurrent, Parallel, Loop
 # split the log with an exclusive choice operator
-    elif detect_exclusive(log):
+    if detect_exclusive(log):
         process_tree = Node(Operator.Exclusive)
         for sublog in get_exclusive_choice_sublogs(log):
             process_tree.add_child(concurrency_miner(sublog, multi_instance_activities))
         return process_tree
 # split the log with a sequence operator
-    elif detect_sequence(log):
+
+    sequence_partitions = create_sequence_partitions(eventually_follows_relations, overlapping_relations, activities)
+    if len(sequence_partitions) > 1:
         process_tree = Node(Operator.Sequence)
-        for sublog in get_sequence_sublogs(log):
+        for sublog in get_sequence_sublogs(log, sequence_partitions, eventually_follows_relations):
             process_tree.add_child(concurrency_miner(sublog, multi_instance_activities))
         return process_tree
 # split the log with an arbitrary order operator

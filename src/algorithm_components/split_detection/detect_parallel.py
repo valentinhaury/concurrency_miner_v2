@@ -1,7 +1,7 @@
 import copy
 from itertools import combinations, product
 from src.data_structures.relations.overlapping_relation import OverlappingRelation
-from src.algorithm_components.helper_functions.partition_functions import connect_partitions
+from src.algorithm_components.helper_functions.partition_functions import merge_partitions
 from src.algorithm_components.helper_functions.sublog_functions import create_sublogs_concurrent
 
 
@@ -36,7 +36,7 @@ def create_parallel_partitions(event_log):
                         break
                 if changed: break
             if changed:
-                connect_partitions(p1[0], p2[0], partitions)
+                merge_partitions(p1[0], p2[0], partitions)
                 break
 
 

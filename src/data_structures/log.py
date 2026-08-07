@@ -25,7 +25,7 @@ class Log:
     def get_directly_follows_relations(self):
         directly_follows_relations = set()
         for trace in self.traces:
-            for spo in trace.get_transitiv_reduced_strict_partial_order():
+            for spo in trace.get_transitive_reduced_strict_partial_order():
                 directly_follows_relations.add(DirectlyFollowsRelation(spo.get_first().get_activity(), spo.get_second().get_activity()))
         return directly_follows_relations
 
@@ -39,23 +39,23 @@ class Log:
     def get_overlapping_relations(self):
         overlapping_relations = set()
         for trace in self.traces:
-            overlapping_relations.union(trace.get_overlapping_relations())
+            overlapping_relations.update(trace.get_overlapping_relations())
         return overlapping_relations
 
     def get_activities(self):
         activities = set()
         for trace in self.traces:
-            activities.union(trace.get_activities())
+            activities.update(trace.get_activities())
         return activities
 
     def get_start_activities(self):
         start_activities = set()
         for trace in self.traces:
-            start_activities.union(trace.get_start_activities())
+            start_activities.update(trace.get_start_activities())
         return start_activities
 
     def get_end_activities(self):
         end_activities = set()
         for trace in self.traces:
-            end_activities.union(trace.get_end_activities())
+            end_activities.update(trace.get_end_activities())
         return end_activities
