@@ -15,7 +15,7 @@ def test_arbitrary_order_log():
     assert detect_parallel(get_log("arbitrary")) == False
 
 def test_interleafing_log():
-    assert detect_parallel(get_log("interleafing")) == False
+    assert detect_parallel(get_log("interleaving")) == False
 
 def test_concurrent_log():
     assert detect_parallel(get_log("concurrent")) == False

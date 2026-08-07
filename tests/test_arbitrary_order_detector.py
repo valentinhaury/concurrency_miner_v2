@@ -48,7 +48,7 @@ def test_arbitrary_order_log():
     assert len(sequence_partitions_of_arbitrary_log) > 1
 
 def test_interleafing_log():
-    log = copy.deepcopy(get_log("interleafing"))
+    log = copy.deepcopy(get_log("interleaving"))
     eventually_follows_relations = log.get_eventually_follows_relations()
     overlapping_relations = log.get_overlapping_relations()
     activities = log.get_activities()

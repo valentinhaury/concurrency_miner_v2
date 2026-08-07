@@ -55,7 +55,7 @@ def get_log(specifier):
         case "loop":            return _log_loop()               # loop log
         case "sequence_loop":   return _log_loop_sequence()      # loop log
         case "arbitrary":       return _log_arbitrary_order()    # arbitrary order log
-        case "interleafing":    return _log_interleafing()       # interleafing log
+        case "interleaving":    return _log_interleafing()       # interleafing log
         case "concurrent":      return _log_concurrent()         # concurrent log
         case "parallel":        return _log_parallel()           # parallel log
     return None

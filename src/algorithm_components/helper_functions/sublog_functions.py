@@ -45,7 +45,7 @@ def create_sublogs_concurrent(log, partitions):
                     new_trace_events.add(event)
 
             for relation in transitive_reduced_strict_partial_order:
-                if relation.get_first_() in new_trace_events and relation.get_second() in new_trace_events:
+                if relation.get_first() in new_trace_events and relation.get_second() in new_trace_events:
                     new_trace_transitive_reduced_strict_partial_order.add(relation)
 
             for e1, e2 in permutations(new_trace_events, 2):

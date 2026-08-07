@@ -64,7 +64,7 @@ def test_arbitrary_order_log():
     assert len(interleaving_partitions_of_arbitrary_log) < 2
 
 def test_interleafing_log():
-    log = copy.deepcopy(get_log("interleafing"))
+    log = copy.deepcopy(get_log("interleaving"))
 
     activities = log.get_activities()
     start_activities = log.get_start_activities()

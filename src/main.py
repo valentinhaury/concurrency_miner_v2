@@ -1,9 +1,5 @@
-from algorithm_components.helper_functions.compute_minimum_self_distance_relation import get_minimum_self_distance_relations
-from algorithm_components.split_detection.detect_arbitrary_order import create_arbitrary_order_partitions
-from algorithm_components.split_detection.detect_sequence import get_sequence_sublogs, \
-    create_sequence_partitions
-from src.algorithm_components.split_detection.detect_exclusive import detect_exclusive, \
-    create_exclusive_choice_partitions
+from algorithm_components.split_detection.detect_concurrent import get_concurrent_sublogs, create_concurrent_partitions
+from algorithm_components.split_detection.detect_interleaving import create_interleaving_partitions
 from src.data_structures.relations.transitive_reduced_strict_partial_order import TransitiveReducedStrictPartialOrder
 from src.log_creation.log_creator import get_log
 from src.data_structures.activity import Activity
@@ -37,31 +33,31 @@ from src.concurrency_miner import concurrency_miner
 #TODO Tree to traces - parser -> Given a tree returns a Log with all possible Traces -> Good to create Testcases
 
 
-test_log = get_log("loop")
 
 
-print(str(get_minimum_self_distance_relations(test_log)))
+print("-----------------------------------------------------------------------------------------------------------")
+
+#prepare log and relations
+test_log = get_log("concurrent")
+
+directly_follows_relations = test_log.get_directly_follows_relations()
+eventually_follows_relations = test_log.get_eventually_follows_relations()
+overlapping_relations = test_log.get_overlapping_relations()
+minimum_self_distance_relations = test_log.get_minimum_self_distance_relations()
+
+activities = test_log.get_activities()
+traces = test_log.get_traces()
+start_activities = test_log.get_start_activities()
+end_activities = test_log.get_end_activities()
 
 
+print("-----------------------------------------------------------------------------------------------------------")
 
+partitions = create_concurrent_partitions(activities, start_activities, end_activities, overlapping_relations, directly_follows_relations, minimum_self_distance_relations)
+for sublog in get_concurrent_sublogs(test_log, partitions):
+    print("Sublog: " + str(sublog))
 
-if False:
-    print("-----------------------------------------------------------------------------------------------------------")
-
-    #prepare log and relations
-    test_log = get_log("arbitrary")
-    eventually_follows_relations = test_log.get_eventually_follows_relations()
-    overlapping_relations = test_log.get_overlapping_relations()
-    activities = test_log.get_activities()
-    traces = test_log.get_traces()
-
-    print("-----------------------------------------------------------------------------------------------------------")
-
-    arbitrary_partitions = create_arbitrary_order_partitions(traces, activities, overlapping_relations, eventually_follows_relations)
-    for sublog in get_sequence_sublogs(test_log, arbitrary_partitions, eventually_follows_relations):
-        print("Sublog: " + str(sublog))
-
-    print("-----------------------------------------------------------------------------------------------------------")
+print("-----------------------------------------------------------------------------------------------------------")
 
 
 if False:
