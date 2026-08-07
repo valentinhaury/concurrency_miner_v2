@@ -1,5 +1,5 @@
 from src.algorithm_components.fall_throughs.flower_model import get_loop_activities
-from algorithm_components.helper_functions import minimum_self_distance_relation
+from algorithm_components.helper_functions import compute_minimum_self_distance_relation
 from src.algorithm_components.helper_functions.sublog_functions import get_log_without_activity
 from src.algorithm_components.fall_throughs.activitiy_once_per_trace import detect_activity_once_per_trace, \
     get_activities_once_per_trace

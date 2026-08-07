@@ -1,7 +1,7 @@
 from collections import deque
 import copy
 
-from data_structures.relations.minimum_self_distance_relation import MinimumSelfDistanceRelation
+from src.data_structures.relations.minimum_self_distance_relation import MinimumSelfDistanceRelation
 
 def compute_minimum_self_distance_relations(log):
     activity_msd_dictionary = {}
