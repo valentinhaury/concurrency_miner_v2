@@ -1,3 +1,4 @@
+from src.algorithm_components.helper_functions.minimum_self_distance_relation import compute_minimum_self_distance_relations
 from src.data_structures.relations.eventually_follows_relation import EventuallyFollowsRelation
 from src.data_structures.relations.directly_follows_relation import DirectlyFollowsRelation
 
@@ -61,4 +62,4 @@ class Log:
         return end_activities
 
     def get_minimum_self_distance_relations(self):
-        return []
+        return compute_minimum_self_distance_relations(self)

@@ -37,7 +37,7 @@ from src.concurrency_miner import concurrency_miner
 #TODO Tree to traces - parser -> Given a tree returns a Log with all possible Traces -> Good to create Testcases
 
 
-test_log = get_log("arbitrary")
+test_log = get_log("loop")
 
 
 print(str(get_minimum_self_distance_relations(test_log)))

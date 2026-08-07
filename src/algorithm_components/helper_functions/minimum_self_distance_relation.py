@@ -2,57 +2,57 @@ from collections import deque
 import copy
 
 from data_structures.relations.minimum_self_distance_relation import MinimumSelfDistanceRelation
-from src.data_structures.activity import Activity
 
-def get_minimum_self_distance_relations(log):
-    relationship_dict = {}
+def compute_minimum_self_distance_relations(log):
+    activity_msd_dictionary = {}
 
     # add every activity in the log as a key and as value add a dict with the keys distance and between
     for activity in log.get_activities():
-        relationship_dict[activity] = {
+        activity_msd_dictionary[activity] = {
             "minimum_self_distance": None,
             "activities_in_msd": None
         }
 
     for trace in log.get_traces():
         trace_dict = trace_self_distance_list(trace)
-        #TODO sind in activities_in_msd activities oder events?
-        for event, (distance, activities_in_msd) in trace_dict.items():
-            old_distance = relationship_dict[event.get_activity()]["minimum_self_distance"]
+        for event, (distance, events_in_msd) in trace_dict.items():
+            old_distance = activity_msd_dictionary[event.get_activity()]["minimum_self_distance"]
+            if not distance:
+                continue
+            activities_in_msd = set()
+            for event_msd in events_in_msd:
+                activities_in_msd.add(event_msd.get_activity())
         # if there is no distance for this activity yet add the new distance and the activities in msd
-            if distance and not old_distance:
-                relationship_dict[event.get_activity()]["minimum_self_distance"] = distance
-                relationship_dict[event.get_activity()]["activities_in_msd"] = activities_in_msd
+            if not old_distance:
+                activity_msd_dictionary[event.get_activity()]["minimum_self_distance"] = distance
+                activity_msd_dictionary[event.get_activity()]["activities_in_msd"] = activities_in_msd
         # if the new distance is smaller than the old distance replace the distance and the activities in msd
-            elif distance and distance < old_distance:
-                relationship_dict[event.get_activity()]["minimum_self_distance"] = distance
-                relationship_dict[event.get_activity()]["activities_in_msd"] = activities_in_msd
+            elif distance < old_distance:
+                activity_msd_dictionary[event.get_activity()]["minimum_self_distance"] = distance
+                activity_msd_dictionary[event.get_activity()]["activities_in_msd"] = activities_in_msd
         # if the new distance is equal to the old distance add the new activities in msd
-            elif distance and distance == old_distance:
-                relationship_dict[event.get_activity()]["activities_in_msd"].update(activities_in_msd)
+            elif distance == old_distance:
+                activity_msd_dictionary[event.get_activity()]["activities_in_msd"].update(activities_in_msd)
 
     msd_relation = []
-    for activity, data in relationship_dict.items():
-        #if data["distance"]: #TODO braucht es das?
-            for target in data["activities_in_msd"]:
-                msd_relation.append(MinimumSelfDistanceRelation(activity, target))
-    #TODO WAS IST TARGET? ACTIVITY ODER EVENT?
+
+    for activity, data in activity_msd_dictionary.items():
+        if not data["activities_in_msd"]:
+            continue
+        for target in data["activities_in_msd"]:
+            msd_relation.append(MinimumSelfDistanceRelation(activity, target))
 
     return msd_relation
-
-
-# CODE FROM CHATGPT 08.07.2026
 
 def trace_self_distance_list(trace):
     trace = copy.deepcopy(trace)
 
     events = trace.get_events()
-    edges = trace.get_transitive_reduced_strict_partial_order()
+    transitive_reduced_strict_partial_order = trace.get_transitive_reduced_strict_partial_order()
 
-    # Adjazenzliste
     adjacent_list = {e: [] for e in events}
-    for edge in edges:
-        adjacent_list[edge.get_first()].append(edge.get_second())
+    for relation in transitive_reduced_strict_partial_order:
+        adjacent_list[relation.get_first()].append(relation.get_second())
 
     result = {}
 
@@ -62,13 +62,13 @@ def trace_self_distance_list(trace):
 
         queue = deque([start])
 
-        # kürzeste Distanz vom Start zu jedem Knoten
+        # dict with key(event) and the shortest distance from start to that event
         distance = {start: 0}
 
-        # alle Vorgänger auf einem kürzesten Pfad
+        # dict with key(event) and a list of parents that are parent on a shortest path
         parents = {start: []}
 
-        # alle Zielknoten mit minimaler Distanz
+        # shortest distance to a target (different event with same activity) and all targets with minimal distance
         best_distance = None
         best_targets = []
 
@@ -76,8 +76,7 @@ def trace_self_distance_list(trace):
 
             node = queue.popleft()
 
-            # Wenn wir schon eine Zielaktivität gefunden haben,
-            # müssen längere Pfade nicht mehr betrachtet werden.
+            # Skip paths that are longer than an already completed path
             if best_distance is not None and distance[node] >= best_distance:
                 continue
 
@@ -85,17 +84,17 @@ def trace_self_distance_list(trace):
 
                 new_dist = distance[node] + 1
 
-                # erster Besuch
+                # first time finding this node
                 if nxt not in distance:
                     distance[nxt] = new_dist
                     parents[nxt] = [node]
                     queue.append(nxt)
 
-                # gleicher kürzester Weg
+                # same shortest path -> add parent node to parents
                 elif new_dist == distance[nxt]:
                     parents[nxt].append(node)
 
-                # gleiches Label gefunden
+                # found same label
                 if (
                     nxt != start
                     and nxt.get_activity() == start_activity
@@ -106,10 +105,7 @@ def trace_self_distance_list(trace):
                     elif new_dist == best_distance:
                         best_targets.append(nxt)
 
-        # --------------------------------------------------
-        # Alle Aktivitäten auf allen kürzesten Pfaden sammeln
-        # --------------------------------------------------
-
+        # collect events on all shortest paths
         visited_on_shortest = set()
 
         def collect(node):
@@ -125,7 +121,7 @@ def trace_self_distance_list(trace):
             for target in best_targets:
                 collect(target)
 
-            # Start- und Zielaktivitäten entfernen
+            # remove start and target event
             visited_on_shortest.discard(start)
             for target in best_targets:
                 visited_on_shortest.discard(target)

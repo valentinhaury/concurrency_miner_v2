@@ -6,3 +6,6 @@ class MinimumSelfDistanceRelation(Relation):
 
     def __str__(self):
         return "(" + str(self.first) + "-o-" + str(self.second) + ")"
+
+    def __repr__(self):
+        return "(" + repr(self.first) + "-o-" + repr(self.second) + ")"

@@ -1,6 +1,5 @@
 import copy
 from itertools import combinations
-from src.algorithm_components.helper_functions.minimum_self_distance_relation import get_minimum_self_distance_relations
 from src.algorithm_components.helper_functions.helper_functions import fully_overlapping_partitions, not_fully_direct_connected_relation
 from src.algorithm_components.helper_functions.partition_functions import merge_partitions, \
     add_partitions_with_no_start_or_end_to_arbitrary

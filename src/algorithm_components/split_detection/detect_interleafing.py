@@ -4,10 +4,7 @@ from itertools import combinations
 from src.data_structures.relations.minimum_self_distance_relation import MinimumSelfDistanceRelation
 from src.data_structures.relations.directly_follows_relation import DirectlyFollowsRelation
 from src.data_structures.relations.overlapping_relation import OverlappingRelation
-from src.algorithm_components.helper_functions.minimum_self_distance_relation import get_minimum_self_distance_relations
-from src.algorithm_components.helper_functions.helper_functions import not_fully_direct_connected_relation
-from src.algorithm_components.helper_functions.partition_functions import merge_partitions, \
-    add_partitions_with_no_start_or_end_to_arbitrary
+from src.algorithm_components.helper_functions.partition_functions import merge_partitions
 from src.algorithm_components.helper_functions.sublog_functions import create_sublogs_concurrent
 
 
