@@ -1,51 +1,49 @@
-import copy
 from itertools import combinations
-from src.algorithm_components.helper_functions.helper_functions import fully_overlapping_partitions, not_fully_direct_connected_relation
-from src.algorithm_components.helper_functions.partition_functions import merge_partitions, \
-    add_partitions_with_no_start_or_end_to_arbitrary
+
+from src.data_structures.relations.minimum_self_distance_relation import MinimumSelfDistanceRelation
+from src.data_structures.relations.directly_follows_relation import DirectlyFollowsRelation
+from src.data_structures.relations.overlapping_relation import OverlappingRelation
+from src.algorithm_components.helper_functions.partition_functions import merge_partitions
 from src.algorithm_components.helper_functions.sublog_functions import create_sublogs_concurrent
 
 
 def detect_concurrent(log):
     return len(create_concurrent_partitions(log)) > 1
 
-def get_concurrent_sublogs(log):
-    partitions = create_concurrent_partitions(log)
-    return create_sublogs_concurrent(log, partitions)
+def get_concurrent_sublogs(log, concurrent_partitions):
+    return create_sublogs_concurrent(log, concurrent_partitions)
 
-def create_concurrent_partitions(event_log):
-    log = copy.deepcopy(event_log)
-    directly_follows_relations = log.get_directly_follows_relations()
-    overlapping_relations = log.get_overlapping_relations()
-    activities = log.get_activities_by_label()
+def create_concurrent_partitions(activities, start_activities, end_activities, overlapping_relations, directly_follows_relations, minimum_self_distance_relations):
     partitions = []
 
     #initialize partitions
-    while activities:
-        new_partition = [activities.pop()]
+    for activity in activities:
+        new_partition = set()
+        new_partition.add(activity)
         partitions.append(new_partition)
 
-    # connect partitions if 2 activities are never overlapping
+    for a, b in combinations(activities, 2):
+        # merge partitions if activities are never overlapping in log
+        if not OverlappingRelation(a, b) in overlapping_relations:
+            merge_partitions(a, b, partitions)
+        # merge partitions if activities are not-fully pairwise connected in log
+        if (not DirectlyFollowsRelation(a, b) in directly_follows_relations) or (not DirectlyFollowsRelation(b, a) in directly_follows_relations):
+            merge_partitions(a, b, partitions)
+        # merge partitions if activities are in minimum self distance relation in log
+        if MinimumSelfDistanceRelation(a, b) in minimum_self_distance_relations or MinimumSelfDistanceRelation(b, a) in minimum_self_distance_relations:
+            merge_partitions(a, b, partitions)
+
+    # merge partitions with no start or no end activity to an arbitrary partition
     changed = True
-    while changed:
+    while len(partitions) > 1 and changed:
         changed = False
-        for p1, p2 in combinations(partitions, 2):
-            if not fully_overlapping_partitions(p1, p2, overlapping_relations):
-                merge_partitions(p1[0], p2[0], partitions)
+        for i, partition in enumerate(partitions):
+            if partition.isdisjoint(start_activities) or partition.isdisjoint(end_activities):
+                if i == 0:
+                    merge_partitions(next(iter(partition)), next(iter(partitions[1])), partitions)
+                else:
+                    merge_partitions(next(iter(partition)), next(iter(partitions[0])), partitions)
                 changed = True
                 break
-
-    # connect partitions if activities are not fully connected
-    for relation in not_fully_direct_connected_relation(log.get_activities_by_label(), directly_follows_relations):
-        merge_partitions(relation.get_first_activity(), relation.get_second_activity(), partitions)
-
-    # connect partitions if activities are in minimum self distance relationship
-    for relation in get_minimum_self_distance_relations(log):
-        merge_partitions(relation.get_first_activity(), relation.get_second_activity(), partitions)
-
-    # connect partition to arbitrary if it has no start or no end activity
-    start_activities = log.get_start_activities()
-    end_activities = log.get_end_activities()
-    partitions = add_partitions_with_no_start_or_end_to_arbitrary(partitions, start_activities, end_activities)
 
     return partitions

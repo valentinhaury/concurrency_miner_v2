@@ -1,4 +1,3 @@
-import copy
 from itertools import combinations
 
 from src.data_structures.relations.minimum_self_distance_relation import MinimumSelfDistanceRelation
@@ -7,9 +6,6 @@ from src.data_structures.relations.overlapping_relation import OverlappingRelati
 from src.algorithm_components.helper_functions.partition_functions import merge_partitions
 from src.algorithm_components.helper_functions.sublog_functions import create_sublogs_concurrent
 
-
-def detect_interleafing(log):
-    return len(create_interleaving_partitions(log)) > 1
 
 def get_interleaving_sublogs(log, interleaving_partitions):
     return create_sublogs_concurrent(log, interleaving_partitions)

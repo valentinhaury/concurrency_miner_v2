@@ -12,7 +12,8 @@ from src.algorithm_components.split_detection.detect_arbitrary_order import dete
     get_arbitrary_order_sublogs, create_arbitrary_order_partitions
 from src.algorithm_components.split_detection.detect_loop import detect_loop, get_loop_sublogs
 from src.algorithm_components.split_detection.detect_parallel import detect_parallel, get_parallel_sublogs
-from src.algorithm_components.split_detection.detect_concurrent import detect_concurrent, get_concurrent_sublogs
+from src.algorithm_components.split_detection.detect_concurrent import detect_concurrent, get_concurrent_sublogs, \
+    create_concurrent_partitions
 from src.algorithm_components.split_detection.detect_interleaving import create_interleaving_partitions, get_interleaving_sublogs
 from src.algorithm_components.split_detection.detect_exclusive import detect_exclusive, get_exclusive_choice_sublogs
 from src.algorithm_components.split_detection.detect_sequence import get_sequence_sublogs, \
@@ -78,11 +79,11 @@ def concurrency_miner(log, multi_instance_activities=None):
         for sublog in get_interleaving_sublogs(log, interleaving_partitions):
             process_tree.add_child(concurrency_miner(sublog, multi_instance_activities))
         return process_tree
-
 # split the log with a concurrent operator
-    elif detect_concurrent(log):
+    concurrent_partitions = create_concurrent_partitions(activities, start_activities, end_activities, overlapping_relations, directly_follows_relations, minimum_self_distance_relations)
+    if len(concurrent_partitions) > 1:
         process_tree = Node(Operator.Concurrent)
-        for sublog in get_concurrent_sublogs(log):
+        for sublog in get_concurrent_sublogs(log, concurrent_partitions):
             process_tree.add_child(concurrency_miner(sublog, multi_instance_activities))
         return process_tree
 # split the log with a parallel operator
