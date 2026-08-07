@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e3ce310f-a6cb-4654-8df9-4da22971cc3a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_interleafing.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_interleafing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_interleafing_detector.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_interleafing_detector.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +104,7 @@
       <workItem from="1786080087158" duration="2749000" />
       <workItem from="1786084888387" duration="4629000" />
       <workItem from="1786090538966" duration="6429000" />
-      <workItem from="1786102471003" duration="8719000" />
+      <workItem from="1786102471003" duration="11517000" />
     </task>
     <servers />
   </component>
