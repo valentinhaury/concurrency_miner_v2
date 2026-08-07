@@ -7,16 +7,16 @@ from src.data_structures.activity import Activity
 from src.algorithm_components.base_cases.detect_single_activity import detect_single_activity, get_single_activity
 from src.data_structures.process_tree_operator import Operator
 from src.data_structures.process_tree import Node
-from src.algorithm_components.split_detection.detect_arbitrary_order import detect_arbitrary_order, get_arbitrary_order_sublogs
+from src.algorithm_components.split_detection.detect_arbitrary_order import detect_arbitrary_order, \
+    get_arbitrary_order_sublogs, create_arbitrary_order_partitions
 from src.algorithm_components.split_detection.detect_loop import detect_loop, get_loop_sublogs
 from src.algorithm_components.split_detection.detect_parallel import detect_parallel, get_parallel_sublogs
 from src.algorithm_components.split_detection.detect_concurrent import detect_concurrent, get_concurrent_sublogs
 from src.algorithm_components.split_detection.detect_interleafing import get_interleafing_sublogs, detect_interleafing
 from src.algorithm_components.split_detection.detect_exclusive import detect_exclusive, get_exclusive_choice_sublogs
-from src.algorithm_components.split_detection.detect_sequence import detect_sequence, get_sequence_sublogs, \
+from src.algorithm_components.split_detection.detect_sequence import get_sequence_sublogs, \
     create_sequence_partitions
 from src.algorithm_components.split_detection.detect_multi_instance import get_multi_instance_activities
-
 
 def concurrency_miner(log, multi_instance_activities=None):
     if not log.get_traces():
@@ -26,6 +26,7 @@ def concurrency_miner(log, multi_instance_activities=None):
     eventually_follows_relations = log.get_eventually_follows_relations()
     overlapping_relations = log.get_overlapping_relations()
     activities = log.get_activities()
+    traces = log.get_traces()
 
 # check for multi_instance activities
     if not multi_instance_activities:
@@ -52,17 +53,17 @@ def concurrency_miner(log, multi_instance_activities=None):
             process_tree.add_child(concurrency_miner(sublog, multi_instance_activities))
         return process_tree
 # split the log with a sequence operator
-
-    sequence_partitions = create_sequence_partitions(eventually_follows_relations, overlapping_relations, activities)
+    sequence_partitions = create_sequence_partitions(activities, overlapping_relations, eventually_follows_relations)
     if len(sequence_partitions) > 1:
         process_tree = Node(Operator.Sequence)
         for sublog in get_sequence_sublogs(log, sequence_partitions, eventually_follows_relations):
             process_tree.add_child(concurrency_miner(sublog, multi_instance_activities))
         return process_tree
 # split the log with an arbitrary order operator
-    elif detect_arbitrary_order(log):
+    arbitrary_order_partitions = create_arbitrary_order_partitions(traces, activities, overlapping_relations, eventually_follows_relations)
+    if len(arbitrary_order_partitions) > 1:
         process_tree = Node(Operator.Arbitrary)
-        for sublog in get_arbitrary_order_sublogs(log):
+        for sublog in get_arbitrary_order_sublogs(log, arbitrary_order_partitions):
             process_tree.add_child(concurrency_miner(sublog, multi_instance_activities))
         return process_tree
 # split the log with an interleaving operator

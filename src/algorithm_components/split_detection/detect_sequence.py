@@ -6,10 +6,6 @@ from src.data_structures.relations.eventually_follows_relation import Eventually
 from src.algorithm_components.helper_functions.partition_functions import merge_partitions
 from src.algorithm_components.helper_functions.sublog_functions import create_sublogs_sequential
 
-
-def detect_sequence(log):
-    return len(create_sequence_partitions(log)) > 1
-
 def get_sequence_sublogs(log, sequence_partitions, eventually_follows_relations):
     return _sort_sublogs(create_sublogs_sequential(log, sequence_partitions), eventually_follows_relations)
 
@@ -35,7 +31,7 @@ def _follows(log_a, log_b, eventually_follows_relations):
                 return False
     return False
 
-def create_sequence_partitions(eventually_follows_relations, overlapping_relations, activities):
+def create_sequence_partitions(activities, overlapping_relations, eventually_follows_relations):
 
     partitions = []
     for activity in activities:
@@ -44,12 +40,13 @@ def create_sequence_partitions(eventually_follows_relations, overlapping_relatio
         partitions.append(new_partition)
 
     for a, b in combinations(activities, 2):
+        # merge partitions if activities are overlapping in log
         if OverlappingRelation(a, b) in overlapping_relations:
             merge_partitions(a, b, partitions)
-
+        # merge partitions if activities are pairwise reachable in log
         if EventuallyFollowsRelation(a, b) in eventually_follows_relations and EventuallyFollowsRelation(b, a) in eventually_follows_relations:
             merge_partitions(a, b, partitions)
-
+        # merge partitions if activities are pairwise not-reachable in log
         if (not EventuallyFollowsRelation(a, b) in eventually_follows_relations) and (not EventuallyFollowsRelation(b, a) in eventually_follows_relations):
             merge_partitions(a, b, partitions)
 

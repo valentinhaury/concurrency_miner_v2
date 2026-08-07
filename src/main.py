@@ -1,4 +1,5 @@
-from algorithm_components.split_detection.detect_sequence import detect_sequence, get_sequence_sublogs, \
+from algorithm_components.split_detection.detect_arbitrary_order import create_arbitrary_order_partitions
+from algorithm_components.split_detection.detect_sequence import get_sequence_sublogs, \
     create_sequence_partitions
 from src.algorithm_components.split_detection.detect_exclusive import detect_exclusive, \
     create_exclusive_choice_partitions
@@ -41,15 +42,16 @@ from src.concurrency_miner import concurrency_miner
 print("-----------------------------------------------------------------------------------------------------------")
 
 #prepare log and relations
-test_log = get_log("sequence")
+test_log = get_log("arbitrary")
 eventually_follows_relations = test_log.get_eventually_follows_relations()
 overlapping_relations = test_log.get_overlapping_relations()
 activities = test_log.get_activities()
+traces = test_log.get_traces()
 
 print("-----------------------------------------------------------------------------------------------------------")
 
-sequence_partitions = create_sequence_partitions(eventually_follows_relations, overlapping_relations, activities)
-for sublog in get_sequence_sublogs(test_log, sequence_partitions, eventually_follows_relations):
+arbitrary_partitions = create_arbitrary_order_partitions(traces, activities, overlapping_relations, eventually_follows_relations)
+for sublog in get_sequence_sublogs(test_log, arbitrary_partitions, eventually_follows_relations):
     print("Sublog: " + str(sublog))
 
 print("-----------------------------------------------------------------------------------------------------------")
