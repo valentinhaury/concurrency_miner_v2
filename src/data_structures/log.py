@@ -59,3 +59,6 @@ class Log:
         for trace in self.traces:
             end_activities.update(trace.get_end_activities())
         return end_activities
+
+    def get_minimum_self_distance_relations(self):
+        return []

@@ -1,3 +1,4 @@
+from algorithm_components.helper_functions.minimum_self_distance_relation import get_minimum_self_distance_relations
 from algorithm_components.split_detection.detect_arbitrary_order import create_arbitrary_order_partitions
 from algorithm_components.split_detection.detect_sequence import get_sequence_sublogs, \
     create_sequence_partitions
@@ -9,18 +10,7 @@ from src.data_structures.activity import Activity
 from src.data_structures.trace import Trace
 from src.data_structures.log import Log
 from src.concurrency_miner import concurrency_miner
-# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
-# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
-# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
-# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
-# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
-# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
-# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
-# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
-# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
-# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
-# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
-# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
+
 #TODO
 # MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
 # alle anpassen so wie im pseudocode zB.:
@@ -47,23 +37,31 @@ from src.concurrency_miner import concurrency_miner
 #TODO Tree to traces - parser -> Given a tree returns a Log with all possible Traces -> Good to create Testcases
 
 
-
-print("-----------------------------------------------------------------------------------------------------------")
-
-#prepare log and relations
 test_log = get_log("arbitrary")
-eventually_follows_relations = test_log.get_eventually_follows_relations()
-overlapping_relations = test_log.get_overlapping_relations()
-activities = test_log.get_activities()
-traces = test_log.get_traces()
 
-print("-----------------------------------------------------------------------------------------------------------")
 
-arbitrary_partitions = create_arbitrary_order_partitions(traces, activities, overlapping_relations, eventually_follows_relations)
-for sublog in get_sequence_sublogs(test_log, arbitrary_partitions, eventually_follows_relations):
-    print("Sublog: " + str(sublog))
+print(str(get_minimum_self_distance_relations(test_log)))
 
-print("-----------------------------------------------------------------------------------------------------------")
+
+
+
+if False:
+    print("-----------------------------------------------------------------------------------------------------------")
+
+    #prepare log and relations
+    test_log = get_log("arbitrary")
+    eventually_follows_relations = test_log.get_eventually_follows_relations()
+    overlapping_relations = test_log.get_overlapping_relations()
+    activities = test_log.get_activities()
+    traces = test_log.get_traces()
+
+    print("-----------------------------------------------------------------------------------------------------------")
+
+    arbitrary_partitions = create_arbitrary_order_partitions(traces, activities, overlapping_relations, eventually_follows_relations)
+    for sublog in get_sequence_sublogs(test_log, arbitrary_partitions, eventually_follows_relations):
+        print("Sublog: " + str(sublog))
+
+    print("-----------------------------------------------------------------------------------------------------------")
 
 
 if False:
