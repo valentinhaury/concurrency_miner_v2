@@ -5,7 +5,7 @@ class Operator(Enum):
     Sequence = "\u2192"
     Loop = "\u27f3"
     Arbitrary = "\u2194"
-    Interleafing = "\u29E2"
+    Interleaving = "\u29E2"
     Concurrent = "\u2227"
     Parallel ="||"
     Multi = "*"

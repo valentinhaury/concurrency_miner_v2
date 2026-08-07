@@ -1,5 +1,9 @@
 import copy
 from itertools import combinations
+
+from src.data_structures.relations.minimum_self_distance_relation import MinimumSelfDistanceRelation
+from src.data_structures.relations.directly_follows_relation import DirectlyFollowsRelation
+from src.data_structures.relations.overlapping_relation import OverlappingRelation
 from src.algorithm_components.helper_functions.minimum_self_distance_relation import get_minimum_self_distance_relations
 from src.algorithm_components.helper_functions.helper_functions import not_fully_direct_connected_relation
 from src.algorithm_components.helper_functions.partition_functions import merge_partitions, \
@@ -8,51 +12,41 @@ from src.algorithm_components.helper_functions.sublog_functions import create_su
 
 
 def detect_interleafing(log):
-    return len(create_interleafing_partitions(log)) > 1
+    return len(create_interleaving_partitions(log)) > 1
 
-def get_interleafing_sublogs(log):
-    partitions = create_interleafing_partitions(log)
-    return create_sublogs_concurrent(log, partitions)
+def get_interleaving_sublogs(log, interleaving_partitions):
+    return create_sublogs_concurrent(log, interleaving_partitions)
 
-def create_interleafing_partitions(event_log):
-    log = copy.deepcopy(event_log)
-    directly_follows_relations = log.get_directly_follows_relations()
-    overlapping_relations = log.get_overlapping_relations()
-    activities = log.get_activities_by_label()
+def create_interleaving_partitions(activities, start_activities, end_activities, overlapping_relations, directly_follows_relations, minimum_self_distance_relations):
     partitions = []
-
-    #initialize partitions
-    while activities:
-        new_partition = [activities.pop()]
+    for activity in activities:
+        new_partition = set()
+        new_partition.add(activity)
         partitions.append(new_partition)
 
-    # merge overlapping partitions
-    for relation in overlapping_relations:
-        merge_partitions(relation.get_first_activity(), relation.get_second_activity(), partitions)
+    for a, b in combinations(activities, 2):
+        # merge partitions if activities are overlapping in log
+        if OverlappingRelation(a, b) in overlapping_relations:
+            merge_partitions(a, b, partitions)
+        # merge partitions if activities are not-fully pairwise connected in log
+        if (not DirectlyFollowsRelation(a, b) in directly_follows_relations) or (not DirectlyFollowsRelation(b, a) in directly_follows_relations):
+            merge_partitions(a, b, partitions)
+        # merge partitions if activities are in minimum self distance relation in log
+        if MinimumSelfDistanceRelation(a, b) in minimum_self_distance_relations or MinimumSelfDistanceRelation(b, a) in minimum_self_distance_relations:
+            merge_partitions(a, b, partitions)
 
-    # merge not fully direct connected partitions
-    for relation in not_fully_direct_connected_relation(log.get_activities_by_label(), directly_follows_relations):
-        merge_partitions(relation.get_first_activity(), relation.get_second_activity(), partitions)
-
-    # merge partitions with minimum self distance relationship
-
-    for relation in get_minimum_self_distance_relations(log):
-        merge_partitions(relation.get_first_activity(), relation.get_second_activity(), partitions)
-
-    # connect partitions with no start or no end activity to an arbitrary partition
-    start_activities = log.get_start_activities()
-    end_activities = log.get_end_activities()
-    partitions = add_partitions_with_no_start_or_end_to_arbitrary(partitions, start_activities, end_activities)
+    # merge partitions with no start or no end activity to an arbitrary partition
+    changed = True
+    while len(partitions) > 1 and changed:
+        changed = False
+        for i, partition in enumerate(partitions):
+            if partition.isdisjoint(start_activities) or partition.isdisjoint(end_activities):
+                if i == 0:
+                    merge_partitions(next(iter(partition)), next(iter(partitions[1])), partitions)
+                else:
+                    merge_partitions(next(iter(partition)), next(iter(partitions[0])), partitions)
+                changed = True
+                break
 
     return partitions
 
-
-    # Alternative to minimum self distance relationship
-    changed = True
-    while changed:
-        changed = False
-        for p1, p2 in combinations(partitions, 2):
-            if are_in_loop_partitions(p1, p2, log):
-                merge_partitions(p1[0], p2[0], partitions)
-                changed = True
-                break

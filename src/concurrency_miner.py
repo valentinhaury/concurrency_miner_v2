@@ -1,4 +1,5 @@
-from algorithm_components.fall_throughs.flower_model import get_loop_activities
+from src.algorithm_components.fall_throughs.flower_model import get_loop_activities
+from algorithm_components.helper_functions import minimum_self_distance_relation
 from src.algorithm_components.helper_functions.sublog_functions import get_log_without_activity
 from src.algorithm_components.fall_throughs.activitiy_once_per_trace import detect_activity_once_per_trace, \
     get_activities_once_per_trace
@@ -12,7 +13,7 @@ from src.algorithm_components.split_detection.detect_arbitrary_order import dete
 from src.algorithm_components.split_detection.detect_loop import detect_loop, get_loop_sublogs
 from src.algorithm_components.split_detection.detect_parallel import detect_parallel, get_parallel_sublogs
 from src.algorithm_components.split_detection.detect_concurrent import detect_concurrent, get_concurrent_sublogs
-from src.algorithm_components.split_detection.detect_interleafing import get_interleafing_sublogs, detect_interleafing
+from src.algorithm_components.split_detection.detect_interleafing import create_interleaving_partitions, get_interleaving_sublogs
 from src.algorithm_components.split_detection.detect_exclusive import detect_exclusive, get_exclusive_choice_sublogs
 from src.algorithm_components.split_detection.detect_sequence import get_sequence_sublogs, \
     create_sequence_partitions
@@ -23,10 +24,14 @@ def concurrency_miner(log, multi_instance_activities=None):
         return Node(Activity("tau"))
 
 # prepare relations
-    eventually_follows_relations = log.get_eventually_follows_relations()
-    overlapping_relations = log.get_overlapping_relations()
-    activities = log.get_activities()
     traces = log.get_traces()
+    activities = log.get_activities()
+    start_activities = log.get_start_activities()
+    end_activities = log.get_end_activities()
+    overlapping_relations = log.get_overlapping_relations()
+    eventually_follows_relations = log.get_eventually_follows_relations()
+    directly_follows_relations = log.get_directly_follows_relations()
+    minimum_self_distance_relations = log.get_minimum_self_distance_relations()
 
 # check for multi_instance activities
     if not multi_instance_activities:
@@ -67,11 +72,13 @@ def concurrency_miner(log, multi_instance_activities=None):
             process_tree.add_child(concurrency_miner(sublog, multi_instance_activities))
         return process_tree
 # split the log with an interleaving operator
-    elif detect_interleafing(log):
-        process_tree = Node(Operator.Interleafing)
-        for sublog in get_interleafing_sublogs(log):
+    interleaving_partitions = create_interleaving_partitions(activities, start_activities, end_activities, overlapping_relations, directly_follows_relations, minimum_self_distance_relations)
+    if len(interleaving_partitions) > 1:
+        process_tree = Node(Operator.Interleaving)
+        for sublog in get_interleaving_sublogs(log, interleaving_partitions):
             process_tree.add_child(concurrency_miner(sublog, multi_instance_activities))
         return process_tree
+
 # split the log with a concurrent operator
     elif detect_concurrent(log):
         process_tree = Node(Operator.Concurrent)

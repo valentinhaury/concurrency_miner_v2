@@ -9,12 +9,21 @@ from src.data_structures.activity import Activity
 from src.data_structures.trace import Trace
 from src.data_structures.log import Log
 from src.concurrency_miner import concurrency_miner
-
-
+# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
+# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
+# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
+# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
+# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
+# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
+# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
+# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
+# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
+# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
+# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
+# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
 #TODO
+# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
 # alle anpassen so wie im pseudocode zB.:
-# exclusive choice so wie im Pseudocode umschreiben (combinations von traces und nicht von partitions)
-# sequence detection so wie im Pseudocode umschreiben (combinations von activities nicht partitions -> ein loop)
 # arbitrary order: muss zusätzlich noch gecheckt werden ob jede Partition mit jeder direct connected ist?
 # algorithmus so anpassen, dass nicht true/false von detect returned wird, sondern dass im main algorithmus die länge geprüft wird -> spart zeit
 # algorithmus so anpassen, dass dfg, efg, msd, ovl direkt übergeben werden und nur einmal am Anfang erstellt werden.
