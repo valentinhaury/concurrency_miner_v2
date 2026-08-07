@@ -8,11 +8,11 @@ from src.data_structures.log import Log
 from src.concurrency_miner import concurrency_miner
 
 #TODO
-# MINIMUM SELF DISTANCE RELATIONSHIP IN DEN LOG
-# alle anpassen so wie im pseudocode zB.:
 # arbitrary order: muss zusätzlich noch gecheckt werden ob jede Partition mit jeder direct connected ist?
-# algorithmus so anpassen, dass nicht true/false von detect returned wird, sondern dass im main algorithmus die länge geprüft wird -> spart zeit
-# algorithmus so anpassen, dass dfg, efg, msd, ovl direkt übergeben werden und nur einmal am Anfang erstellt werden.
+# parallel: muss in jedem trace geschaut werden ob sie overlapping sind -> sonst wenn der Trace (a, b) (keine relation) und die traces (a) und (b) sind, wird es einfach als parallel erkannt
+
+
+
 #TODO Fallthroughs,
 # done  Empty Log -> Tau
 # done  Empty Trace -> x(Tau,...)
