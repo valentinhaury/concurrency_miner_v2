@@ -22,14 +22,12 @@ def create_exclusive_choice_partitions(event_log):
         return [[traces.pop()]]
 
     trace_partitions = []
-    while traces:
-        trace = traces.pop()
+    for trace in traces:
         trace_partitions.append([trace])
 
     for t1, t2 in combinations(log.get_traces(), 2):
         if not t1.get_activities().isdisjoint(t2.get_activities()):
             trace_partitions = _merge_trace_partitions(t1, t2, trace_partitions)
-
     return trace_partitions
 
 
@@ -39,14 +37,13 @@ def _merge_trace_partitions(t1, t2, trace_partitions):
     for partition in trace_partitions:
         if t1 in partition:
             partition1 = partition
+            trace_partitions.remove(partition)
             break
-
     for partition in trace_partitions:
         if t2 in partition:
             partition2 = partition
+            trace_partitions.remove(partition)
             break
-    trace_partitions.remove(partition1)
-    trace_partitions.remove(partition2)
     partition1.extend(partition2)
     trace_partitions.append(partition1)
     return trace_partitions

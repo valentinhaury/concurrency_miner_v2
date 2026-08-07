@@ -23,7 +23,7 @@ class Trace:
             for event in self.events:
                 trace_string += str(event) + ", "
             trace_string = trace_string[:-2]
-        trace_string += "},(A{"
+        trace_string += "}, A{"
         if self.activities:
             for activity in self.activities:
                 trace_string += str(activity) + ", "

@@ -1,4 +1,7 @@
-from data_structures.relations.directly_follows_relation import TransitivReducedStrictPartialOrder
+from src.algorithm_components.split_detection.detect_exclusive import detect_exclusive, \
+    create_exclusive_choice_partitions
+from src.data_structures.relations.transitiv_reduced_strict_partial_order import TransitivReducedStrictPartialOrder
+from src.log_creation.log_creator import get_log
 from src.data_structures.activity import Activity
 from src.data_structures.trace import Trace
 from src.data_structures.log import Log
@@ -34,36 +37,61 @@ from src.concurrency_miner import concurrency_miner
 
 
 # arbitrary, concurrent, interleaving by exclusive testen
-
-
-str_input = 'sequence_loop' # exclusive sequence arbitrary interleafing concurrent parallel loop sequence_loop
-#test_log = get_log(str_input)
-a1 = Activity("a")
-a2 = Activity("a")
-a3 = Activity("a")
-b1 = Activity("b")
-b2 = Activity("b")
-b3 = Activity("b")
-c1 = Activity("c")
-c2 = Activity("c")
-c3 = Activity("c")
-d1 = Activity("d")
-# a-c b-d a-d
-t1 = Trace([a1, b1, c1, d1, a2], [TransitivReducedStrictPartialOrder(a2, a1), TransitivReducedStrictPartialOrder(a1, c1), TransitivReducedStrictPartialOrder(a1, d1), TransitivReducedStrictPartialOrder(b1, d1)])
-test_log = Log([t1])
-
-#get_log_without_activity
-#detect_activity_once_per_trace
-#get_activities_once_per_trace
 print("-----------------------------------------------------------------------------------------------------------")
+
+if detect_exclusive(get_log("arbitrary")):
+    print("FALSE - Arbitrary")
+
+i = 1
+for partition in create_exclusive_choice_partitions(get_log("arbitrary")):
+    for trace in partition:
+        print("Partition " + str(i) + ": " + str(trace))
+    i += 1
+
 
 print("-----------------------------------------------------------------------------------------------------------")
 
+#if detect_exclusive(get_log("interleafing")):
+#    print("FALSE - Interleaving")
+
 print("-----------------------------------------------------------------------------------------------------------")
-print("Discovered Tree")
-process_tree = concurrency_miner(test_log)
-print(str(process_tree))
+
+#if detect_exclusive(get_log("concurrent")):
+#    print("FALSE - Concurrent")
+
 print("-----------------------------------------------------------------------------------------------------------")
-print("Input Log")
-print(str(test_log))
-print("-----------------------------------------------------------------------------------------------------------")
+
+
+
+if False:
+    str_input = 'sequence_loop' # exclusive sequence arbitrary interleafing concurrent parallel loop sequence_loop
+    #test_log = get_log(str_input)
+    a1 = Activity("a")
+    a2 = Activity("a")
+    a3 = Activity("a")
+    b1 = Activity("b")
+    b2 = Activity("b")
+    b3 = Activity("b")
+    c1 = Activity("c")
+    c2 = Activity("c")
+    c3 = Activity("c")
+    d1 = Activity("d")
+    # a-c b-d a-d
+    t1 = Trace([a1, b1, c1, d1, a2], [TransitivReducedStrictPartialOrder(a2, a1), TransitivReducedStrictPartialOrder(a1, c1), TransitivReducedStrictPartialOrder(a1, d1), TransitivReducedStrictPartialOrder(b1, d1)])
+    test_log = Log([t1])
+
+    #get_log_without_activity
+    #detect_activity_once_per_trace
+    #get_activities_once_per_trace
+    print("-----------------------------------------------------------------------------------------------------------")
+
+    print("-----------------------------------------------------------------------------------------------------------")
+
+    print("-----------------------------------------------------------------------------------------------------------")
+    print("Discovered Tree")
+    process_tree = concurrency_miner(test_log)
+    print(str(process_tree))
+    print("-----------------------------------------------------------------------------------------------------------")
+    print("Input Log")
+    print(str(test_log))
+    print("-----------------------------------------------------------------------------------------------------------")
