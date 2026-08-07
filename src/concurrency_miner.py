@@ -13,7 +13,7 @@ from src.algorithm_components.split_detection.detect_arbitrary_order import dete
 from src.algorithm_components.split_detection.detect_loop import detect_loop, get_loop_sublogs
 from src.algorithm_components.split_detection.detect_parallel import detect_parallel, get_parallel_sublogs
 from src.algorithm_components.split_detection.detect_concurrent import detect_concurrent, get_concurrent_sublogs
-from src.algorithm_components.split_detection.detect_interleafing import create_interleaving_partitions, get_interleaving_sublogs
+from src.algorithm_components.split_detection.detect_interleaving import create_interleaving_partitions, get_interleaving_sublogs
 from src.algorithm_components.split_detection.detect_exclusive import detect_exclusive, get_exclusive_choice_sublogs
 from src.algorithm_components.split_detection.detect_sequence import get_sequence_sublogs, \
     create_sequence_partitions

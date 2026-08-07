@@ -1,5 +1,5 @@
 from src.log_creation.log_creator import get_log
-from src.algorithm_components.split_detection.detect_interleafing import detect_interleafing
+from src.algorithm_components.split_detection.detect_interleaving import detect_interleafing
 from src.data_structures.log import Log
 
 def test_empty_log():

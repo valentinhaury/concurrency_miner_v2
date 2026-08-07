@@ -1,8 +1,8 @@
 import copy
-from itertools import combinations
+from itertools import combinations, permutations
 
+from src.data_structures.relations.strict_partial_order import StrictPartialOrder
 from src.data_structures.relations.transitive_reduced_strict_partial_order import TransitiveReducedStrictPartialOrder
-from src.data_structures.relations.eventually_follows_relation import EventuallyFollowsRelation
 from src.data_structures.log import Log
 from src.data_structures.trace import Trace
 
@@ -32,23 +32,34 @@ def create_sublogs_concurrent(log, partitions):
     for partition in partitions:
         sub_log = []
         for trace in log.get_traces():
-            new_trace = Trace()
-            eventually_follows_relation_id = trace.get_eventually_follows_relations_by_id()
-            for activity in trace.activities:
-                if activity.activity_exists_by_label(partition):
-                    new_trace.add_activity(activity)
-            for relation in trace.get_directly_follows_relations():
-                if relation.get_first_activity().activity_exists_by_label(new_trace.get_activities()) and relation.get_second_activity().activity_exists_by_label(new_trace.get_activities()):
-                    new_trace.add_directly_follows_relation(relation)
-            for a1 in new_trace.get_activities():
-                for a2 in new_trace.get_activities():
-                    if EventuallyFollowsRelation(a1, a2).relation_exists_by_id(eventually_follows_relation_id):
-                        for a3 in new_trace.get_activities():
-                            if  not (EventuallyFollowsRelation(a1, a3).relation_exists_by_id(eventually_follows_relation_id)
-                                    and EventuallyFollowsRelation(a3, a2).relation_exists_by_id(eventually_follows_relation_id))\
-                                and not TransitiveReducedStrictPartialOrder(a1, a2).relation_exists_by_id(new_trace.get_directly_follows_relations()):
-                                new_trace.add_directly_follows_relation(TransitiveReducedStrictPartialOrder(a1, a2))
-            sub_log.append(new_trace)
+
+            new_trace_events = set()
+            new_trace_transitive_reduced_strict_partial_order = set()
+
+            events = trace.get_events()
+            strict_partial_order = trace.get_strict_partial_order()
+            transitive_reduced_strict_partial_order = trace.get_transitive_reduced_strict_partial_order()
+
+            for event in events:
+                if event.get_activity() in partition:
+                    new_trace_events.add(event)
+
+            for relation in transitive_reduced_strict_partial_order:
+                if relation.get_first_() in new_trace_events and relation.get_second() in new_trace_events:
+                    new_trace_transitive_reduced_strict_partial_order.add(relation)
+
+            for e1, e2 in permutations(new_trace_events, 2):
+                if not StrictPartialOrder(e1, e2) in strict_partial_order:
+                    continue
+                connected = True
+                for e3 in new_trace_events:
+                    if StrictPartialOrder(e1, e3) in strict_partial_order and StrictPartialOrder(e3, e2)in strict_partial_order:
+                        connected = False
+                        break
+                if connected:
+                    new_trace_transitive_reduced_strict_partial_order.add(TransitiveReducedStrictPartialOrder(e1, e2))
+
+            sub_log.append(Trace(new_trace_events, new_trace_transitive_reduced_strict_partial_order))
         sublogs.append(Log(sub_log))
 
     return sublogs
