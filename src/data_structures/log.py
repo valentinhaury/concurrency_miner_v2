@@ -17,31 +17,15 @@ class Log:
         string = string[:-5] + ")"
         return string
 
+    # TRACES
+
     def add_trace(self, trace):
         self.traces.append(trace)
 
     def get_traces(self):
         return self.traces
 
-    def get_directly_follows_relations(self):
-        directly_follows_relations = set()
-        for trace in self.traces:
-            for spo in trace.get_transitive_reduced_strict_partial_order():
-                directly_follows_relations.add(DirectlyFollowsRelation(spo.get_first().get_activity(), spo.get_second().get_activity()))
-        return directly_follows_relations
-
-    def get_eventually_follows_relations(self):
-        eventually_follows_relations = set()
-        for trace in self.traces:
-            for spo in trace.get_strict_partial_order():
-                eventually_follows_relations.add(EventuallyFollowsRelation(spo.get_first().get_activity(), spo.get_second().get_activity()))
-        return eventually_follows_relations
-
-    def get_overlapping_relations(self):
-        overlapping_relations = set()
-        for trace in self.traces:
-            overlapping_relations.update(trace.get_overlapping_relations())
-        return overlapping_relations
+    # ACTIVITIES
 
     def get_activities(self):
         activities = set()
@@ -60,6 +44,28 @@ class Log:
         for trace in self.traces:
             end_activities.update(trace.get_end_activities())
         return end_activities
+
+    # RELATIONS
+
+    def get_directly_follows_relations(self):
+        directly_follows_relations = set()
+        for trace in self.traces:
+            for spo in trace.get_transitive_reduced_strict_partial_order():
+                directly_follows_relations.add(DirectlyFollowsRelation(spo.get_first().get_activity(), spo.get_second().get_activity()))
+        return directly_follows_relations
+
+    def get_eventually_follows_relations(self):
+        eventually_follows_relations = set()
+        for trace in self.traces:
+            for spo in trace.get_strict_partial_order():
+                eventually_follows_relations.add(EventuallyFollowsRelation(spo.get_first().get_activity(), spo.get_second().get_activity()))
+        return eventually_follows_relations
+
+    def get_overlapping_relations(self):
+        overlapping_relations = set()
+        for trace in self.traces:
+            overlapping_relations.update(trace.get_overlapping_relations_trace())
+        return overlapping_relations
 
     def get_minimum_self_distance_relations(self):
         return compute_minimum_self_distance_relations(self)

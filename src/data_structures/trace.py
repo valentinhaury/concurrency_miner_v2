@@ -70,7 +70,7 @@ class Trace:
                 end_activities.add(e1.get_activity())
         return end_activities
 
-    def get_overlapping_relations(self):
+    def get_overlapping_relations_trace(self):
         overlapping_relations = set()
         for e1, e2 in product(self.events, repeat=2):
             if not StrictPartialOrder(e1, e2) in self.strict_partial_order \
