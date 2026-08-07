@@ -31,6 +31,11 @@ from src.concurrency_miner import concurrency_miner
 #TODO correct and incorrect test cases
 #TODO Tree to traces - parser -> Given a tree returns a Log with all possible Traces -> Good to create Testcases
 
+
+
+# arbitrary, concurrent, interleaving by exclusive testen
+
+
 str_input = 'sequence_loop' # exclusive sequence arbitrary interleafing concurrent parallel loop sequence_loop
 #test_log = get_log(str_input)
 a1 = Activity("a")

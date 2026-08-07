@@ -2,7 +2,7 @@ import copy
 from itertools import product, combinations
 from src.data_structures.log import Log
 from src.data_structures.trace import Trace
-from src.data_structures.relations.directly_follows_relation import TransitivReducedStrictPartialOrder
+from src.data_structures.relations.transitiv_reduced_strict_partial_order import TransitivReducedStrictPartialOrder
 from src.algorithm_components.helper_functions.helper_functions import direct_connected_id, overlapping
 from src.algorithm_components.helper_functions.partition_functions import connect_partitions
 

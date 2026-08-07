@@ -1,7 +1,7 @@
 import copy
 from itertools import combinations
 
-from src.data_structures.relations.directly_follows_relation import TransitivReducedStrictPartialOrder
+from src.data_structures.relations.transitiv_reduced_strict_partial_order import TransitivReducedStrictPartialOrder
 from src.data_structures.relations.eventually_follows_relation import EventuallyFollowsRelation
 from src.data_structures.log import Log
 from src.data_structures.trace import Trace

@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e3ce310f-a6cb-4654-8df9-4da22971cc3a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/data_structures/trace.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_structures/trace.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithm_components/helper_functions/helper_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/helper_functions/helper_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithm_components/helper_functions/sublog_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/helper_functions/sublog_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_exclusive.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_exclusive.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_loop.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/log_creation/log_creator.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/log_creation/log_creator.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,12 +30,12 @@
     &quot;assignee&quot;: &quot;valentinhaury&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/valentinhaury/concurrency_miner_v2.git",
-    "accountId": "fc36c271-2c6e-4c6b-9edf-9e08a5e05a9a"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/valentinhaury/concurrency_miner_v2.git&quot;,
+    &quot;accountId&quot;: &quot;fc36c271-2c6e-4c6b-9edf-9e08a5e05a9a&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -101,6 +106,7 @@
       <workItem from="1784269293196" duration="461000" />
       <workItem from="1785849734604" duration="12398000" />
       <workItem from="1786013828983" duration="4925000" />
+      <workItem from="1786080087158" duration="1129000" />
     </task>
     <servers />
   </component>
@@ -122,7 +128,7 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/data_structures/trace.py</url>
+          <url>file://$PROJECT_DIR$/src/log_creation/log_creator.py</url>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>

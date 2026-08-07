@@ -2,7 +2,7 @@ from itertools import product, combinations
 from src.data_structures.relations.relation import Relation
 from src.data_structures.relations.eventually_follows_relation import EventuallyFollowsRelation
 from src.data_structures.relations.overlapping_relation import OverlappingRelation
-from src.data_structures.relations.directly_follows_relation import TransitivReducedStrictPartialOrder
+from src.data_structures.relations.transitiv_reduced_strict_partial_order import TransitivReducedStrictPartialOrder
 
 
 def fully_direct_connected(a1, a2, directly_follows_relations):

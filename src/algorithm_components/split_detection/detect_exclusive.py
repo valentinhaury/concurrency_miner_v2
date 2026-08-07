@@ -25,25 +25,31 @@ def create_exclusive_choice_partitions(event_log):
     while traces:
         trace = traces.pop()
         trace_partitions.append([trace])
-    changed = True
-    while changed:
-        changed = False
-        for p1, p2 in combinations(trace_partitions, 2):
-            if changed:
-                break
-            for t1, t2 in product(p1, p2):
-                if not are_disjunct(t1, t2):
-                    changed = True
-                    p1.extend(p2)
-                    trace_partitions.remove(p2)
-                    break
+
+    for t1, t2 in combinations(log.get_traces(), 2):
+        if not t1.get_activities().isdisjoint(t2.get_activities()):
+            trace_partitions = _merge_trace_partitions(t1, t2, trace_partitions)
+
     return trace_partitions
 
-def are_disjunct(t1, t2):
-        for a1, a2 in product(t1.get_activities_by_label(), t2.get_activities_by_label()):
-            if a1.get_label() == a2.get_label():
-                return False
-        return True
+
+def _merge_trace_partitions(t1, t2, trace_partitions):
+    partition1 = []
+    partition2 = []
+    for partition in trace_partitions:
+        if t1 in partition:
+            partition1 = partition
+            break
+
+    for partition in trace_partitions:
+        if t2 in partition:
+            partition2 = partition
+            break
+    trace_partitions.remove(partition1)
+    trace_partitions.remove(partition2)
+    partition1.extend(partition2)
+    trace_partitions.append(partition1)
+    return trace_partitions
 
 
 
