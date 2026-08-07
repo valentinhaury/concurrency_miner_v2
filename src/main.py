@@ -42,13 +42,6 @@ print("-------------------------------------------------------------------------
 if detect_exclusive(get_log("arbitrary")):
     print("FALSE - Arbitrary")
 
-i = 1
-for partition in create_exclusive_choice_partitions(get_log("arbitrary")):
-    for trace in partition:
-        print("Partition " + str(i) + ": " + str(trace))
-    i += 1
-
-
 print("-----------------------------------------------------------------------------------------------------------")
 
 #if detect_exclusive(get_log("interleafing")):
