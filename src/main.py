@@ -5,6 +5,8 @@ from src.concurrency_miner import concurrency_miner
 # arbitrary order: muss zusätzlich noch gecheckt werden ob jede Partition mit jeder direct connected ist?
 #                   bzw wenn sie keine start und end activity haben ,it arbitrary partition mergen
 
+#TODO IMPORTANT FLOWER MODEL::: put every activity in a partition and create sublogs from that, so that all the traces are still there -> base cases / and loop will do the rest
+
 #TODO Fallthroughs,
 # done  Empty Log -> Tau
 # done  Empty Trace -> x(Tau,...)
