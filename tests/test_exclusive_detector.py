@@ -1,27 +1,27 @@
 from src.log_creation.log_creator import get_log
-from src.algorithm_components.split_detection.detect_exclusive import detect_exclusive
+from src.algorithm_components.split_detection.detect_exclusive import create_exclusive_choice_partitions
 from src.data_structures.log import Log
 
 def test_empty_log():
-    assert detect_exclusive(Log([])) == False
+    assert len(create_exclusive_choice_partitions(Log([]))) < 2
 
 def test_exclusive_log():
-    assert detect_exclusive(get_log("exclusive")) == True
+    assert len(create_exclusive_choice_partitions(get_log("exclusive"))) > 1
 
 def test_sequence_log():
-    assert detect_exclusive(get_log("sequence")) == False
+    assert len(create_exclusive_choice_partitions(get_log("sequence"))) < 2
 
 def test_arbitrary_order_log():
-    assert detect_exclusive(get_log("arbitrary")) == False
+    assert len(create_exclusive_choice_partitions(get_log("arbitrary"))) < 2
 
 def test_interleafing_log():
-    assert detect_exclusive(get_log("interleaving")) == False
+    assert len(create_exclusive_choice_partitions(get_log("interleaving"))) < 2
 
 def test_concurrent_log():
-    assert detect_exclusive(get_log("concurrent")) == False
+    assert len(create_exclusive_choice_partitions(get_log("concurrent"))) < 2
 
 def test_parallel_log():
-    assert detect_exclusive(get_log("parallel")) == False
+    assert len(create_exclusive_choice_partitions(get_log("parallel"))) < 2
 
 def test_loop_log():
-    assert detect_exclusive(get_log("loop")) == False
+    assert len(create_exclusive_choice_partitions(get_log("loop"))) < 2
