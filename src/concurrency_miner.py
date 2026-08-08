@@ -34,8 +34,6 @@ def concurrency_miner(log):
     directly_follows_relations = log.get_directly_follows_relations()
     minimum_self_distance_relations = log.get_minimum_self_distance_relations()
 
-    print("LOG: " + str(log))
-
 ##### BASE CASES
 # end recursion and add single activity node or multi_instance_node
     if len(activities) < 2:
