@@ -1,3 +1,4 @@
+from algorithm_components.split_detection.detect_loop import create_loop_partitions
 from src.algorithm_components.fall_throughs.flower_model import get_loop_activities
 from src.algorithm_components.helper_functions.sublog_functions import get_log_without_activity
 from src.algorithm_components.fall_throughs.activitiy_once_per_trace import detect_activity_once_per_trace, get_activities_once_per_trace
@@ -89,9 +90,10 @@ def concurrency_miner(log, multi_instance_activities=None):
             process_tree.add_child(concurrency_miner(sublog, multi_instance_activities))
         return process_tree
 # split the log with a loop operator
-    elif detect_loop(log):
+    loop_partitions = create_loop_partitions(activities, start_activities, end_activities, overlapping_relations, directly_follows_relations)
+    if len(loop_partitions) > 1:
         process_tree = Node(Operator.Loop)
-        for sublog in get_loop_sublogs(log):
+        for sublog in get_loop_sublogs(log, loop_partitions):
             process_tree.add_child(concurrency_miner(sublog, multi_instance_activities))
         return process_tree
 
