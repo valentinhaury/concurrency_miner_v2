@@ -82,7 +82,7 @@ def concurrency_miner(log, multi_instance_activities=None):
             process_tree.add_child(concurrency_miner(sublog, multi_instance_activities))
         return process_tree
 # split the log with a parallel operator
-    parallel_partitions = create_parallel_partitions(activities, overlapping_relations, eventually_follows_relations)
+    parallel_partitions = create_parallel_partitions(traces, activities)
     if len(parallel_partitions) > 1:
         process_tree = Node(Operator.Parallel)
         for sublog in get_parallel_sublogs(log, parallel_partitions):
