@@ -32,10 +32,11 @@ def create_arbitrary_order_partitions(traces, activities, overlapping_relations,
         # merge partitions if partitions are pairwise reachable in one trace
     for trace in traces:
         for e1, e2, e3 in permutations(trace.get_events(), 3):
-            if StrictPartialOrder(e1, e2) in trace.get_strict_partial_order() and StrictPartialOrder(e2, e3) in trace.get_strict_partial_order():
-                for partition in partitions:
-                    if e1.get_activity() in partition and e3.get_activity() in partition:
-                        merge_partitions(e1.get_activity(), e2.get_activity(), partitions)
-                        break
+            if not StrictPartialOrder(e1, e2) in trace.get_strict_partial_order() or not StrictPartialOrder(e2, e3) in trace.get_strict_partial_order():
+                continue
+            for partition in partitions:
+                if e1.get_activity() in partition and e3.get_activity() in partition:
+                    merge_partitions(e1.get_activity(), e2.get_activity(), partitions)
+                    break
 
     return partitions

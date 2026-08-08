@@ -9,9 +9,7 @@ from src.concurrency_miner import concurrency_miner
 
 #TODO
 # arbitrary order: muss zusätzlich noch gecheckt werden ob jede Partition mit jeder direct connected ist?
-# parallel: muss in jedem trace geschaut werden ob sie overlapping sind -> sonst wenn der Trace (a, b) (keine relation) und die traces (a) und (b) sind, wird es einfach als parallel erkannt
-
-
+#                   bzw wenn sie keine start und end activity haben ,it arbitrary partition mergen
 
 #TODO Fallthroughs,
 # done  Empty Log -> Tau
