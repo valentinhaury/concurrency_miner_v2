@@ -1,5 +1,8 @@
 import copy
 from itertools import product, combinations
+
+from data_structures.relations.directly_follows_relation import DirectlyFollowsRelation
+from src.data_structures.relations.overlapping_relation import OverlappingRelation
 from src.data_structures.log import Log
 from src.data_structures.trace import Trace
 from src.data_structures.relations.transitive_reduced_strict_partial_order import TransitiveReducedStrictPartialOrder
@@ -56,101 +59,77 @@ def get_loop_sublogs(log):
 
     return sublogs
 
-def create_loop_partitions(event_log):
-    log = copy.deepcopy(event_log)
-    activities = log.get_activities_by_label()
-    start_activities = log.get_start_activities()
-    end_activities = log.get_end_activities()
-    eventually_follows_relations = log.get_eventually_follows_relations()
-    directly_follows_relations = log.get_directly_follows_relations()
+def _merge_loop_partitions(activity_a, activity_b, partitions):
+    if activity_a in partitions[0] or activity_b in partitions[0]:
+        merge_partitions(activity_a, activity_b, partitions)
+        partitions.insert(0, partitions.pop())
+    else:
+        merge_partitions(activity_a, activity_b, partitions)
+
+def create_loop_partitions(activities, start_activities, end_activities, overlapping_relations, directly_follows_relations):
 
     partitions = []
-    partition_1 = []
-#create partition 1 where all start and end activities are
-    saved_activities = []
-    for activity in activities:
-        if activity.activity_exists_by_label(start_activities) or activity.activity_exists_by_label(end_activities):
-            partition_1.append(activity)
-        else:
-            saved_activities.append(activity)
-    activities = saved_activities
 
-# create all other partitions from the non-start and non-end activities
-    while activities:
-        new_partition = [activities.pop()]
-        partitions.append(new_partition)
+    # create partition 1 where all start and end activities are
+    partition_1 = start_activities | end_activities
+    partitions.append(partition_1)
 
-# merge partitions 2-n if they are connected
-    changed = True
-    while changed:
-        changed = False
-        for p1, p2 in combinations(partitions, 2):
-            for a, b in product(p1, p2):
-                if TransitiveReducedStrictPartialOrder(a, b).relation_exists_by_label(directly_follows_relations) \
-                    or TransitiveReducedStrictPartialOrder(b, a).relation_exists_by_label(directly_follows_relations):
-                    changed = True
-                    break
-            if changed:
-                merge_partitions(p1[0], p2[0], partitions)
-                break
+    # create all other partitions from the non-start and non-end activities
+    for activity in activities - partitions[0]:
+        partitions.append({activity})
+    # partitions 2-n should have no direct connections between them
+    for a, b in activities - partitions[0]:
+        if DirectlyFollowsRelation(a, b) in directly_follows_relations or DirectlyFollowsRelation(b, a) in directly_follows_relations:
+            merge_partitions(a, b, partitions)
 
-# merge partitions to p1 if they can be directly reached from a start-activity that is no end-activity
-#   or if an end-activity that is no start-activity can be directly reached from there
-    start_and_not_end_activities = []
-    end_and_not_start_activities = []
-    for activity in start_activities:
-        if not activity.activity_exists_by_label(end_activities):
-            start_and_not_end_activities.append(activity)
-    for activity in end_activities:
-        if not activity.activity_exists_by_label(start_activities):
-            end_and_not_start_activities.append(activity)
+    # merge overlapping partitions
+    for a, b in combinations(activities, 2):
+        if OverlappingRelation(a, b) in overlapping_relations:
+            _merge_loop_partitions(a, b, partitions)
 
-    saved_partitions = []
-    while partitions:
-        partition = partitions.pop()
-        merge = False
-        for activity in partition:
-            for start_activity in start_and_not_end_activities:
-                if TransitiveReducedStrictPartialOrder(start_activity, activity).relation_exists_by_label(directly_follows_relations):
-                    merge = True
-                    break
-            if merge: break
-            for end_activity in end_and_not_start_activities:
-                if TransitiveReducedStrictPartialOrder(activity, end_activity).relation_exists_by_label(directly_follows_relations):
-                    merge = True
-                    break
-            if merge: break
-        if merge:
-            partition_1.extend(partition)
-        else:
-            saved_partitions.append(partition)
-    partitions = saved_partitions
+    # merge partitions to p1 if they can be directly reached from a start-activity that is no end-activity
+    for a_start in start_activities - end_activities:
+        for b in activities - partitions[0]:
+            if DirectlyFollowsRelation(a_start, b) in directly_follows_relations:
+                _merge_loop_partitions(a_start, b, partitions)
+
+    # merge partitions to p1 if an end-activity that is no start-activity can be directly reached from there
+    for a_end in end_activities - start_activities:
+        for b in activities - partitions[0]:
+            if DirectlyFollowsRelation(b, a_end) in directly_follows_relations:
+                _merge_loop_partitions(a_end, b, partitions)
 
 # merge partitions to p1 if from a partition one but not all start-activities can be reached
 #   or if a partition can be reached from one but not all end-activities
-    saved_partitions = []
-    while partitions:
-        partition = partitions.pop()
+    partitions_to_merge = []
+    for i in range(1, len(partitions)):
+
+        partition = partitions[i]
+
         reaches_start_count = 0
         reached_by_end_count = 0
-        for start in start_activities:
-            for activity in partition:
-                if TransitiveReducedStrictPartialOrder(activity, start).relation_exists_by_label(directly_follows_relations):
+
+        for a_start in start_activities:
+            for b in partition:
+                if DirectlyFollowsRelation(b, a_start) in directly_follows_relations:
                     reaches_start_count += 1
                     break
-        for end in end_activities:
-            for activity in partition:
-                if TransitiveReducedStrictPartialOrder(end, activity).relation_exists_by_label(directly_follows_relations):
+
+        for a_end in end_activities:
+            for b in partition:
+                if DirectlyFollowsRelation(a_end, b) in directly_follows_relations:
                     reached_by_end_count += 1
                     break
-        if 0 < reaches_start_count < len(start_activities):
-            partition_1.extend(partition)
-        elif 0 < reached_by_end_count < len(end_activities):
-            partition_1.extend(partition)
-        else:
-            saved_partitions.append(partition)#
-    partitions = saved_partitions
 
-    partitions.insert(0, partition_1)
+        if 0 < reaches_start_count < len(start_activities):
+            partitions_to_merge.append(i)
+        elif 0 < reached_by_end_count < len(end_activities):
+            partitions_to_merge.append(i)
+
+    # starts with the highest index, so that the smaller indices are not changed
+    while partitions_to_merge:
+        i = partitions_to_merge.pop()
+        _merge_loop_partitions(partitions[0][0], partitions[i][0], partitions)
+
     return partitions
 
