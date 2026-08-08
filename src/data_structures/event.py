@@ -9,7 +9,7 @@ class Event:
         return f"<Event \"{self.activity.get_label()}\" with id {self.id}>"
 
     def __str__(self):
-        return ":" + self.activity.get_label() + ":"
+        return f":{self.activity.get_label()}"
 
     def get_id(self):
         return self.id

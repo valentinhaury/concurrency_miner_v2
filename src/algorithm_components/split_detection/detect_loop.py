@@ -25,10 +25,10 @@ def get_loop_sublogs(log, loop_partitions):
 
             # get events and relations from trace
             transitive_reduced_strict_partial_order = trace.get_transitive_reduced_strict_partial_order()
-            trace_strict_partial_order = trace.get_trace_strict_partial_order()
+            trace_strict_partial_order = trace.get_strict_partial_order()
             partition_events = set()
             for event in trace.get_events():
-                if event.get_activitiy() in partition:
+                if event.get_activity() in partition:
                     partition_events.add(event)
 
             # as long as there are events from the trace left new traces are created

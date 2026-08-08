@@ -26,10 +26,19 @@ from src.concurrency_miner import concurrency_miner
 
 
 
+#        case "exclusive":       return _log_exclusive()          # exclusive Log
+#        case "sequence":        return _log_sequence()           # sequence log
+#        case "loop":            return _log_loop()               # loop log
+#        case "sequence_loop":   return _log_loop_sequence()      # loop log
+#        case "arbitrary":       return _log_arbitrary_order()    # arbitrary order log
+#        case "interleaving":    return _log_interleafing()       # interleafing log
+#        case "concurrent":      return _log_concurrent()         # concurrent log
+#        case "parallel":        return _log_parallel()           # parallel log
 
+
+test_log = get_log("parallel")
 print("-----------------------------------------------------------------------------------------------------------")
-
-#prepare log and relations
-test_log = get_log("concurrent")
-
+print(str(test_log))
+print("-----------------------------------------------------------------------------------------------------------")
 print(str(concurrency_miner(test_log)))
+print("-----------------------------------------------------------------------------------------------------------")
