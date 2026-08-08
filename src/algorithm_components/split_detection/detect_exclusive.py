@@ -6,8 +6,7 @@ from src.data_structures.log import Log
 def detect_exclusive(log):
     return len(create_exclusive_choice_partitions(log)) > 1
 
-def get_exclusive_choice_sublogs(log):
-    partitions = create_exclusive_choice_partitions(log)
+def get_exclusive_choice_sublogs(partitions):
     sublogs = []
     for partition in partitions:
         sublogs.append(Log(partition))
