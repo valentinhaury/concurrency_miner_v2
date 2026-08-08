@@ -80,6 +80,17 @@ class Trace:
 
         return overlapping_relations
 
+    def get_overlapping_events_relations(self):
+        overlapping_relations = set()
+        for e1, e2 in product(self.events, repeat=2):
+            if not StrictPartialOrder(e1, e2) in self.strict_partial_order \
+                and not StrictPartialOrder(e2, e1) in self.strict_partial_order \
+                and not e1 == e2:
+                overlapping_relations.add(OverlappingRelation(e1, e2))
+
+        return overlapping_relations
+
+
     def _compute_transitive_closure(self):
         closure = set()
         for relation in self.transitive_reduced_strict_partial_order:

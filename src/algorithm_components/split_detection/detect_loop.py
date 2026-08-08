@@ -1,65 +1,72 @@
-import copy
 from itertools import product, combinations
 
-from data_structures.relations.directly_follows_relation import DirectlyFollowsRelation
+from src.data_structures.relations.directly_follows_relation import DirectlyFollowsRelation
+from src.data_structures.relations.strict_partial_order import StrictPartialOrder
 from src.data_structures.relations.overlapping_relation import OverlappingRelation
 from src.data_structures.log import Log
 from src.data_structures.trace import Trace
 from src.data_structures.relations.transitive_reduced_strict_partial_order import TransitiveReducedStrictPartialOrder
-from src.algorithm_components.helper_functions.helper_functions import direct_connected_id, overlapping
 from src.algorithm_components.helper_functions.partition_functions import merge_partitions
 
 
 def detect_loop(log):
     return len(create_loop_partitions(log)) > 1
 
-def get_loop_sublogs(log):
-    partitions = create_loop_partitions(log)
+def get_loop_sublogs(log, loop_partitions):
     sublogs = []
-    for partition in partitions:
+    # for every partition create a new sub-log
+    for partition in loop_partitions:
         new_sublog = Log([])
+        # for every trace create 1-n traces in every sub-log
+        # for example for trace (a b a b a)
+        # if partition is {a} create traces (a) (a) (a)
+        # if partition is {b} create traces (b) (b)
         for trace in log.get_traces():
-            trace_directly_follows_relation = trace.get_directly_follows_relations()
-            trace_overlapping_relation = trace.get_overlapping_relations()
 
-            activities = trace.get_activities()
-            partition_activities = []
-            for activity in activities:
-                if activity.activity_exists_by_label(partition):
-                    partition_activities.append(activity)
+            # get events and relations from trace
+            transitive_reduced_strict_partial_order = trace.get_transitive_reduced_strict_partial_order()
+            trace_strict_partial_order = trace.get_trace_strict_partial_order()
+            partition_events = set()
+            for event in trace.get_events():
+                if event.get_activitiy() in partition:
+                    partition_events.add(event)
 
-            while partition_activities:
-                new_trace = Trace()
+            # as long as there are events from the trace left new traces are created
+            while partition_events:
+                # initiate new trace events
+                new_trace_events = set()
+                new_trace_events.add(partition_events.pop())
+
+                # update the new_trace_events until all direct connected or overlapping events from this partition are added
                 changed = True
-                while changed:
+                while changed and partition_events:
                     changed = False
-                    saved_activities = []
-                    for i in range(len(partition_activities)):
-                        a1 = partition_activities.pop()
-                        added = False
-                        if not new_trace.get_activities():
-                            new_trace.add_activity(a1)
-                            added = True
-                        else:
-                            for a2 in new_trace.get_activities():
-                                if direct_connected_id(a1, a2, trace_directly_follows_relation) or overlapping(a1, a2, trace_overlapping_relation):
-                                    new_trace.add_activity(a1)
-                                    changed = True
-                                    added = True
-                                    break
-                        if not added:
-                            saved_activities.append(a1)
-                    partition_activities = saved_activities
-                new_trace_activities = new_trace.get_activities()
-                for relation in trace_directly_follows_relation:
-                    if relation.get_first_activity() in new_trace_activities and relation.get_second_activity() in new_trace_activities:
-                        new_trace.add_directly_follows_relation(relation)
-                new_sublog.add_trace(new_trace)
+                    for e_t, e_p in product(new_trace_events, partition_events):
+                        # if an event is direct connected to the new trace in the old trace add it to the new trace
+                        if TransitiveReducedStrictPartialOrder(e_t, e_p) in transitive_reduced_strict_partial_order or TransitiveReducedStrictPartialOrder(e_p, e_t) in transitive_reduced_strict_partial_order:
+                            new_trace_events.add(e_p)
+                            changed = True
+                        # if an event is overlapping the new trace in the old trace add it to the new trace
+                        elif not StrictPartialOrder(e_t, e_p) in trace_strict_partial_order and not StrictPartialOrder(e_p, e_t) in trace_strict_partial_order:
+                            new_trace_events.add(e_p)
+                            changed = True
+                    # remove all events that are added to the new trace
+                    partition_events = partition_events - new_trace_events
+
+                # get new trace transitive_reduced_strict_partial_order
+                new_trace_transitive_reduced_strict_partial_order = set()
+                for relation in transitive_reduced_strict_partial_order:
+                    if relation.get_first() in new_trace_events and relation.get_second() in new_trace_events:
+                        new_trace_transitive_reduced_strict_partial_order.add(relation)
+                # add the new trace to the sublog
+                new_sublog.add_trace(Trace(new_trace_events, new_trace_transitive_reduced_strict_partial_order))
+        # for every partition add the new sublog as a child
         sublogs.append(new_sublog)
 
     return sublogs
 
 def _merge_loop_partitions(activity_a, activity_b, partitions):
+    # merge partitions but keep p1 at index 0
     if activity_a in partitions[0] or activity_b in partitions[0]:
         merge_partitions(activity_a, activity_b, partitions)
         partitions.insert(0, partitions.pop())
@@ -78,7 +85,7 @@ def create_loop_partitions(activities, start_activities, end_activities, overlap
     for activity in activities - partitions[0]:
         partitions.append({activity})
     # partitions 2-n should have no direct connections between them
-    for a, b in activities - partitions[0]:
+    for a, b in combinations(activities - partitions[0], 2):
         if DirectlyFollowsRelation(a, b) in directly_follows_relations or DirectlyFollowsRelation(b, a) in directly_follows_relations:
             merge_partitions(a, b, partitions)
 
@@ -99,9 +106,10 @@ def create_loop_partitions(activities, start_activities, end_activities, overlap
             if DirectlyFollowsRelation(b, a_end) in directly_follows_relations:
                 _merge_loop_partitions(a_end, b, partitions)
 
-# merge partitions to p1 if from a partition one but not all start-activities can be reached
-#   or if a partition can be reached from one but not all end-activities
+    # merge partitions to p1 if from a partition one but not all start-activities can be reached
+    # or if a partition can be reached from one but not all end-activities
     partitions_to_merge = []
+    # loop over p2 - pn
     for i in range(1, len(partitions)):
 
         partition = partitions[i]
@@ -109,17 +117,19 @@ def create_loop_partitions(activities, start_activities, end_activities, overlap
         reaches_start_count = 0
         reached_by_end_count = 0
 
-        for a_start in start_activities:
-            for b in partition:
+        # count how many start activities are reached from partition
+        for b in partition:
+            for a_start in start_activities:
                 if DirectlyFollowsRelation(b, a_start) in directly_follows_relations:
                     reaches_start_count += 1
-                    break
+                    break # important break to not count start activities double
 
-        for a_end in end_activities:
-            for b in partition:
+        # count from how many end activities partition is reached
+        for b in partition:
+            for a_end in end_activities:
                 if DirectlyFollowsRelation(a_end, b) in directly_follows_relations:
                     reached_by_end_count += 1
-                    break
+                    break # important break to not count end activities double
 
         if 0 < reaches_start_count < len(start_activities):
             partitions_to_merge.append(i)

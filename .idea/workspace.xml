@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e3ce310f-a6cb-4654-8df9-4da22971cc3a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/algorithm_components/helper_functions/partition_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/helper_functions/partition_functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_loop.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data_structures/trace.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_structures/trace.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +110,8 @@
       <workItem from="1786123141289" duration="1617000" />
       <workItem from="1786129891465" duration="1467000" />
       <workItem from="1786169338459" duration="2172000" />
-      <workItem from="1786172080770" duration="3479000" />
+      <workItem from="1786172080770" duration="3797000" />
+      <workItem from="1786177139714" duration="2981000" />
     </task>
     <servers />
   </component>
