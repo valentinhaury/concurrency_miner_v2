@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e3ce310f-a6cb-4654-8df9-4da22971cc3a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_parallel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_parallel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/concurrency_miner.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/concurrency_miner.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/test_parallel_detector.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_parallel_detector.py" afterDir="false" />
-    </list>
+    <list default="true" id="e3ce310f-a6cb-4654-8df9-4da22971cc3a" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -110,7 +105,7 @@
       <workItem from="1786102471003" duration="12356000" />
       <workItem from="1786123141289" duration="1617000" />
       <workItem from="1786129891465" duration="1467000" />
-      <workItem from="1786169338459" duration="921000" />
+      <workItem from="1786169338459" duration="1906000" />
     </task>
     <servers />
   </component>
