@@ -97,8 +97,6 @@ def concurrency_miner(log):
             process_tree.add_child(concurrency_miner(sublog))
         return process_tree
 
-
-
 ##### FALL THROUGH
 
 # acitivity once per trace
