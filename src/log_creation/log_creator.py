@@ -58,6 +58,7 @@ def get_log(specifier):
         case "interleaving":    return _log_interleafing()       # interleafing log
         case "concurrent":      return _log_concurrent()         # concurrent log
         case "parallel":        return _log_parallel()           # parallel log
+        case "x_parallel":      return _log_exclusive_parallel() # parallel log
     return None
 
 
@@ -122,3 +123,13 @@ def _log_concurrent():
 def _log_parallel():
     trace_f = _certain_parallel_trace_a_sequence()
     return Log([trace_f])
+
+def _log_exclusive_parallel():
+    a1 = a()
+    b1 = b()
+    a2 = a()
+    b2 = b()
+    trace_f = Trace([a2, b2], [])
+    trace_a = Trace([a1], [])
+    trace_b = Trace([b1], [])
+    return Log([trace_a, trace_b, trace_f])

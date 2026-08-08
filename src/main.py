@@ -36,7 +36,7 @@ from src.concurrency_miner import concurrency_miner
 #        case "parallel":        return _log_parallel()           # parallel log
 
 
-test_log = get_log("parallel")
+test_log = get_log("x_parallel")
 print("-----------------------------------------------------------------------------------------------------------")
 print(str(test_log))
 print("-----------------------------------------------------------------------------------------------------------")

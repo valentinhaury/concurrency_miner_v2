@@ -1,17 +1,15 @@
 from itertools import combinations
 
-from src.data_structures.relations.overlapping_relation import OverlappingRelation
+from src.data_structures.relations.eventually_follows_relation import EventuallyFollowsRelation
+
 from src.algorithm_components.helper_functions.partition_functions import merge_partitions
 from src.algorithm_components.helper_functions.sublog_functions import create_sublogs_concurrent
 
 
-def detect_parallel(log):
-    return len(create_parallel_partitions(log)) > 1
-
 def get_parallel_sublogs(log, parallel_partitions):
     return create_sublogs_concurrent(log, parallel_partitions)
 
-def create_parallel_partitions(traces, activities):
+def create_parallel_partitions(activities, eventually_follows_relation):
     partitions = []
 
     #initialize partitions
@@ -22,10 +20,8 @@ def create_parallel_partitions(traces, activities):
 
     # merge non-fully overlapping partitions
     for a, b in combinations(activities, 2):
-        for trace in traces:
-            if not OverlappingRelation(a, b) in trace.get_overlapping_relations_trace():
-                merge_partitions(a, b, partitions)
-                break
+        if EventuallyFollowsRelation(a, b) in eventually_follows_relation or EventuallyFollowsRelation(b, a) in eventually_follows_relation:
+            merge_partitions(a, b, partitions)
 
     return partitions
 

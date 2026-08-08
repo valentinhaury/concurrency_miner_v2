@@ -18,8 +18,11 @@ from src.algorithm_components.split_detection.detect_multi_instance import detec
 
 
 def concurrency_miner(log):
+# handle empty log
     if not log.get_traces():
         return Node(Activity("tau"))
+# handle empty traces
+    log = handle_empty_traces(log)
 
 # prepare relations
     traces = log.get_traces()
@@ -31,11 +34,9 @@ def concurrency_miner(log):
     directly_follows_relations = log.get_directly_follows_relations()
     minimum_self_distance_relations = log.get_minimum_self_distance_relations()
 
+    print("LOG: " + str(log))
 
 ##### BASE CASES
-# add Activity("tau") to empty traces
-    log = handle_empty_traces(log)
-
 # end recursion and add single activity node or multi_instance_node
     if len(activities) < 2:
         if detect_single_activity(traces):
@@ -48,6 +49,7 @@ def concurrency_miner(log):
 
 ##### OPERATORS Exclusive, Sequence, Arbitrary Order, Interleaving, Concurrent, Parallel, Loop
 # split the log with an exclusive choice operator
+
     exclusive_choice_partitions = create_exclusive_choice_partitions(log)
     if len(exclusive_choice_partitions) > 1:
         process_tree = Node(Operator.Exclusive)
@@ -83,7 +85,7 @@ def concurrency_miner(log):
             process_tree.add_child(concurrency_miner(sublog))
         return process_tree
 # split the log with a parallel operator
-    parallel_partitions = create_parallel_partitions(traces, activities)
+    parallel_partitions = create_parallel_partitions(activities, eventually_follows_relations)
     if len(parallel_partitions) > 1:
         process_tree = Node(Operator.Parallel)
         for sublog in get_parallel_sublogs(log, parallel_partitions):

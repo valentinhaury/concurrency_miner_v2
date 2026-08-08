@@ -13,7 +13,8 @@ def handle_empty_traces(log):
         if trace.get_events():
             new_log_traces.append(trace)
         else:
-            new_log_traces.append(Trace(Event(Activity("tau")), set()))
+            print("add empty trace to log")
+            new_log_traces.append(Trace([Event(Activity("tau"))], set()))
     # return a new log with all events from the old log and Event with "tau" activity for the empty traces
     log = Log(new_log_traces)
     return log
