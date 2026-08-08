@@ -38,10 +38,10 @@ def concurrency_miner(log):
 
 # end recursion and add single activity node or multi_instance_node
     if len(activities) < 2:
-        if detect_single_activity(log):
-            process_tree = Node(activities[0])
+        if detect_single_activity(traces):
+            process_tree = Node(next(iter(activities)))
             return process_tree
-        elif detect_multi_instance(log):
+        elif detect_multi_instance(traces):
             process_tree = Node(Operator.Multi)
             process_tree.add_child(Node(activities[0]))
             return process_tree
@@ -49,7 +49,7 @@ def concurrency_miner(log):
 ##### OPERATORS Exclusive, Sequence, Arbitrary Order, Interleaving, Concurrent, Parallel, Loop
 # split the log with an exclusive choice operator
     exclusive_choice_partitions = create_exclusive_choice_partitions(log)
-    if len(exclusive_choice_partitions(log)) > 1:
+    if len(exclusive_choice_partitions) > 1:
         process_tree = Node(Operator.Exclusive)
         for sublog in get_exclusive_choice_sublogs(exclusive_choice_partitions):
             process_tree.add_child(concurrency_miner(sublog))

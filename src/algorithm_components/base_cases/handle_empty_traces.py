@@ -6,7 +6,7 @@ from src.data_structures.trace import Trace
 from src.data_structures.activity import Activity
 
 def handle_empty_traces(log):
-    log_traces = copy.deepcopy(log.get_log_traces())
+    log_traces = copy.deepcopy(log.get_traces())
     new_log_traces = []
 
     for trace in log_traces:

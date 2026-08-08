@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e3ce310f-a6cb-4654-8df9-4da22971cc3a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/algorithm_components/base_cases/detect_single_activity.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/base_cases/detect_single_activity.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/algorithm_components/base_cases/handle_empty_traces.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/base_cases/handle_empty_traces.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_multi_instance.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_multi_instance.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/concurrency_miner.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/concurrency_miner.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
     </list>
@@ -115,7 +112,7 @@
       <workItem from="1786169338459" duration="2172000" />
       <workItem from="1786172080770" duration="3797000" />
       <workItem from="1786177139714" duration="4348000" />
-      <workItem from="1786187168158" duration="2451000" />
+      <workItem from="1786187168158" duration="3512000" />
     </task>
     <servers />
   </component>

@@ -1,10 +1,4 @@
-from algorithm_components.split_detection.detect_concurrent import get_concurrent_sublogs, create_concurrent_partitions
-from algorithm_components.split_detection.detect_interleaving import create_interleaving_partitions
-from src.data_structures.relations.transitive_reduced_strict_partial_order import TransitiveReducedStrictPartialOrder
 from src.log_creation.log_creator import get_log
-from src.data_structures.activity import Activity
-from src.data_structures.trace import Trace
-from src.data_structures.log import Log
 from src.concurrency_miner import concurrency_miner
 
 #TODO
@@ -38,4 +32,4 @@ print("-------------------------------------------------------------------------
 #prepare log and relations
 test_log = get_log("concurrent")
 
-test_log = Log([])
+print(str(concurrency_miner(test_log)))
