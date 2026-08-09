@@ -1,3 +1,4 @@
+from algorithm_components.fall_throughs.activitiy_once_per_trace import get_activities_once_per_trace
 from src.log_creation.log_creator import get_log
 from src.concurrency_miner import concurrency_miner
 
@@ -28,19 +29,22 @@ from src.concurrency_miner import concurrency_miner
 
 
 
-#        case "exclusive":       return _log_exclusive()          # exclusive Log
-#        case "sequence":        return _log_sequence()           # sequence log
-#        case "loop":            return _log_loop()               # loop log
-#        case "sequence_loop":   return _log_loop_sequence()      # loop log
-#        case "arbitrary":       return _log_arbitrary_order()    # arbitrary order log
-#        case "interleaving":    return _log_interleafing()       # interleafing log
-#        case "concurrent":      return _log_concurrent()         # concurrent log
-#        case "parallel":        return _log_parallel()           # parallel log
+#        case "exclusive":      # exclusive Log
+#        case "sequence":       # sequence log
+#        case "loop":           # loop log
+#        case "sequence_loop":  # loop/sequence log
+#        case "arbitrary":      # arbitrary order log
+#        case "interleaving":   # interleafing log
+#        case "concurrent":     # concurrent log
+#        case "parallel":       # parallel log
+#        case "x_parallel"      # exclusive/parallel log
 
 
-test_log = get_log("x_parallel")
+test_log = get_log("exclusive")
 print("-----------------------------------------------------------------------------------------------------------")
 print(str(test_log))
+print("-----------------------------------------------------------------------------------------------------------")
+print(str(get_activities_once_per_trace(test_log.get_traces())))
 print("-----------------------------------------------------------------------------------------------------------")
 print(str(concurrency_miner(test_log)))
 print("-----------------------------------------------------------------------------------------------------------")

@@ -36,11 +36,10 @@ def create_sublogs_concurrent(log, partitions):
             new_trace_events = set()
             new_trace_transitive_reduced_strict_partial_order = set()
 
-            events = trace.get_events()
             strict_partial_order = trace.get_strict_partial_order()
             transitive_reduced_strict_partial_order = trace.get_transitive_reduced_strict_partial_order()
 
-            for event in events:
+            for event in trace.get_events():
                 if event.get_activity() in partition:
                     new_trace_events.add(event)
 
