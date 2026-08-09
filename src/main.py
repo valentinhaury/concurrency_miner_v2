@@ -1,10 +1,12 @@
 from pygments.lexers import asn1
 
+from algorithm_components.fall_throughs.flower_model import get_flower_model_sublogs, create_flower_model_partitions
 from algorithm_components.split_detection.detect_arbitrary_order import create_arbitrary_order_partitions
 from algorithm_components.split_detection.detect_interleaving import create_interleaving_partitions
 from data_structures.activity import Activity
 from data_structures.event import Event
 from data_structures.log import Log
+from data_structures.process_tree import Node
 from data_structures.process_tree_operator import Operator
 from data_structures.relations.transitive_reduced_strict_partial_order import TransitiveReducedStrictPartialOrder
 from data_structures.trace import Trace
@@ -77,10 +79,10 @@ minimum_self_distance_relations = test_log.get_minimum_self_distance_relations()
 print("-----------------------------------------------------------------------------------------------------------")
 print(str(test_log))
 print("-----------------------------------------------------------------------------------------------------------")
-print(str(create_interleaving_partitions(activities, start_activities, end_activities, overlapping_relations, directly_follows_relations, minimum_self_distance_relations)))
-print("-----------------------------------------------------------------------------------------------------------")
-print(str(create_arbitrary_order_partitions(traces, activities, start_activities, end_activities, overlapping_relations, eventually_follows_relations, directly_follows_relations)))
-print("-----------------------------------------------------------------------------------------------------------")
 print(str(concurrency_miner(test_log)))
 print("-----------------------------------------------------------------------------------------------------------")
-
+flower_model_partitions = create_flower_model_partitions(activities)
+process_tree = Node(Operator.Concurrent)
+for sublog in get_flower_model_sublogs(test_log, flower_model_partitions):
+    process_tree.add_child(concurrency_miner(sublog))
+print(str(process_tree))

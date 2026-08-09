@@ -84,6 +84,10 @@ def get_loop_sublogs(log, loop_partitions):
                 if event.get_activity() in partition:
                     partition_events.add(event)
 
+            # if the activities from this partition are not in the trace, add an empty trace
+            if not partition_events:
+                new_sublog.add_trace(Trace(set(), set()))
+
             # as long as there are events from the trace left new traces are created
             while partition_events:
                 # initiate new trace events

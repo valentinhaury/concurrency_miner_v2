@@ -1,5 +1,6 @@
 from algorithm_components.fall_throughs.concurrent_activity import get_concurrent_activity_partitions, \
     get_concurrent_activity_sublogs
+from algorithm_components.fall_throughs.flower_model import create_flower_model_partitions, get_flower_model_sublogs
 from algorithm_components.split_detection.detect_loop import create_loop_partitions
 from algorithm_components.fall_throughs.activitiy_once_per_trace import create_activity_once_per_trace_partitions, \
     get_activity_once_per_trace_sublogs
@@ -124,4 +125,10 @@ def concurrency_miner(log):
 #tau-loop/strict-tau-loop
     #missing
 # flower model
+    flower_model_partitions = create_flower_model_partitions(activities)
+    process_tree = Node(Operator.Concurrent)
+    for sublog in get_flower_model_sublogs(log, flower_model_partitions):
+        process_tree.add_child(concurrency_miner(sublog))
+    return process_tree
+
 
