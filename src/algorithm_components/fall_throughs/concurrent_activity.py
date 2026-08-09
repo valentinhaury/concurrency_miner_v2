@@ -21,7 +21,7 @@ def get_concurrent_activity_partitions(event_log, activities):
         sublogs = create_sublogs_concurrent(log, [activity_set, set_without_activity])
         for sublog in sublogs:
             if not activity in sublog.get_activities():
-                if split_found:
+                if split_found(sublog):
                     return [activity_set, set_without_activity]
     return []
 
@@ -42,7 +42,7 @@ def split_found(log):
     sequence_partitions = create_sequence_partitions(activities, overlapping_relations, eventually_follows_relations)
     if len(sequence_partitions) > 1:
         return True
-    arbitrary_order_partitions = create_arbitrary_order_partitions(traces, activities, overlapping_relations, eventually_follows_relations)
+    arbitrary_order_partitions = create_arbitrary_order_partitions(traces, activities, start_activities, end_activities, overlapping_relations, eventually_follows_relations, directly_follows_relations)
     if len(arbitrary_order_partitions) > 1:
         return True
     interleaving_partitions = create_interleaving_partitions(activities, start_activities, end_activities, overlapping_relations, directly_follows_relations, minimum_self_distance_relations)

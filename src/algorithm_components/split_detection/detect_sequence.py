@@ -47,7 +47,7 @@ def create_sequence_partitions(activities, overlapping_relations, eventually_fol
         if EventuallyFollowsRelation(a, b) in eventually_follows_relations and EventuallyFollowsRelation(b, a) in eventually_follows_relations:
             merge_partitions(a, b, partitions)
         # merge partitions if activities are pairwise not-reachable in log
-        if (not EventuallyFollowsRelation(a, b) in eventually_follows_relations) and (not EventuallyFollowsRelation(b, a) in eventually_follows_relations):
+        if EventuallyFollowsRelation(a, b) not in eventually_follows_relations and EventuallyFollowsRelation(b, a) not in eventually_follows_relations:
             merge_partitions(a, b, partitions)
 
     return partitions

@@ -70,7 +70,7 @@ def concurrency_miner(log):
             process_tree.add_child(concurrency_miner(sublog))
         return process_tree
 # split the log with an arbitrary order operator
-    arbitrary_order_partitions = create_arbitrary_order_partitions(traces, activities, overlapping_relations, eventually_follows_relations, directly_follows_relations)
+    arbitrary_order_partitions = create_arbitrary_order_partitions(traces, activities, start_activities, end_activities, overlapping_relations, eventually_follows_relations, directly_follows_relations)
     if len(arbitrary_order_partitions) > 1:
         process_tree = Node(Operator.Arbitrary)
         for sublog in get_arbitrary_order_sublogs(log, arbitrary_order_partitions):

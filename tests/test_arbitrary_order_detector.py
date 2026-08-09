@@ -9,8 +9,10 @@ def _get_test_partitions(log):
     eventually_follows_relations = log.get_eventually_follows_relations()
     overlapping_relations = log.get_overlapping_relations()
     activities = log.get_activities()
+    start_activities = log.get_start_activities()
+    end_activities = log.get_end_activities()
     traces = log.get_traces()
-    arbitrary_order_partitions = create_arbitrary_order_partitions(traces, activities, overlapping_relations,
+    arbitrary_order_partitions = create_arbitrary_order_partitions(traces, activities, start_activities, end_activities, overlapping_relations,
                                                                          eventually_follows_relations,
                                                                          directly_follows_relations)
     return arbitrary_order_partitions

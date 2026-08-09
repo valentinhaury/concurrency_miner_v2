@@ -47,14 +47,11 @@ from src.concurrency_miner import concurrency_miner
 #        case "x_parallel"      # exclusive/parallel log
 
 
-
-
-
 a1 = Event(Activity("a"))
 b1 = Event(Activity("b"))
 c1 = Event(Activity("c"))
-tspo5 = TransitiveReducedStrictPartialOrder(b1, c1)
 tspo6 = TransitiveReducedStrictPartialOrder(a1, b1)
+tspo5 = TransitiveReducedStrictPartialOrder(b1, c1)
 t1 = Trace([a1, b1, c1], [tspo5, tspo6])
 
 a2 = Event(Activity("a"))
@@ -65,9 +62,9 @@ t2 = Trace([a2, c2], [tspo3])
 b2 = Event(Activity("b"))
 t3 = Trace([b2], [])
 
-#test_log = Log([t1, t2, t3])
+test_log = Log([t1, t2, t3])
 
-test_log = get_log("arbitrary")
+#test_log = get_log("arbitrary")
 
 traces = test_log.get_traces()
 activities = test_log.get_activities()
@@ -82,7 +79,7 @@ print(str(test_log))
 print("-----------------------------------------------------------------------------------------------------------")
 print(str(create_interleaving_partitions(activities, start_activities, end_activities, overlapping_relations, directly_follows_relations, minimum_self_distance_relations)))
 print("-----------------------------------------------------------------------------------------------------------")
-print(str(create_arbitrary_order_partitions(traces, activities, overlapping_relations, eventually_follows_relations, directly_follows_relations)))
+print(str(create_arbitrary_order_partitions(traces, activities, start_activities, end_activities, overlapping_relations, eventually_follows_relations, directly_follows_relations)))
 print("-----------------------------------------------------------------------------------------------------------")
 print(str(concurrency_miner(test_log)))
 print("-----------------------------------------------------------------------------------------------------------")
