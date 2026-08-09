@@ -1,3 +1,4 @@
+from algorithm_components.fall_throughs.concurrent_activity import get_concurrent_activity_partitions
 from algorithm_components.split_detection.detect_loop import create_loop_partitions
 from src.algorithm_components.fall_throughs.flower_model import get_loop_activities
 from algorithm_components.fall_throughs.activitiy_once_per_trace import create_activity_once_per_trace_partitions, \
@@ -113,7 +114,12 @@ def concurrency_miner(log):
             process_tree.add_child(concurrency_miner(sublog))
         return process_tree
 #activity concurrent
-    #missing
+    activity_concurrent_partitions = get_concurrent_activity_partitions(log, activities)
+    if activity_concurrent_partitions > 1:
+        process_tree = Node(Operator.Concurrent)
+        for sublog in get_concurrent_activity_sublogs(log, activity_concurrent_partitions):
+            process_tree.add_child(concurrency_miner(sublog))
+        return process_tree
 #tau-loop/strict-tau-loop
     #missing
 # flower model → aktivitäten die in einem trace mehrfach vorkommen in einen tau-loop stecken
