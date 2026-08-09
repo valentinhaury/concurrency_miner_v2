@@ -1,7 +1,6 @@
 from algorithm_components.fall_throughs.concurrent_activity import get_concurrent_activity_partitions, \
     get_concurrent_activity_sublogs
 from algorithm_components.split_detection.detect_loop import create_loop_partitions
-from src.algorithm_components.fall_throughs.flower_model import get_loop_activities
 from algorithm_components.fall_throughs.activitiy_once_per_trace import create_activity_once_per_trace_partitions, \
     get_activity_once_per_trace_sublogs
 from src.algorithm_components.base_cases.handle_empty_traces import handle_empty_traces
@@ -11,7 +10,7 @@ from src.algorithm_components.base_cases.detect_single_activity import detect_si
 from src.data_structures.process_tree_operator import Operator
 from src.data_structures.process_tree import Node
 from src.algorithm_components.split_detection.detect_arbitrary_order import get_arbitrary_order_sublogs, create_arbitrary_order_partitions
-from src.algorithm_components.split_detection.detect_loop import get_loop_sublogs
+from algorithm_components.helper_functions.sublog_functions import get_loop_sublogs
 from src.algorithm_components.split_detection.detect_parallel import get_parallel_sublogs, create_parallel_partitions
 from src.algorithm_components.split_detection.detect_concurrent import get_concurrent_sublogs, create_concurrent_partitions
 from src.algorithm_components.split_detection.detect_interleaving import create_interleaving_partitions, get_interleaving_sublogs
@@ -124,27 +123,5 @@ def concurrency_miner(log):
         return process_tree
 #tau-loop/strict-tau-loop
     #missing
-# flower model → aktivitäten die in einem trace mehrfach vorkommen in einen tau-loop stecken
+# flower model
 
-    if False:
-        loop_activities = get_loop_activities(log)
-        activities = get_activities_once_per_trace(log)
-        optional_activities = []
-        for activity in log.get_activities_by_label():
-            if not (activity.activity_exists_by_label(loop_activities)
-                    or activity.activity_exists_by_label(activities)):
-                optional_activities.append(activity)
-        process_tree = Node(Operator.Concurrent)
-        for activity in activities:
-            process_tree.add_child(Node(activity))
-        for activity in loop_activities:
-            child = Node(Operator.Loop)
-            child.add_child(Node(Activity("tau")))
-            child.add_child(Node(activity))
-            process_tree.add_child(child)
-        for activity in optional_activities:
-            child = Node(Operator.Exclusive)
-            child.add_child(Node(Activity("tau")))
-            child.add_child(Node(activity))
-            process_tree.add_child(child)
-        return process_tree
