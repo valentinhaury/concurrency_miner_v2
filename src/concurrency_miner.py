@@ -1,9 +1,9 @@
-from algorithm_components.fall_throughs.concurrent_activity import get_concurrent_activity_partitions
+from algorithm_components.fall_throughs.concurrent_activity import get_concurrent_activity_partitions, \
+    get_concurrent_activity_sublogs
 from algorithm_components.split_detection.detect_loop import create_loop_partitions
 from src.algorithm_components.fall_throughs.flower_model import get_loop_activities
 from algorithm_components.fall_throughs.activitiy_once_per_trace import create_activity_once_per_trace_partitions, \
     get_activity_once_per_trace_sublogs
-from src.algorithm_components.fall_throughs.activitiy_once_per_trace import get_activities_once_per_trace
 from src.algorithm_components.base_cases.handle_empty_traces import handle_empty_traces
 from src.data_structures.activity import Activity
 from src.algorithm_components.base_cases.detect_single_activity import detect_single_activity, detect_single_loop, \
@@ -70,12 +70,13 @@ def concurrency_miner(log):
             process_tree.add_child(concurrency_miner(sublog))
         return process_tree
 # split the log with an arbitrary order operator
-    arbitrary_order_partitions = create_arbitrary_order_partitions(traces, activities, overlapping_relations, eventually_follows_relations)
-    if len(arbitrary_order_partitions) > 1:
-        process_tree = Node(Operator.Arbitrary)
-        for sublog in get_arbitrary_order_sublogs(log, arbitrary_order_partitions):
-            process_tree.add_child(concurrency_miner(sublog))
-        return process_tree
+    if False:
+        arbitrary_order_partitions = create_arbitrary_order_partitions(traces, activities, overlapping_relations, eventually_follows_relations)
+        if len(arbitrary_order_partitions) > 1:
+            process_tree = Node(Operator.Arbitrary)
+            for sublog in get_arbitrary_order_sublogs(log, arbitrary_order_partitions):
+                process_tree.add_child(concurrency_miner(sublog))
+            return process_tree
 # split the log with an interleaving operator
     interleaving_partitions = create_interleaving_partitions(activities, start_activities, end_activities, overlapping_relations, directly_follows_relations, minimum_self_distance_relations)
     if len(interleaving_partitions) > 1:
@@ -115,7 +116,7 @@ def concurrency_miner(log):
         return process_tree
 #activity concurrent
     activity_concurrent_partitions = get_concurrent_activity_partitions(log, activities)
-    if activity_concurrent_partitions > 1:
+    if len(activity_concurrent_partitions) > 1:
         process_tree = Node(Operator.Concurrent)
         for sublog in get_concurrent_activity_sublogs(log, activity_concurrent_partitions):
             process_tree.add_child(concurrency_miner(sublog))
@@ -123,7 +124,8 @@ def concurrency_miner(log):
 #tau-loop/strict-tau-loop
     #missing
 # flower model → aktivitäten die in einem trace mehrfach vorkommen in einen tau-loop stecken
-    else:
+
+    if False:
         loop_activities = get_loop_activities(log)
         activities = get_activities_once_per_trace(log)
         optional_activities = []

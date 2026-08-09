@@ -45,26 +45,22 @@ from src.concurrency_miner import concurrency_miner
 
 
 
+
+
 a1 = Event(Activity("a"))
-a2 = Event(Activity("a"))
 b1 = Event(Activity("b"))
-tspo1 = TransitiveReducedStrictPartialOrder(a1, b1)
-tspo2 = TransitiveReducedStrictPartialOrder(b1, a2)
-t1 = Trace([a1, a2, b1], [tspo1, tspo2])
-
-a3 = Event(Activity("a"))
-a4 = Event(Activity("a"))
 c1 = Event(Activity("c"))
-tspo3 = TransitiveReducedStrictPartialOrder(a3, c1)
-tspo4 = TransitiveReducedStrictPartialOrder(a4, c1)
-t2 = Trace([a3, a4, c1], [tspo3, tspo4])
+tspo5 = TransitiveReducedStrictPartialOrder(b1, c1)
+tspo6 = TransitiveReducedStrictPartialOrder(a1, b1)
+t1 = Trace([a1, b1, c1], [tspo5, tspo6])
 
-a5 = Event(Activity("a"))
-b2 = Event(Activity("b"))
+a2 = Event(Activity("a"))
 c2 = Event(Activity("c"))
-tspo5 = TransitiveReducedStrictPartialOrder(b2, a5)
-tspo6 = TransitiveReducedStrictPartialOrder(a5, c2)
-t3 = Trace([a5, b2, c2], [tspo5, tspo6])
+tspo3 = TransitiveReducedStrictPartialOrder(c2, a2)
+t2 = Trace([a2, c2], [tspo3])
+
+b2 = Event(Activity("b"))
+t3 = Trace([b2], [])
 
 test_log = Log([t1, t2, t3])
 print("-----------------------------------------------------------------------------------------------------------")

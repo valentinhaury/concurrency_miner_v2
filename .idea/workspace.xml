@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e3ce310f-a6cb-4654-8df9-4da22971cc3a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/algorithm_components/fall_throughs/concurrent_activity.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/algorithm_components/fall_throughs/strict_tau_loop.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/algorithm_components/fall_throughs/tau_loop.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithm_components/helper_functions/compute_minimum_self_distance_relation.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/helper_functions/compute_minimum_self_distance_relation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_sequence.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/split_detection/detect_sequence.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/concurrency_miner.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/concurrency_miner.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +118,8 @@
       <workItem from="1786187168158" duration="4427000" />
       <workItem from="1786195337770" duration="2306000" />
       <workItem from="1786253740767" duration="10581000" />
-      <workItem from="1786266143926" duration="1529000" />
+      <workItem from="1786266143926" duration="1844000" />
+      <workItem from="1786269384232" duration="1169000" />
     </task>
     <servers />
   </component>
@@ -137,7 +138,7 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/concurrency_miner_v2$main.coverage" NAME="main Coverage Results" MODIFIED="1786264124042" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/concurrency_miner_v2$main.coverage" NAME="main Coverage Results" MODIFIED="1786270490930" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/concurrency_miner$main.coverage" NAME="main Coverage Results" MODIFIED="1784197821005" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/concurrency_miner$.coverage" NAME=" Coverage Results" MODIFIED="1781601132527" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/concurrency_miner_v2$concurrency_miner.coverage" NAME="concurrency_miner Coverage Results" MODIFIED="1786258086581" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />

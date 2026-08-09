@@ -1,3 +1,5 @@
+from itertools import permutations
+
 from src.algorithm_components.helper_functions.compute_minimum_self_distance_relation import compute_minimum_self_distance_relations
 from src.data_structures.relations.eventually_follows_relation import EventuallyFollowsRelation
 from src.data_structures.relations.directly_follows_relation import DirectlyFollowsRelation
@@ -56,9 +58,18 @@ class Log:
 
     def get_eventually_follows_relations(self):
         eventually_follows_relations = set()
-        for trace in self.traces:
-            for spo in trace.get_strict_partial_order():
-                eventually_follows_relations.add(EventuallyFollowsRelation(spo.get_first().get_activity(), spo.get_second().get_activity()))
+        for relation in self.get_directly_follows_relations():
+            eventually_follows_relations.add(EventuallyFollowsRelation(relation.get_first(), relation.get_second()))
+        changed = True
+        while changed:
+            changed = False
+            for a1, a2, a3 in permutations(self.get_activities(), 3):
+                relation = EventuallyFollowsRelation(a1, a3)
+                if (EventuallyFollowsRelation(a1, a2) in eventually_follows_relations and
+                        EventuallyFollowsRelation(a2, a3) in eventually_follows_relations and
+                        relation not in eventually_follows_relations):
+                    eventually_follows_relations.add(relation)
+                    changed = True
         return eventually_follows_relations
 
     def get_overlapping_relations(self):
