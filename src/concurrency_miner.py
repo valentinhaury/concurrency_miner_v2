@@ -1,6 +1,7 @@
 from algorithm_components.split_detection.detect_loop import create_loop_partitions
 from src.algorithm_components.fall_throughs.flower_model import get_loop_activities
-from algorithm_components.fall_throughs.activitiy_once_per_trace import create_activity_oncer_per_trace_sublogs
+from algorithm_components.fall_throughs.activitiy_once_per_trace import create_activity_once_per_trace_partitions, \
+    get_activity_once_per_trace_sublogs
 from src.algorithm_components.fall_throughs.activitiy_once_per_trace import get_activities_once_per_trace
 from src.algorithm_components.base_cases.handle_empty_traces import handle_empty_traces
 from src.data_structures.activity import Activity
@@ -103,14 +104,12 @@ def concurrency_miner(log):
             process_tree.add_child(concurrency_miner(sublog))
         return process_tree
 
-##### FALL THROUGH
-
+##### FALL THROUGHS
 # acitivity once per trace
-    activities_once_per_trace = get_activities_once_per_trace(traces)
-    if len(activities_once_per_trace) >  0:
+    activities_once_per_trace_partitions = create_activity_once_per_trace_partitions(traces, activities)
+    if len(activities_once_per_trace_partitions) >  1:
         process_tree = Node(Operator.Concurrent)
-        activity = next(iter(activities_once_per_trace))
-        for sublog in create_activity_oncer_per_trace_sublogs(log, activity):
+        for sublog in get_activity_once_per_trace_sublogs(log, activities_once_per_trace_partitions):
             process_tree.add_child(concurrency_miner(sublog))
         return process_tree
 #activity concurrent

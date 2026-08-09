@@ -1,6 +1,5 @@
 from pygments.lexers import asn1
 
-from algorithm_components.fall_throughs.activitiy_once_per_trace import get_activities_once_per_trace
 from data_structures.activity import Activity
 from data_structures.event import Event
 from data_structures.log import Log
@@ -66,13 +65,10 @@ c2 = Event(Activity("c"))
 tspo5 = TransitiveReducedStrictPartialOrder(b2, a5)
 tspo6 = TransitiveReducedStrictPartialOrder(a5, c2)
 t3 = Trace([a5, b2, c2], [tspo5, tspo6])
-#Log([t1, t2, t3])
 
-test_log = get_log("concurrent")
+test_log = Log([t1, t2, t3])
 print("-----------------------------------------------------------------------------------------------------------")
 print(str(test_log))
-print("-----------------------------------------------------------------------------------------------------------")
-print(str(get_activities_once_per_trace(test_log.get_traces())))
 print("-----------------------------------------------------------------------------------------------------------")
 print(str(concurrency_miner(test_log)))
 print("-----------------------------------------------------------------------------------------------------------")
