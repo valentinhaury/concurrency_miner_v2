@@ -1,6 +1,6 @@
-import copy
-from itertools import combinations, permutations
+from itertools import combinations, permutations, product
 
+from src.data_structures.relations.directly_follows_relation import DirectlyFollowsRelation
 from src.data_structures.relations.eventually_follows_relation import EventuallyFollowsRelation
 from src.data_structures.relations.overlapping_relation import OverlappingRelation
 from src.data_structures.relations.strict_partial_order import StrictPartialOrder
@@ -14,7 +14,7 @@ def detect_arbitrary_order(log):
 def get_arbitrary_order_sublogs(log, arbitrary_order_partitions):
     return create_sublogs_sequential(log, arbitrary_order_partitions)
 
-def create_arbitrary_order_partitions(traces, activities, overlapping_relations, eventually_follows_relations):
+def create_arbitrary_order_partitions(traces, activities, overlapping_relations, eventually_follows_relations, directly_follows_relations):
     partitions = []
     for activity in activities:
         new_partition = set()
@@ -22,14 +22,32 @@ def create_arbitrary_order_partitions(traces, activities, overlapping_relations,
         partitions.append(new_partition)
 
     for a, b in combinations(activities, 2):
-        # merge partitions if activities are overlapping in log
+    # merge partitions if activities are overlapping in log
         if OverlappingRelation(a, b) in overlapping_relations:
             merge_partitions(a, b, partitions)
-        # merge partitions if activities are not-fully pairwise reachable in log
+    # merge partitions if activities are not-fully pairwise reachable in log
+        print()
         if (not EventuallyFollowsRelation(a, b) in eventually_follows_relations) or (not EventuallyFollowsRelation(b, a) in eventually_follows_relations):
             merge_partitions(a, b, partitions)
 
-        # merge partitions if partitions are pairwise reachable in one trace
+    # merge partitions if partitions are not fully direct connected
+    changed = True
+    while len(partitions) > 1 and changed:
+        changed = False
+        for p1, p2 in combinations(partitions, 2):
+            p1_connected_to_p2 = False
+            p2_connected_to_p1 = False
+            for a1, a2 in product(p1, p2):
+                if DirectlyFollowsRelation(a1, a2) in directly_follows_relations:
+                    p1_connected_to_p2 = True
+                if DirectlyFollowsRelation(a2, a1) in directly_follows_relations:
+                    p2_connected_to_p1 = True
+            if not (p1_connected_to_p2 and p2_connected_to_p1):
+                merge_partitions(next(iter(p1)), next(iter(p2)), partitions)
+                changed = True
+                break
+
+    # merge partitions if partitions are pairwise reachable in one trace
     for trace in traces:
         for e1, e2, e3 in permutations(trace.get_events(), 3):
             if not StrictPartialOrder(e1, e2) in trace.get_strict_partial_order() or not StrictPartialOrder(e2, e3) in trace.get_strict_partial_order():

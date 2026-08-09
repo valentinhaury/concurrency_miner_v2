@@ -70,13 +70,12 @@ def concurrency_miner(log):
             process_tree.add_child(concurrency_miner(sublog))
         return process_tree
 # split the log with an arbitrary order operator
-    if False:
-        arbitrary_order_partitions = create_arbitrary_order_partitions(traces, activities, overlapping_relations, eventually_follows_relations)
-        if len(arbitrary_order_partitions) > 1:
-            process_tree = Node(Operator.Arbitrary)
-            for sublog in get_arbitrary_order_sublogs(log, arbitrary_order_partitions):
-                process_tree.add_child(concurrency_miner(sublog))
-            return process_tree
+    arbitrary_order_partitions = create_arbitrary_order_partitions(traces, activities, overlapping_relations, eventually_follows_relations, directly_follows_relations)
+    if len(arbitrary_order_partitions) > 1:
+        process_tree = Node(Operator.Arbitrary)
+        for sublog in get_arbitrary_order_sublogs(log, arbitrary_order_partitions):
+            process_tree.add_child(concurrency_miner(sublog))
+        return process_tree
 # split the log with an interleaving operator
     interleaving_partitions = create_interleaving_partitions(activities, start_activities, end_activities, overlapping_relations, directly_follows_relations, minimum_self_distance_relations)
     if len(interleaving_partitions) > 1:
@@ -105,7 +104,7 @@ def concurrency_miner(log):
         for sublog in get_loop_sublogs(log, loop_partitions):
             process_tree.add_child(concurrency_miner(sublog))
         return process_tree
-
+    print("1")
 ##### FALL THROUGHS
 # acitivity once per trace
     activities_once_per_trace_partitions = create_activity_once_per_trace_partitions(traces, activities)
@@ -114,6 +113,8 @@ def concurrency_miner(log):
         for sublog in get_activity_once_per_trace_sublogs(log, activities_once_per_trace_partitions):
             process_tree.add_child(concurrency_miner(sublog))
         return process_tree
+
+    print("2")
 #activity concurrent
     activity_concurrent_partitions = get_concurrent_activity_partitions(log, activities)
     if len(activity_concurrent_partitions) > 1:

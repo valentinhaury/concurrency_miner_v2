@@ -1,8 +1,11 @@
 from pygments.lexers import asn1
 
+from algorithm_components.split_detection.detect_arbitrary_order import create_arbitrary_order_partitions
+from algorithm_components.split_detection.detect_interleaving import create_interleaving_partitions
 from data_structures.activity import Activity
 from data_structures.event import Event
 from data_structures.log import Log
+from data_structures.process_tree_operator import Operator
 from data_structures.relations.transitive_reduced_strict_partial_order import TransitiveReducedStrictPartialOrder
 from data_structures.trace import Trace
 from src.log_creation.log_creator import get_log
@@ -38,7 +41,7 @@ from src.concurrency_miner import concurrency_miner
 #        case "loop":           # loop log
 #        case "sequence_loop":  # loop/sequence log
 #        case "arbitrary":      # arbitrary order log
-#        case "interleaving":   # interleafing log
+#        case "interleaving":   # interleafing log # print(Operator.Interleaving.value)
 #        case "concurrent":     # concurrent log
 #        case "parallel":       # parallel log
 #        case "x_parallel"      # exclusive/parallel log
@@ -62,9 +65,24 @@ t2 = Trace([a2, c2], [tspo3])
 b2 = Event(Activity("b"))
 t3 = Trace([b2], [])
 
-test_log = Log([t1, t2, t3])
+#test_log = Log([t1, t2, t3])
+
+test_log = get_log("arbitrary")
+
+traces = test_log.get_traces()
+activities = test_log.get_activities()
+start_activities = test_log.get_start_activities()
+end_activities = test_log.get_end_activities()
+overlapping_relations = test_log.get_overlapping_relations()
+directly_follows_relations = test_log.get_directly_follows_relations()
+eventually_follows_relations = test_log.get_eventually_follows_relations()
+minimum_self_distance_relations = test_log.get_minimum_self_distance_relations()
 print("-----------------------------------------------------------------------------------------------------------")
 print(str(test_log))
+print("-----------------------------------------------------------------------------------------------------------")
+print(str(create_interleaving_partitions(activities, start_activities, end_activities, overlapping_relations, directly_follows_relations, minimum_self_distance_relations)))
+print("-----------------------------------------------------------------------------------------------------------")
+print(str(create_arbitrary_order_partitions(traces, activities, overlapping_relations, eventually_follows_relations, directly_follows_relations)))
 print("-----------------------------------------------------------------------------------------------------------")
 print(str(concurrency_miner(test_log)))
 print("-----------------------------------------------------------------------------------------------------------")
