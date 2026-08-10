@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e3ce310f-a6cb-4654-8df9-4da22971cc3a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/log_creation/logs_from_cortado.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/algorithm_components/fall_throughs/strict_tau_loop.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/algorithm_components/fall_throughs/strict_tau_loop.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,7 +122,9 @@
       <workItem from="1786274011118" duration="9938000" />
       <workItem from="1786285733125" duration="1707000" />
       <workItem from="1786291141549" duration="1729000" />
-      <workItem from="1786295361190" duration="17000" />
+      <workItem from="1786295361190" duration="1147000" />
+      <workItem from="1786300742268" duration="73000" />
+      <workItem from="1786338005817" duration="1399000" />
     </task>
     <servers />
   </component>
