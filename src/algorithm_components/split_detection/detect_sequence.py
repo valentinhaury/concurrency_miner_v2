@@ -11,14 +11,10 @@ def get_sequence_sublogs(log, sequence_partitions, eventually_follows_relations)
 
 def _sort_sublogs(sublogs, eventually_follows_relations):
     n = len(sublogs)
-    for i in range(n-1):
-      swapped = False
-      for j in range(n-i-1):
-        if _follows(sublogs[j],sublogs[j+1], eventually_follows_relations):
-          sublogs[j], sublogs[j+1] = sublogs[j+1], sublogs[j]
-          swapped = True
-      if not swapped:
-        break
+    for i in range(n):
+      for j in range(i + 1, n):
+        if _follows(sublogs[i],sublogs[j], eventually_follows_relations):
+          sublogs[i], sublogs[j] = sublogs[j], sublogs[i]
 
     return sublogs
 

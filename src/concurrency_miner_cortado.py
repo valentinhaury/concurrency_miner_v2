@@ -1,13 +1,22 @@
-import copy
-from itertools import combinations
-
-from src.algorithm_components.helper_functions.partition_functions import merge_partitions
+from src.concurrency_miner_cortado.core_miner.exclusive_choice_partitioning import compute_exclusive_choice_partitions
+from src.concurrency_miner_cortado.core_miner.sequence_partitioning import compute_sequence_partitions
+from src.concurrency_miner_cortado.helper_functions.compute_sublogs import compute_sequence_sublogs
 from cortado_core.utils.cgroups_graph import ConcurrencyGroup
 from src.data_structures.process_tree_operator import Operator
 from src.data_structures.process_tree import Node
 
 
+
 def concurrency_miner_cortado(log):
+    """
+    Creates a process tree with partial order semantics.
+
+    Args:
+        event log (list[ConcurrencyGroup()]): List of ConcurrencyGroup(). Each ConcurrencyGroup represents one trace
+
+    Returns:
+        process_tree (Node): Process tree with partial order semantics.
+    """
 # handle empty log
     if len(log) == 0:
         return Node("tau")
@@ -64,26 +73,6 @@ def concurrency_miner_cortado(log):
             return process_tree
 
 ##### OPERATORS Exclusive, Sequence, Arbitrary Order, Interleaving, Concurrent, Parallel, Loop
-    def compute_exclusive_choice_partitions(event_log):
-        _log = copy.deepcopy(event_log)
-        partitions = [[_trace] for _trace in _log]
-        for t1, t2 in combinations(_log, 2):
-            if len(partitions) < 2:
-                break
-            if not t1.isdisjoint(t2):
-                p1 = []
-                p2 = []
-                for p in partitions:
-                    if t1 in p:
-                        p1 = p
-                    if t2 in p:
-                        p2 = p
-                if p1 != p2:
-                    partitions.remove(p1)
-                    partitions.remove(p2)
-                    p1.extend(p2)
-                    partitions.append(p1)
-        return partitions
 
     exclusive_choice_partitions = compute_exclusive_choice_partitions(log)
     if len(exclusive_choice_partitions) > 1:
@@ -91,31 +80,16 @@ def concurrency_miner_cortado(log):
         for partition in exclusive_choice_partitions:
             process_tree.add_child(concurrency_miner_cortado(partition))
 
-
-    def compute_sequence_partitions(activities, concurrency_pairs, follows):
-        partitions = [{_activity} for _activity in log_activities]
-        for a, b in combinations(activities, 2):
-        # merge partitions if activities are overlapping in log
-            if (a, b) in concurrency_pairs:
-                merge_partitions(a, b, partitions)
-        # merge partitions if activities are pairwise reachable in log
-            if (a, b) in follows and (b, a) in follows:
-                merge_partitions(a, b, partitions)
-        # merge partitions if activities are pairwise not-reachable in log
-            if (a, b) not in follows and (b, a) not in follows:
-                merge_partitions(a, b, partitions)
-
-        for partition in partitions:
-            #TODO ORDER PARTITIONS HERE OR ODER SUBLOGS LATER??? -> Does sublog computation change the order?
-        return partitions
-
-
     sequence_partitions = compute_sequence_partitions(log_activities, log_concurrency_pairs, log_follows)
     if len(sequence_partitions) > 1:
         process_tree = Node(Operator.Sequence)
         sublogs = compute_sequence_sublogs(sequence_partitions, log)
         for partition in sequence_partitions:
             process_tree.add_child(concurrency_miner_cortado(partition))
+
+    arbitrary_order_partitions = compute_arbitrary_order_partitions(log, log_activities,
+                                                                    log_start_activities, log_end_activities,
+                                                                    log_concurrency_pairs, log_follows, log_directly_follows)
 
 
 
