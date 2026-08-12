@@ -1,3 +1,6 @@
+import copy
+from itertools import combinations, permutations
+
 from src.concurrency_miner_cortado.core_miner.exclusive_choice_partitioning import compute_exclusive_choice_partitions
 from src.concurrency_miner_cortado.core_miner.sequence_partitioning import compute_sequence_partitions
 from src.concurrency_miner_cortado.helper_functions.compute_sublogs import compute_sequence_sublogs
@@ -50,6 +53,12 @@ def concurrency_miner_cortado(log):
         log_follows |= trace.follows
         log_directly_follows |= trace.directly_follows
 
+    # create the transitive closure of the directly follows relation of the log (different from the union of the follows)
+    log_follows_closure = copy.copy(log_directly_follows)
+    for r1, r2 in permutations(log_directly_follows, 2):
+        if r1[1] == r2[0]:
+            log_follows_closure.add((r1[0], r2[1]))
+
 # handle single activities
     if len(log_activities) < 2:
         single_activity = (next(iter(log_activities)),next(iter(log_activities)))
@@ -80,7 +89,7 @@ def concurrency_miner_cortado(log):
         for partition in exclusive_choice_partitions:
             process_tree.add_child(concurrency_miner_cortado(partition))
 
-    sequence_partitions = compute_sequence_partitions(log_activities, log_concurrency_pairs, log_follows)
+    sequence_partitions = compute_sequence_partitions(log_activities, log_concurrency_pairs, log_follows_closure)
     if len(sequence_partitions) > 1:
         process_tree = Node(Operator.Sequence)
         sublogs = compute_sequence_sublogs(sequence_partitions, log)

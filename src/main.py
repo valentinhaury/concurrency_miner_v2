@@ -31,6 +31,7 @@ from src.concurrency_miner import concurrency_miner
 
 #TODO data handling
 #       infrequent : wenn kein cuut gefunden wird edges zählen in den graphen -> directly follows, overlappping und ganz seltene entfernen (ganze Traces oder nur edges?)
+#                       -> in wie vielen Traces kommen sie vor, zählen pro event geht nicht
 #       incompleteness : Wenn kein cut gefunden wird edges in dfg und overlapping hinzufügen
 #                       dafür werden wahrscheinlichkeiten für jede mögliche edge berechnet
 
