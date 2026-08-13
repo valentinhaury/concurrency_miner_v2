@@ -49,8 +49,13 @@ class Trace:
     def get_strict_partial_order(self):
         return self.strict_partial_order
 
-    def get_overlapping_relations_trace(self):
+    def get_overlapping_events(self):
         return self.overlapping_relations
+
+    def get_overlapping_activities(self):
+        return {
+            (e1.label, e2.label) for e1, e2 in self.overlapping_relations
+        }
 
     def get_directly_follows(self):
         directly_follows = set()

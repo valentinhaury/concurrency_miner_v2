@@ -1,4 +1,4 @@
-from src.algorithm_components.helper_functions.sublog_functions import get_loop_sublogs
+from src.algorithm_components.helper_functions.sublog_functions import create_sublogs_loop
 
 def create_flower_model_partitions(activities):
     partitions = []
@@ -7,4 +7,4 @@ def create_flower_model_partitions(activities):
     return partitions
 
 def get_flower_model_sublogs(log, partitions):
-    return get_loop_sublogs(log, partitions)
+    return create_sublogs_loop(log, partitions)

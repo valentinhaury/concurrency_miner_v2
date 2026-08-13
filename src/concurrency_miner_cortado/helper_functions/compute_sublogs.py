@@ -6,7 +6,7 @@ from src.data_structures.relations.transitive_reduced_strict_partial_order impor
 from src.data_structures.log import Log
 from src.data_structures.trace import Trace
 
-def create_sublogs_concurrent(log, partitions):
+def compute_sublogs_concurrent(log, partitions):
     sublogs = []
     for partition in partitions:
         sub_log = []
