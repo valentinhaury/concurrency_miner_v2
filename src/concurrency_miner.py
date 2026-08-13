@@ -135,7 +135,7 @@ def concurrency_miner(
 
     print(f"[{datetime.now():%H:%M:%S}] Finished Concurrent partitioning")
 # split the log with a parallel operator
-    parallel_partitions = create_parallel_partitions(activities, eventually_follows_relations)
+    parallel_partitions = create_parallel_partitions(log_activities, log_eventually_follows)
     if len(parallel_partitions) > 1:
         process_tree = Node(Operator.Parallel)
         for sublog in get_parallel_sublogs(log, parallel_partitions):

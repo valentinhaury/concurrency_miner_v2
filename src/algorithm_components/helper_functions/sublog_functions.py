@@ -7,36 +7,42 @@ from src.data_structures.trace import Trace
 
 def create_sublogs_concurrent(log, partitions):
     sublogs = []
+
     for partition in partitions:
         sub_log = []
-        for trace in log.get_traces():
+        for old_trace in log.get_traces():
 
-            new_trace_events = set()
-            new_trace_strict_partial_order = set()
-            new_trace_transitive_reduced_strict_partial_order = set()
+            # new events are old events that are present in the partition
+            new_trace_events = partition & old_trace.get_events()
 
-            # add events to the trace
-            for event in trace.get_events():
-                if event.get_label() in partition:
-                    new_trace_events.add(event)
+            # new strict partial order is old strict partial order
+            new_trace_strict_partial_order = {
+                relation
+                for relation in old_trace.get_strict_partial_order()
+                if set(relation).issubset(new_trace_events)
+            }
 
-            # initializing the strict partial order
-            for relation in trace.get_strict_partial_order():
-                if relation.get_first() in new_trace_events and relation.get_second() in new_trace_events:
-                    new_trace_strict_partial_order.add(relation)
-
-            # transitive reduction of the strict partial order
-            reduction = set(new_trace_strict_partial_order)
+            # new transitive reduced strict partial order is the transitive reduction of the old strict partial order
+            new_trace_transitive_reduced_strict_partial_order = set(new_trace_strict_partial_order)
             for r in new_trace_strict_partial_order:
                 for e in new_trace_events:
-                    if StrictPartialOrder(r.get_first(), e) in new_trace_strict_partial_order and StrictPartialOrder(e, r.get_second()) in new_trace_strict_partial_order:
-                        reduction.discard(r)
+                    if (r[0], e) in new_trace_strict_partial_order and (e, r[1]) in new_trace_strict_partial_order:
+                        new_trace_transitive_reduced_strict_partial_order.discard(r)
 
-            # adding transitive reduced strict partial orders
-            for r in reduction:
-                new_trace_transitive_reduced_strict_partial_order.add(TransitiveReducedStrictPartialOrder(r.get_first(), r.get_second()))
+            # new overlapping relation is old overlapping relation
+            new_trace_overlapping_relations = {
+                relation
+                for relation in old_trace.get_overlapping_relations()
+                if set(relation).issubset(new_trace_events)
+            }
 
-            sub_log.append(Trace(new_trace_events, new_trace_transitive_reduced_strict_partial_order))
+            sub_log.append(
+                Trace(
+                    new_trace_events,
+                    new_trace_transitive_reduced_strict_partial_order,
+                    new_trace_strict_partial_order,
+                    new_trace_overlapping_relations)
+            )
         sublogs.append(Log(sub_log))
 
     return sublogs
@@ -47,19 +53,24 @@ def create_sublogs_sequential(log, partitions):
         sub_log = []
         for old_trace in log:
 
+            # new events are old events that are present in the partition
             new_trace_events = partition & old_trace.get_events()
 
+            # new transitive reduced strict partial order is old transitive reduced strict partial order
             new_trace_transitive_reduced_strict_partial_order = {
                 relation
                 for relation in old_trace.get_transitive_reduced_strict_partial_order()
                 if set(relation).issubset(new_trace_events)
             }
+
+            # new strict partial order is old strict partial order
             new_trace_strict_partial_order = {
                 relation
                 for relation in old_trace.get_strict_partial_order()
                 if set(relation).issubset(new_trace_events)
             }
 
+            # new overlapping relation is old overlapping relation
             new_trace_overlapping_relations = {
                 relation
                 for relation in old_trace.get_overlapping_relations()
