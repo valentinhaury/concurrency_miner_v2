@@ -1,5 +1,4 @@
 from src.data_structures.event import Event
-from src.data_structures.activity import Activity
 from src.data_structures.relations.transitive_reduced_strict_partial_order import TransitiveReducedStrictPartialOrder
 from src.data_structures.log import Log
 from src.data_structures.trace import Trace
@@ -10,21 +9,21 @@ from src.data_structures.trace import Trace
 ##
 ## USED FOR TESTING DONT CHANGE
 def a():
-    return Event(Activity("a"))
+    return Event("a")
 def b():
-    return Event(Activity("b"))
+    return Event("b")
 def c():
-    return Event(Activity("c"))
+    return Event("c")
 def d():
-    return Event(Activity("d"))
+    return Event("d")
 def e():
-    return Event(Activity("e"))
+    return Event("e")
 def f():
-    return Event(Activity("f"))
+    return Event("f")
 def g():
-    return Event(Activity("g"))
+    return Event("g")
 def h():
-    return Event(Activity("h"))
+    return Event("h")
 
 def _arbitrary_trace_a_sequence():
     a1 = a()

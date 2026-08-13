@@ -16,23 +16,23 @@ def compute_minimum_self_distance_relations(log):
     for trace in log.get_traces():
         trace_dict = trace_self_distance_list(trace)
         for event, (distance, events_in_msd) in trace_dict.items():
-            old_distance = activity_msd_dictionary[event.get_activity()]["minimum_self_distance"]
+            old_distance = activity_msd_dictionary[event.get_label()]["minimum_self_distance"]
             if not distance:
                 continue
             activities_in_msd = set()
             for event_msd in events_in_msd:
-                activities_in_msd.add(event_msd.get_activity())
+                activities_in_msd.add(event_msd.get_label())
         # if there is no distance for this activity yet add the new distance and the activities in msd
             if not old_distance:
-                activity_msd_dictionary[event.get_activity()]["minimum_self_distance"] = distance
-                activity_msd_dictionary[event.get_activity()]["activities_in_msd"] = activities_in_msd
+                activity_msd_dictionary[event.get_label()]["minimum_self_distance"] = distance
+                activity_msd_dictionary[event.get_label()]["activities_in_msd"] = activities_in_msd
         # if the new distance is smaller than the old distance replace the distance and the activities in msd
             elif distance < old_distance:
-                activity_msd_dictionary[event.get_activity()]["minimum_self_distance"] = distance
-                activity_msd_dictionary[event.get_activity()]["activities_in_msd"] = activities_in_msd
+                activity_msd_dictionary[event.get_label()]["minimum_self_distance"] = distance
+                activity_msd_dictionary[event.get_label()]["activities_in_msd"] = activities_in_msd
         # if the new distance is equal to the old distance add the new activities in msd
             elif distance == old_distance:
-                activity_msd_dictionary[event.get_activity()]["activities_in_msd"].update(activities_in_msd)
+                activity_msd_dictionary[event.get_label()]["activities_in_msd"].update(activities_in_msd)
 
     msd_relation = []
 
@@ -40,7 +40,7 @@ def compute_minimum_self_distance_relations(log):
         if not data["activities_in_msd"]:
             continue
         for target in data["activities_in_msd"]:
-            msd_relation.append(MinimumSelfDistanceRelation(activity, target))
+            msd_relation.append((activity, target))
 
     return msd_relation
 
@@ -52,13 +52,13 @@ def trace_self_distance_list(trace):
 
     adjacent_list = {e: [] for e in events}
     for relation in transitive_reduced_strict_partial_order:
-        adjacent_list[relation.get_first()].append(relation.get_second())
+        adjacent_list[relation[0]].append(relation[1])
 
     result = {}
 
     for start in events:
 
-        start_activity = start.get_activity()
+        start_activity = start.get_label()
 
         queue = deque([start])
 
@@ -97,7 +97,7 @@ def trace_self_distance_list(trace):
                 # found same label
                 if (
                     nxt != start
-                    and nxt.get_activity() == start_activity
+                    and nxt.get_label() == start_activity
                 ):
                     if best_distance is None:
                         best_distance = new_dist

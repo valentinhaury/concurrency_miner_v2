@@ -1,16 +1,9 @@
 from pygments.lexers import asn1
 
-from algorithm_components.fall_throughs.flower_model import get_flower_model_sublogs, create_flower_model_partitions
-from algorithm_components.split_detection.detect_arbitrary_order import create_arbitrary_order_partitions
-from algorithm_components.split_detection.detect_interleaving import create_interleaving_partitions
-from data_structures.activity import Activity
-from data_structures.event import Event
 from data_structures.log import Log
-from data_structures.process_tree import Node
-from data_structures.process_tree_operator import Operator
-from data_structures.relations.transitive_reduced_strict_partial_order import TransitiveReducedStrictPartialOrder
-from data_structures.trace import Trace
-from src.log_creation.log_creator import get_log
+
+from src.log_creation.create_event_log_from_xes import create_event_log_from_data_input_xes
+
 from src.concurrency_miner import concurrency_miner
 
 #TODO
@@ -39,51 +32,10 @@ from src.concurrency_miner import concurrency_miner
 #TODO correct and incorrect test cases
 #TODO Tree to traces - parser -> Given a tree returns a Log with all possible Traces -> Good to create Testcases
 
-#        case "exclusive":      # exclusive Log
-#        case "sequence":       # sequence log
-#        case "loop":           # loop log
-#        case "sequence_loop":  # loop/sequence log
-#        case "arbitrary":      # arbitrary order log
-#        case "interleaving":   # interleafing log # print(Operator.Interleaving.value)
-#        case "concurrent":     # concurrent log
-#        case "parallel":       # parallel log
-#        case "x_parallel"      # exclusive/parallel log
 
+test_log = create_event_log_from_data_input_xes()
 
-a1 = Event(Activity("a"))
-b1 = Event(Activity("b"))
-c1 = Event(Activity("c"))
-tspo6 = TransitiveReducedStrictPartialOrder(a1, b1)
-tspo5 = TransitiveReducedStrictPartialOrder(b1, c1)
-t1 = Trace([a1, b1, c1], [tspo5, tspo6])
-
-a2 = Event(Activity("a"))
-c2 = Event(Activity("c"))
-tspo3 = TransitiveReducedStrictPartialOrder(c2, a2)
-t2 = Trace([a2, c2], [tspo3])
-
-b2 = Event(Activity("b"))
-t3 = Trace([b2], [])
-
-test_log = Log([t1, t2, t3])
-
-#test_log = get_log("arbitrary")
-
-traces = test_log.get_traces()
-activities = test_log.get_activities()
-start_activities = test_log.get_start_activities()
-end_activities = test_log.get_end_activities()
-overlapping_relations = test_log.get_overlapping_relations()
-directly_follows_relations = test_log.get_directly_follows_relations()
-eventually_follows_relations = test_log.get_eventually_follows_relations()
-minimum_self_distance_relations = test_log.get_minimum_self_distance_relations()
-print("-----------------------------------------------------------------------------------------------------------")
-print(str(test_log))
 print("-----------------------------------------------------------------------------------------------------------")
 print(str(concurrency_miner(test_log)))
 print("-----------------------------------------------------------------------------------------------------------")
-flower_model_partitions = create_flower_model_partitions(activities)
-process_tree = Node(Operator.Concurrent)
-for sublog in get_flower_model_sublogs(test_log, flower_model_partitions):
-    process_tree.add_child(concurrency_miner(sublog))
-print(str(process_tree))
+

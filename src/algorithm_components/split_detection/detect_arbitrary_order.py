@@ -67,8 +67,8 @@ def create_arbitrary_order_partitions(traces, activities, start_activities, end_
             if not StrictPartialOrder(e1, e2) in trace.get_strict_partial_order() or not StrictPartialOrder(e2, e3) in trace.get_strict_partial_order():
                 continue
             for partition in partitions:
-                if e1.get_activity() in partition and e3.get_activity() in partition:
-                    merge_partitions(e1.get_activity(), e2.get_activity(), partitions)
+                if e1.get_label() in partition and e3.get_label() in partition:
+                    merge_partitions(e1.get_label(), e2.get_label(), partitions)
                     break
 
     return partitions

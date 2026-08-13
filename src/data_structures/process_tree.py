@@ -1,6 +1,3 @@
-from src.data_structures.activity import Activity
-from src.data_structures.process_tree_operator import Operator
-
 class Node:
     def __init__(self, value):
         self.value = value

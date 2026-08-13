@@ -18,7 +18,7 @@ def create_sublogs_concurrent(log, partitions):
 
             # add events to the trace
             for event in trace.get_events():
-                if event.get_activity() in partition:
+                if event.get_label() in partition:
                     new_trace_events.add(event)
 
             # initializing the strict partial order
@@ -83,7 +83,7 @@ def get_loop_sublogs(log, loop_partitions):
             trace_strict_partial_order = trace.get_strict_partial_order()
             partition_events = set()
             for event in trace.get_events():
-                if event.get_activity() in partition:
+                if event.get_label() in partition:
                     partition_events.add(event)
 
             # if the activities from this partition are not in the trace, add an empty trace

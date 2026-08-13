@@ -53,20 +53,20 @@ class Log:
         directly_follows_relations = set()
         for trace in self.traces:
             for spo in trace.get_transitive_reduced_strict_partial_order():
-                directly_follows_relations.add(DirectlyFollowsRelation(spo.get_first().get_activity(), spo.get_second().get_activity()))
+                directly_follows_relations.add((spo[0].get_label(), spo[1].get_label()))
         return directly_follows_relations
 
     def get_eventually_follows_relations(self):
         eventually_follows_relations = set()
         for relation in self.get_directly_follows_relations():
-            eventually_follows_relations.add(EventuallyFollowsRelation(relation.get_first(), relation.get_second()))
+            eventually_follows_relations.add((relation[0], relation[1]))
         changed = True
         while changed:
             changed = False
             for a1, a2, a3 in permutations(self.get_activities(), 3):
-                relation = EventuallyFollowsRelation(a1, a3)
-                if (EventuallyFollowsRelation(a1, a2) in eventually_follows_relations and
-                        EventuallyFollowsRelation(a2, a3) in eventually_follows_relations and
+                relation = (a1, a3)
+                if ((a1, a2) in eventually_follows_relations and
+                        (a2, a3) in eventually_follows_relations and
                         relation not in eventually_follows_relations):
                     eventually_follows_relations.add(relation)
                     changed = True
