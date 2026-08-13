@@ -1,15 +1,11 @@
-
 from itertools import combinations
 
 from src.algorithm_components.helper_functions.partition_functions import merge_partitions
 
 def create_sequence_partitions(activities, overlapping_relations, eventually_follows_relations):
 
-    partitions = []
-    for activity in activities:
-        new_partition = set()
-        new_partition.add(activity)
-        partitions.append(new_partition)
+    # create partitions as sets with one activity each
+    partitions = [{activity} for activity in activities]
 
     for a, b in combinations(activities, 2):
         # merge partitions if activities are overlapping in log
@@ -22,7 +18,7 @@ def create_sequence_partitions(activities, overlapping_relations, eventually_fol
         if (a, b) not in eventually_follows_relations and (b, a) not in eventually_follows_relations:
             merge_partitions(a, b, partitions)
             # sort partitions (for sequence it's important)
-            n = len(partitions)
+        n = len(partitions)
         for i in range(n):
             a = next(iter(partitions[i]))
             for j in range(i + 1, n):

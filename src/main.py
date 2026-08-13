@@ -1,7 +1,5 @@
 from pygments.lexers import asn1
 
-from data_structures.log import Log
-
 from src.log_creation.create_event_log_from_xes import create_event_log_from_data_input_xes
 
 from src.concurrency_miner import concurrency_miner

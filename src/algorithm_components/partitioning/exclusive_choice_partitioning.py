@@ -3,7 +3,10 @@ from itertools import combinations
 
 def create_exclusive_choice_partitions(event_log):
     log = copy.deepcopy(event_log)
+
+    # create partitions as lists with one trace each
     partitions = [[trace] for trace in log]
+
     for t1, t2 in combinations(log, 2):
         if len(partitions) < 2:
             break

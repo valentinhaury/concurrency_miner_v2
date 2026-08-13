@@ -1,7 +1,7 @@
 import copy
 
 from src.log_creation.log_creator import get_log
-from src.algorithm_components.partitioning.detect_concurrent import create_concurrent_partitions
+from src.algorithm_components.partitioning.concurrent_partitioning import create_concurrent_partitions
 from src.data_structures.log import Log
 
 def test_empty_log():

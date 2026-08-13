@@ -3,17 +3,17 @@ import copy
 
 from src.data_structures.relations.minimum_self_distance_relation import MinimumSelfDistanceRelation
 
-def compute_minimum_self_distance_relations(log):
+def compute_minimum_self_distance_relations(activities, traces):
     activity_msd_dictionary = {}
-
+    print(str(activities))
     # add every activity in the log as a key and as value add a dict with the keys distance and between
-    for activity in log.get_activities():
+    for activity in activities:
         activity_msd_dictionary[activity] = {
             "minimum_self_distance": None,
             "activities_in_msd": None
         }
 
-    for trace in log.get_traces():
+    for trace in traces:
         trace_dict = trace_self_distance_list(trace)
         for event, (distance, events_in_msd) in trace_dict.items():
             old_distance = activity_msd_dictionary[event.get_label()]["minimum_self_distance"]
@@ -34,13 +34,13 @@ def compute_minimum_self_distance_relations(log):
             elif distance == old_distance:
                 activity_msd_dictionary[event.get_label()]["activities_in_msd"].update(activities_in_msd)
 
-    msd_relation = []
+    msd_relation = set()
 
     for activity, data in activity_msd_dictionary.items():
         if not data["activities_in_msd"]:
             continue
         for target in data["activities_in_msd"]:
-            msd_relation.append((activity, target))
+            msd_relation.add((activity, target))
 
     return msd_relation
 

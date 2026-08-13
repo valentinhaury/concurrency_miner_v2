@@ -10,17 +10,13 @@ def get_parallel_sublogs(log, parallel_partitions):
     return create_sublogs_concurrent(log, parallel_partitions)
 
 def create_parallel_partitions(activities, eventually_follows_relation):
-    partitions = []
 
-    #initialize partitions
-    for activity in activities:
-        new_partition = set()
-        new_partition.add(activity)
-        partitions.append(new_partition)
+    #create partitions as sets with one activity each
+    partitions = [{activity} for activity in activities]
 
     # merge non-fully overlapping partitions
     for a, b in combinations(activities, 2):
-        if EventuallyFollowsRelation(a, b) in eventually_follows_relation or EventuallyFollowsRelation(b, a) in eventually_follows_relation:
+        if (a, b) in eventually_follows_relation or (b, a) in eventually_follows_relation:
             merge_partitions(a, b, partitions)
 
     return partitions
