@@ -2,44 +2,40 @@ import copy
 from datetime import datetime
 from itertools import permutations
 
+from data_structures.event import Event
 from src.data_structures.trace import Trace
 from src.data_structures.process_tree_operator import Operator
 from src.data_structures.process_tree import Node
 
-from src.algorithm_components.helper_functions.sublog_functions import create_sublogs_loop, create_sublogs_sequential, \
+from src.concurrency_miner_components.helper_functions.sublog_functions import create_sublogs_loop, create_sublogs_sequential, \
     create_sublogs_concurrent
-from algorithm_components.helper_functions.compute_minimum_self_distance_relation import \
+from concurrency_miner_components.helper_functions.compute_minimum_self_distance_relation import \
     compute_minimum_self_distance_relations
 
-from src.algorithm_components.partitioning.parallel_partitioning import create_parallel_partitions
-from src.algorithm_components.partitioning.concurrent_partitioning import create_concurrent_partitions
-from src.algorithm_components.partitioning.interleaving_partitioning import create_interleaving_partitions
-from src.algorithm_components.partitioning.exclusive_choice_partitioning import create_exclusive_choice_partitions
-from src.algorithm_components.partitioning.sequence_partitioning import create_sequence_partitions
-from src.algorithm_components.partitioning.loop_partitioning import create_loop_partitions
-from src.algorithm_components.partitioning.detect_arbitrary_order import get_arbitrary_order_sublogs, create_arbitrary_order_partitions
+from src.concurrency_miner_components.partitioning.parallel_partitioning import create_parallel_partitions
+from src.concurrency_miner_components.partitioning.concurrent_partitioning import create_concurrent_partitions
+from src.concurrency_miner_components.partitioning.interleaving_partitioning import create_interleaving_partitions
+from src.concurrency_miner_components.partitioning.exclusive_choice_partitioning import create_exclusive_choice_partitions
+from src.concurrency_miner_components.partitioning.sequence_partitioning import create_sequence_partitions
+from src.concurrency_miner_components.partitioning.loop_partitioning import create_loop_partitions
+from src.concurrency_miner_components.partitioning.detect_arbitrary_order import get_arbitrary_order_sublogs, create_arbitrary_order_partitions
 
-from src.algorithm_components.fall_throughs.concurrent_activity import get_concurrent_activity_partitions, \
-    get_concurrent_activity_sublogs
-from src.algorithm_components.fall_throughs.flower_model import create_flower_model_partitions, get_flower_model_sublogs
-from src.algorithm_components.fall_throughs.activitiy_once_per_trace import create_activity_once_per_trace_partitions, \
-    get_activity_once_per_trace_sublogs
-
-
+from concurrency_miner_components.partitioning.fall_through_partitioning import create_activity_once_per_trace_partitions, \
+    get_concurrent_activity_partitions, create_flower_model_partitions
 
 
 def concurrency_miner(
         event_log: list[Trace]
 ):
 
+    print(f"[{datetime.now():%H:%M:%S}] Initiating Log")
 # handle empty log
     if not event_log:
         return Node("tau")
 
+    print(f"[{datetime.now():%H:%M:%S}] Handeling Empty Traces")
 # handle empty traces
-    log = [Trace({"tau"}, set(), set(), set()) if len(old_trace.get_events()) == 0 else old_trace for old_trace in event_log]
-
-    print(f"[{datetime.now():%H:%M:%S}] Empty Traces")
+    log = [Trace({Event("tau")}, set(), set(), set()) if len(old_trace.get_events()) == 0 else old_trace for old_trace in event_log]
 
 # initiate log parameters
     log_activities = set()          #contains all activities, activities are always represented by their name-string
@@ -57,22 +53,22 @@ def concurrency_miner(
         log_overlapping_relation |= trace.get_overlapping_activities()
         log_directly_follows |= trace.get_directly_follows()
 
-    print(f"[{datetime.now():%H:%M:%S}] Initiated Log")
 
+    print(f"[{datetime.now():%H:%M:%S}] Initiating log transitiv closure")
     # create the transitive closure of the directly follows relation of the log
     log_eventually_follows |= copy.copy(log_directly_follows)
     for r1, r2 in permutations(log_directly_follows, 2):
         if r1[1] == r2[0]:
             log_eventually_follows.add((r1[0], r2[1]))
 
-    print(f"[{datetime.now():%H:%M:%S}] Initiated log transitiv closure")
 
+    print(f"[{datetime.now():%H:%M:%S}] Initiating log minimum_self_distance")
     log_minimum_self_distance |= compute_minimum_self_distance_relations(log_activities, log)
-
+    print(f"[{datetime.now():%H:%M:%S}] Checking for base cases")
 ##### BASE CASES
 # end recursion and add a single activity node, a self_loop node and/or a multi_instance node
     if len(log_activities) < 2:
-        single_activity = (next(iter(log_activities)), next(iter(log_activities)))
+        single_activity = (next(iter(log_activities)))
         if not log_overlapping_relation and not log_directly_follows:
             process_tree = Node(single_activity)
             return process_tree
@@ -92,7 +88,8 @@ def concurrency_miner(
             process_tree.add_child(Node("tau"))
             return process_tree
 
-    print(f"[{datetime.now():%H:%M:%S}] Checked for base cases")
+
+    print(f"[{datetime.now():%H:%M:%S}] Starting Exclusive Choice partitioning")
 ##### OPERATORS Exclusive, Sequence, Arbitrary Order, Interleaving, Concurrent, Parallel, Loop
 # split the log with an exclusive choice operator
     exclusive_choice_partitions = create_exclusive_choice_partitions(log)
@@ -102,7 +99,7 @@ def concurrency_miner(
             process_tree.add_child(concurrency_miner(partition))
         return process_tree
 
-    print(f"[{datetime.now():%H:%M:%S}] Finished Exclusive Choice partitioning")
+    print(f"[{datetime.now():%H:%M:%S}] Starting Sequence partitioning")
 # split the log with a sequence operator
     sequence_partitions = create_sequence_partitions(log_activities, log_overlapping_relation, log_eventually_follows)
     if len(sequence_partitions) > 1:
@@ -111,7 +108,6 @@ def concurrency_miner(
             process_tree.add_child(concurrency_miner(sub_log))
         return process_tree
 
-    print(f"[{datetime.now():%H:%M:%S}] Finished Sequence partitioning")
     if False:
     # split the log with an arbitrary order operator
         arbitrary_order_partitions = create_arbitrary_order_partitions(traces, activities, start_activities, end_activities, overlapping_relations, eventually_follows_relations, directly_follows_relations)
@@ -121,6 +117,7 @@ def concurrency_miner(
                 process_tree.add_child(concurrency_miner(sub_log))
             return process_tree
 
+    print(f"[{datetime.now():%H:%M:%S}] Starting Interleaving partitioning")
 # split the log with an interleaving operator
     interleaving_partitions = create_interleaving_partitions(log_activities, log_start_activities, log_end_activities, log_overlapping_relation, log_directly_follows, log_minimum_self_distance)
     if len(interleaving_partitions) > 1:
@@ -129,7 +126,7 @@ def concurrency_miner(
             process_tree.add_child(concurrency_miner(sub_log))
         return process_tree
 
-    print(f"[{datetime.now():%H:%M:%S}] Finished Interleaving partitioning")
+    print(f"[{datetime.now():%H:%M:%S}] Starting Concurrent partitioning")
 # split the log with a concurrent operator
     concurrent_partitions = create_concurrent_partitions(log_activities, log_start_activities, log_end_activities, log_overlapping_relation, log_directly_follows, log_minimum_self_distance)
     if len(concurrent_partitions) > 1:
@@ -138,7 +135,7 @@ def concurrency_miner(
             process_tree.add_child(concurrency_miner(sub_log))
         return process_tree
 
-    print(f"[{datetime.now():%H:%M:%S}] Finished Concurrent partitioning")
+    print(f"[{datetime.now():%H:%M:%S}] Starting Parallel partitioning")
 # split the log with a parallel operator
     parallel_partitions = create_parallel_partitions(log_activities, log_eventually_follows)
     if len(parallel_partitions) > 1:
@@ -147,7 +144,7 @@ def concurrency_miner(
             process_tree.add_child(concurrency_miner(sub_log))
         return process_tree
 
-    print(f"[{datetime.now():%H:%M:%S}] Finished Parallel partitioning")
+    print(f"[{datetime.now():%H:%M:%S}] Starting Loop partitioning")
 # split the log with a loop operator
     loop_partitions = create_loop_partitions(log_activities, log_start_activities, log_end_activities, log_overlapping_relation, log_directly_follows)
     if len(loop_partitions) > 1:
@@ -156,33 +153,34 @@ def concurrency_miner(
             process_tree.add_child(concurrency_miner(sub_log))
         return process_tree
 
-    print(f"[{datetime.now():%H:%M:%S}] Finished Loop partitioning")
+    print(f"[{datetime.now():%H:%M:%S}] Starting activities_once_per_trace partitioning")
 ##### FALL THROUGHS
 # acitivity once per trace
-    activities_once_per_trace_partitions = create_activity_once_per_trace_partitions(traces, activities)
+    activities_once_per_trace_partitions = create_activity_once_per_trace_partitions(log, log_activities)
     if len(activities_once_per_trace_partitions) >  1:
         process_tree = Node(Operator.Concurrent)
-        for sub_log in get_activity_once_per_trace_sublogs(log, activities_once_per_trace_partitions):
+        for sub_log in create_sublogs_concurrent(log, activities_once_per_trace_partitions):
+            process_tree.add_child(concurrency_miner(sub_log))
             process_tree.add_child(concurrency_miner(sub_log))
         return process_tree
 
-    print(f"[{datetime.now():%H:%M:%S}] Finished activities_once_per_trace partitioning")
+    print(f"[{datetime.now():%H:%M:%S}] Starting activity_concurrent partitioning")
 #activity concurrent
-    activity_concurrent_partitions = get_concurrent_activity_partitions(log, activities)
+    activity_concurrent_partitions = get_concurrent_activity_partitions(log, log_activities)
     if len(activity_concurrent_partitions) > 1:
         print("Activity concurrent")
         process_tree = Node(Operator.Concurrent)
-        for sub_log in get_concurrent_activity_sublogs(log, activity_concurrent_partitions):
+        for sub_log in create_sublogs_concurrent(log, activity_concurrent_partitions):
             process_tree.add_child(concurrency_miner(sub_log))
         return process_tree
 
-    print(f"[{datetime.now():%H:%M:%S}] Finished activity_concurrent partitioning")
+    print(f"[{datetime.now():%H:%M:%S}] Starting flower model partitioning")
 #tau-loop/strict-tau-loop
     #missing
 # flower model
-    flower_model_partitions = create_flower_model_partitions(activities)
+    flower_model_partitions = create_flower_model_partitions(log_activities)
     process_tree = Node(Operator.Concurrent)
-    for sub_log in get_flower_model_sublogs(log, flower_model_partitions):
+    for sub_log in create_sublogs_concurrent(log, flower_model_partitions):
         process_tree.add_child(concurrency_miner(sub_log))
     return process_tree
 

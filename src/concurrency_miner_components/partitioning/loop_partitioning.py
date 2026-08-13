@@ -1,6 +1,6 @@
-from itertools import combinations
+from itertools import combinations, permutations
 
-from src.algorithm_components.helper_functions.partition_functions import merge_partitions
+from src.concurrency_miner_components.helper_functions.partition_functions import merge_partitions
 
 def _merge_loop_partitions(activity_a, activity_b, partitions):
     # merge partitions but keep p1 at index 0
@@ -13,9 +13,9 @@ def _merge_loop_partitions(activity_a, activity_b, partitions):
 def create_loop_partitions(activities, start_activities, end_activities, overlapping_relations, directly_follows_relations):
 
     partitions = []
-
     # create partition 1 where all start and end activities are
-    partition_1 = start_activities | end_activities
+    partition_1 = set()
+    partition_1 |= start_activities | end_activities
     partitions.append(partition_1)
 
     # create all other partitions from the non-start and non-end activities
@@ -28,7 +28,7 @@ def create_loop_partitions(activities, start_activities, end_activities, overlap
             merge_partitions(a, b, partitions)
 
     # merge overlapping partitions
-    for a, b in combinations(activities, 2):
+    for a, b in permutations(activities, 2):
         if (a, b) in overlapping_relations:
             _merge_loop_partitions(a, b, partitions)
 
@@ -73,6 +73,5 @@ def create_loop_partitions(activities, start_activities, end_activities, overlap
 
     for activity in activities_to_merge:
         _merge_loop_partitions(partitions[0][0], activity, partitions)
-
     return partitions
 

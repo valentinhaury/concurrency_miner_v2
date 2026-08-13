@@ -1,6 +1,6 @@
 from itertools import combinations
 
-from src.algorithm_components.helper_functions.partition_functions import merge_partitions
+from src.concurrency_miner_components.helper_functions.partition_functions import merge_partitions
 
 def create_sequence_partitions(activities, overlapping_relations, eventually_follows_relations):
 
@@ -9,7 +9,7 @@ def create_sequence_partitions(activities, overlapping_relations, eventually_fol
 
     for a, b in combinations(activities, 2):
         # merge partitions if activities are overlapping in log
-        if (a, b) in overlapping_relations:
+        if (a, b) in overlapping_relations or (b, a) in overlapping_relations:
             merge_partitions(a, b, partitions)
         # merge partitions if activities are pairwise reachable in log
         if (a, b) in eventually_follows_relations and (b, a) in eventually_follows_relations:

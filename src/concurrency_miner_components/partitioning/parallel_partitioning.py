@@ -1,9 +1,7 @@
 from itertools import combinations
 
-from src.data_structures.relations.eventually_follows_relation import EventuallyFollowsRelation
-
-from src.algorithm_components.helper_functions.partition_functions import merge_partitions
-from src.algorithm_components.helper_functions.sublog_functions import create_sublogs_concurrent
+from src.concurrency_miner_components.helper_functions.partition_functions import merge_partitions
+from src.concurrency_miner_components.helper_functions.sublog_functions import create_sublogs_concurrent
 
 
 def get_parallel_sublogs(log, parallel_partitions):

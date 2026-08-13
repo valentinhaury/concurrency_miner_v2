@@ -1,8 +1,6 @@
 from collections import deque
 import copy
 
-from src.data_structures.relations.minimum_self_distance_relation import MinimumSelfDistanceRelation
-
 def compute_minimum_self_distance_relations(activities, traces):
     activity_msd_dictionary = {}
     # add every activity in the log as a key and as value add a dict with the keys distance and between

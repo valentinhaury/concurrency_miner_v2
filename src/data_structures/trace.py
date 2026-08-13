@@ -1,9 +1,4 @@
-from itertools import product, permutations
-
-from src.data_structures.relations.transitive_reduced_strict_partial_order import \
-    TransitiveReducedStrictPartialOrder
-from src.data_structures.relations.strict_partial_order import StrictPartialOrder
-from src.data_structures.relations.overlapping_relation import OverlappingRelation
+from itertools import permutations
 
 
 class Trace:
@@ -66,14 +61,14 @@ class Trace:
     def get_start_activities(self):
         start_activities = set()
         for e in self.events:
-            if any(y == e for _, y in self.transitive_reduced_strict_partial_order):
+            if not any(y == e for _, y in self.transitive_reduced_strict_partial_order):
                 start_activities.add(e.get_label())
         return start_activities
 
     def get_end_activities(self):
         end_activities = set()
         for e in self.events:
-            if any(y == e for y, _ in self.transitive_reduced_strict_partial_order):
+            if not any(y == e for y, _ in self.transitive_reduced_strict_partial_order):
                 end_activities.add(e.get_label())
         return end_activities
 
