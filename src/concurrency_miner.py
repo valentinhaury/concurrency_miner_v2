@@ -5,21 +5,19 @@ from itertools import permutations
 from algorithm_components.fall_throughs.concurrent_activity import get_concurrent_activity_partitions, \
     get_concurrent_activity_sublogs
 from algorithm_components.fall_throughs.flower_model import create_flower_model_partitions, get_flower_model_sublogs
-from algorithm_components.split_detection.detect_loop import create_loop_partitions
+from algorithm_components.partitioning.detect_loop import create_loop_partitions
 from algorithm_components.fall_throughs.activitiy_once_per_trace import create_activity_once_per_trace_partitions, \
     get_activity_once_per_trace_sublogs
 from data_structures.trace import Trace
-from src.algorithm_components.base_cases.detect_single_activity import detect_single_activity, detect_single_loop, \
-    detect_multi_instance, create_single_loop_sublog
 from src.data_structures.process_tree_operator import Operator
 from src.data_structures.process_tree import Node
-from src.algorithm_components.split_detection.detect_arbitrary_order import get_arbitrary_order_sublogs, create_arbitrary_order_partitions
-from algorithm_components.helper_functions.sublog_functions import get_loop_sublogs
-from src.algorithm_components.split_detection.detect_parallel import get_parallel_sublogs, create_parallel_partitions
-from src.algorithm_components.split_detection.detect_concurrent import get_concurrent_sublogs, create_concurrent_partitions
-from src.algorithm_components.split_detection.detect_interleaving import create_interleaving_partitions, get_interleaving_sublogs
-from src.algorithm_components.split_detection.detect_exclusive import create_exclusive_choice_partitions
-from src.algorithm_components.split_detection.detect_sequence import get_sequence_sublogs, create_sequence_partitions
+from src.algorithm_components.partitioning.detect_arbitrary_order import get_arbitrary_order_sublogs, create_arbitrary_order_partitions
+from algorithm_components.helper_functions.sublog_functions import get_loop_sublogs, create_sublogs_sequential
+from src.algorithm_components.partitioning.detect_parallel import get_parallel_sublogs, create_parallel_partitions
+from src.algorithm_components.partitioning.detect_concurrent import get_concurrent_sublogs, create_concurrent_partitions
+from src.algorithm_components.partitioning.detect_interleaving import create_interleaving_partitions, get_interleaving_sublogs
+from src.algorithm_components.partitioning.detect_exclusive import create_exclusive_choice_partitions
+from src.algorithm_components.partitioning.detect_sequence import create_sequence_partitions
 
 
 
@@ -52,7 +50,7 @@ def concurrency_miner(
 
     print(f"[{datetime.now():%H:%M:%S}] Initiated Log")
 
-    # create the transitive closure of the directly follows relation of the log (different from the union of the follows)
+    # create the transitive closure of the directly follows relation of the log
     log_eventually_follows = copy.copy(log_directly_follows)
     for r1, r2 in permutations(log_directly_follows, 2):
         if r1[1] == r2[0]:
@@ -95,13 +93,14 @@ def concurrency_miner(
 
     print(f"[{datetime.now():%H:%M:%S}] Finished Exclusive Choice partitioning")
 # split the log with a sequence operator
-    sequence_partitions = create_sequence_partitions(activities, overlapping_relations, eventually_follows_relations)
+    sequence_partitions = create_sequence_partitions(log_activities, log_concurrency_pairs, log_eventually_follows)
     if len(sequence_partitions) > 1:
         process_tree = Node(Operator.Sequence)
-        for sublog in get_sequence_sublogs(log, sequence_partitions, eventually_follows_relations):
-            process_tree.add_child(concurrency_miner(sublog))
+        for sub_log in create_sublogs_sequential(log, sequence_partitions):
+            process_tree.add_child(concurrency_miner(sub_log))
         return process_tree
 
+    print(f"[{datetime.now():%H:%M:%S}] Finished Sequence partitioning")
 # split the log with an arbitrary order operator
     arbitrary_order_partitions = create_arbitrary_order_partitions(traces, activities, start_activities, end_activities, overlapping_relations, eventually_follows_relations, directly_follows_relations)
     if len(arbitrary_order_partitions) > 1:

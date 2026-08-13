@@ -7,16 +7,14 @@ from src.data_structures.relations.overlapping_relation import OverlappingRelati
 
 
 class Trace:
-    def __init__(self, events, transitive_reduced_strict_partial_order, strict_partial_order=None):
+    def __init__(self, events, transitive_reduced_strict_partial_order, strict_partial_order, overlapping_relation):
         self.events = set(events)
         self.activities = set()
         for event in events:
             self.activities.add(event.get_label())
         self.transitive_reduced_strict_partial_order = set(transitive_reduced_strict_partial_order)
-        if strict_partial_order is None:
-            self.strict_partial_order = self._compute_transitive_closure()
-        else:
-            self.strict_partial_order = set(strict_partial_order)
+        self.strict_partial_order = set(strict_partial_order)
+        self.overlapping_relations = set(overlapping_relation)
 
     def __str__(self):
         if not self.events:
@@ -48,47 +46,36 @@ class Trace:
     def get_transitive_reduced_strict_partial_order(self):
         return self.transitive_reduced_strict_partial_order
 
+    def get_strict_partial_order(self):
+        return self.strict_partial_order
+
+    def get_overlapping_relations_trace(self):
+        return self.overlapping_relations
+
     def get_directly_follows(self):
         directly_follows = set()
         for r in self.transitive_reduced_strict_partial_order:
             directly_follows.add((r[0].get_label(), r[1].get_label()))
         return directly_follows
 
-    def get_strict_partial_order(self):
-        return self.strict_partial_order
-
     def get_start_activities(self):
         start_activities = set()
-        for e1 in self.events:
-            is_start = True
-            for e2 in self.events:
-                if (e2, e1) in self.transitive_reduced_strict_partial_order:
-                    is_start = False
-            if is_start:
-                start_activities.add(e1.get_label())
+        for e in self.events:
+            if any(y == e for _, y in self.transitive_reduced_strict_partial_order):
+                start_activities.add(e.get_label())
         return start_activities
 
     def get_end_activities(self):
         end_activities = set()
-        for e1 in self.events:
-            is_end = True
-            for e2 in self.events:
-                if (e1, e2) in self.transitive_reduced_strict_partial_order:
-                    is_end = False
-            if is_end:
-                end_activities.add(e1.get_label())
+        for e in self.events:
+            if any(y == e for y, _ in self.transitive_reduced_strict_partial_order):
+                end_activities.add(e.get_label())
         return end_activities
 
-    def get_overlapping_relations_trace(self):
-        overlapping_relations = set()
-        for e1, e2 in product(self.events, repeat=2):
-            if not (e1, e2) in self.strict_partial_order \
-                and not (e2, e1) in self.strict_partial_order \
-                and not e1 == e2:
-                overlapping_relations.add((e1.get_label(), e2.get_label()))
 
-        return overlapping_relations
 
+
+    #not needed right now
     def _compute_transitive_closure(self):
         closure = set()
         for relation in self.transitive_reduced_strict_partial_order:

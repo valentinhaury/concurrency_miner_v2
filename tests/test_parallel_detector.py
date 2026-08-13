@@ -1,5 +1,5 @@
 from src.log_creation.log_creator import get_log
-from src.algorithm_components.split_detection.detect_parallel import create_parallel_partitions
+from src.algorithm_components.partitioning.detect_parallel import create_parallel_partitions
 from src.data_structures.log import Log
 
 def test_empty_log():

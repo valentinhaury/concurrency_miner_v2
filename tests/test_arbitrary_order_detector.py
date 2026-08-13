@@ -1,6 +1,6 @@
 import copy
 
-from src.algorithm_components.split_detection.detect_arbitrary_order import create_arbitrary_order_partitions
+from src.algorithm_components.partitioning.detect_arbitrary_order import create_arbitrary_order_partitions
 from src.log_creation.log_creator import get_log
 from src.data_structures.log import Log
 

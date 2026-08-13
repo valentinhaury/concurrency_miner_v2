@@ -45,24 +45,35 @@ def create_sublogs_sequential(log, partitions):
     sublogs = []
     for partition in partitions:
         sub_log = []
-        for trace in log.get_traces():
+        for old_trace in log:
 
-            new_trace_events = set()
-            new_trace_transitive_reduced_strict_partial_order = set()
+            new_trace_events = partition & old_trace.get_events()
 
-            # add events to new trace
-            for event in trace.get_events():
-                if event.get_label() in partition:
-                    new_trace_events.add(event)
+            new_trace_transitive_reduced_strict_partial_order = {
+                relation
+                for relation in old_trace.get_transitive_reduced_strict_partial_order()
+                if set(relation).issubset(new_trace_events)
+            }
+            new_trace_strict_partial_order = {
+                relation
+                for relation in old_trace.get_strict_partial_order()
+                if set(relation).issubset(new_trace_events)
+            }
 
-            # add relations to new event
-            for relation in trace.get_transitive_reduced_strict_partial_order():
-                if relation.get_first() in new_trace_events and relation.get_second() in new_trace_events:
-                    new_trace_transitive_reduced_strict_partial_order.add(relation)
+            new_trace_overlapping_relations = {
+                relation
+                for relation in old_trace.get_overlapping_relations()
+                if set(relation).issubset(new_trace_events)
+            }
 
-            sub_log.append(Trace(new_trace_events, new_trace_transitive_reduced_strict_partial_order))
-        sublogs.append(Log(sub_log))
-
+            sub_log.append(
+                Trace(
+                    new_trace_events,
+                    new_trace_transitive_reduced_strict_partial_order,
+                    new_trace_strict_partial_order,
+                    new_trace_overlapping_relations)
+            )
+        sublogs.append(sub_log)
     return sublogs
 
 def get_loop_sublogs(log, loop_partitions):

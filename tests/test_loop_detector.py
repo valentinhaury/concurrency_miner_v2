@@ -1,7 +1,7 @@
 import copy
 
 from src.log_creation.log_creator import get_log
-from src.algorithm_components.split_detection.detect_loop import create_loop_partitions
+from src.algorithm_components.partitioning.detect_loop import create_loop_partitions
 from src.data_structures.log import Log
 
 def test_empty_log():
