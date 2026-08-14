@@ -58,6 +58,12 @@ class Trace:
             directly_follows.add((r[0].get_label(), r[1].get_label()))
         return directly_follows
 
+    def get_eventually_follows(self):
+        eventually_follows = set()
+        for r in self.strict_partial_order:
+            eventually_follows.add((r[0].get_label(), r[1].get_label()))
+        return eventually_follows
+
     def get_start_activities(self):
         start_activities = set()
         for e in self.events:

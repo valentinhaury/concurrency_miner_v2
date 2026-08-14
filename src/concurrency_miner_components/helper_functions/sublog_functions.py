@@ -86,16 +86,18 @@ def create_sublogs_sequential(log, partitions):
 
 def create_sublogs_loop(log, loop_partitions):
     sublogs = []
+    partition_1_activities = loop_partitions[0]
     # for every partition create a new sub-log
     for partition in loop_partitions:
 
-        sub_log = _create_partition_loop_sub_log(log, partition)
-        sublogs.append(sub_log)
+        sub_log = _create_partition_loop_sub_log(log, partition, partition_1_activities)
+        if sub_log or (partition & partition_1_activities):
+            sublogs.append(sub_log)
 
     return sublogs
 
 
-def _create_partition_loop_sub_log(log, partition):
+def _create_partition_loop_sub_log(log, partition, partition_1_activities):
     sub_log = []
     # for every trace create 1-n traces in every sub-log
     # for example for trace (a b a b a)
@@ -106,8 +108,8 @@ def _create_partition_loop_sub_log(log, partition):
         # new events are old events that are present in the partition
         partition_events = {event for event in old_trace.events if event.get_label() in partition}
 
-        # if the activities from this partition are not in the trace, add an empty trace
-        if not partition_events:
+        # if the activities from this partition are not in the trace, add an empty trace (only for partition 1 because the others are supposed to be optional)
+        if not partition_events and (partition_1_activities & partition):
             sub_log.append(Trace({Event("tau")}, set(), set(), set()))
 
         # as long as there are events from the trace left new traces are created

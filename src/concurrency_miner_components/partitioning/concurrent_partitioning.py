@@ -14,7 +14,7 @@ def create_concurrent_partitions(activities, start_activities, end_activities, o
 
     for a, b in combinations(activities, 2):
         # merge partitions if activities are never overlapping in log
-        if not (a, b) in overlapping_relations and not (b, a) in overlapping_relations:
+        if (a, b) not in overlapping_relations and (b, a) not in overlapping_relations:
             merge_partitions(a, b, partitions)
         # merge partitions if activities are not-fully pairwise connected in log
         if  (a, b) not in directly_follows_relations or (b, a) not in directly_follows_relations:
@@ -35,5 +35,4 @@ def create_concurrent_partitions(activities, start_activities, end_activities, o
                     merge_partitions(next(iter(partition)), next(iter(partitions[0])), partitions)
                 changed = True
                 break
-
     return partitions

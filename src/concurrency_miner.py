@@ -18,7 +18,7 @@ from src.concurrency_miner_components.partitioning.interleaving_partitioning imp
 from src.concurrency_miner_components.partitioning.exclusive_choice_partitioning import create_exclusive_choice_partitions
 from src.concurrency_miner_components.partitioning.sequence_partitioning import create_sequence_partitions
 from src.concurrency_miner_components.partitioning.loop_partitioning import create_loop_partitions
-from src.concurrency_miner_components.partitioning.detect_arbitrary_order import get_arbitrary_order_sublogs, create_arbitrary_order_partitions
+from src.concurrency_miner_components.partitioning.arbitrary_order_partitioning import get_arbitrary_order_sublogs, create_arbitrary_order_partitions
 
 from concurrency_miner_components.partitioning.fall_through_partitioning import create_activity_once_per_trace_partitions, \
     get_concurrent_activity_partitions, create_flower_model_partitions
@@ -33,18 +33,18 @@ def concurrency_miner(
     if not event_log:
         return Node("tau")
 
-    print(f"[{datetime.now():%H:%M:%S}] Handeling Empty Traces")
 # handle empty traces
     log = [Trace({Event("tau")}, set(), set(), set()) if len(old_trace.get_events()) == 0 else old_trace for old_trace in event_log]
 
 # initiate log parameters
-    log_activities = set()          #contains all activities, activities are always represented by their name-string
-    log_start_activities = set()    #contains all start activities
-    log_end_activities = set()      #contains all end activities
+    log_activities = set()              #contains all activities, activities are always represented by their name-string
+    log_start_activities = set()        #contains all start activities
+    log_end_activities = set()          #contains all end activities
     log_overlapping_relation = set()   #contains pairs of activities that occur parallel at least once in the log
-    log_directly_follows = set()    #contains pairs of activities where the second follows at least once directly after the first in the trace
-    log_eventually_follows = set()  #contains the transitive closure of the directly follows relation
+    log_directly_follows = set()        #contains pairs of activities where the second follows directly after the first in at least one trace
+    log_eventually_follows = set()      #contains the transitive closure of the directly follows relation
     log_minimum_self_distance = set()   #contains pairs of activities where the second one is a witness of the minimum self distance relationship of the first
+    log_follows = set()                 # contains all pars of activities where the second follows eventually after the first in at least one trace
 
     for trace in log:
         log_activities |= trace.get_activities()
@@ -52,17 +52,19 @@ def concurrency_miner(
         log_end_activities |= trace.get_end_activities()
         log_overlapping_relation |= trace.get_overlapping_activities()
         log_directly_follows |= trace.get_directly_follows()
+        log_follows |= trace.get_eventually_follows()
 
-
-    print(f"[{datetime.now():%H:%M:%S}] Initiating log transitiv closure")
     # create the transitive closure of the directly follows relation of the log
     log_eventually_follows |= copy.copy(log_directly_follows)
-    for r1, r2 in permutations(log_directly_follows, 2):
-        if r1[1] == r2[0]:
-            log_eventually_follows.add((r1[0], r2[1]))
+    changed = True
+    while changed:
+        changed = False
+        for r1, r2 in permutations(log_eventually_follows, 2):
+            if r1[1] == r2[0]:
+                if (r1[0], r2[1]) not in log_eventually_follows:
+                    log_eventually_follows.add((r1[0], r2[1]))
+                    changed = True
 
-
-    print(f"[{datetime.now():%H:%M:%S}] Initiating log minimum_self_distance")
     log_minimum_self_distance |= compute_minimum_self_distance_relations(log_activities, log)
     print(f"[{datetime.now():%H:%M:%S}] Checking for base cases")
 ##### BASE CASES
@@ -107,15 +109,14 @@ def concurrency_miner(
         for sub_log in create_sublogs_sequential(log, sequence_partitions):
             process_tree.add_child(concurrency_miner(sub_log))
         return process_tree
-
-    if False:
-    # split the log with an arbitrary order operator
-        arbitrary_order_partitions = create_arbitrary_order_partitions(traces, activities, start_activities, end_activities, overlapping_relations, eventually_follows_relations, directly_follows_relations)
-        if len(arbitrary_order_partitions) > 1:
-            process_tree = Node(Operator.Arbitrary)
-            for sub_log in get_arbitrary_order_sublogs(log, arbitrary_order_partitions):
-                process_tree.add_child(concurrency_miner(sub_log))
-            return process_tree
+    print(f"[{datetime.now():%H:%M:%S}] Starting Arbitrary Order partitioning")
+# split the log with an arbitrary order operator
+    arbitrary_order_partitions = create_arbitrary_order_partitions(log, log_activities, log_start_activities, log_end_activities, log_overlapping_relation, log_follows, log_directly_follows)
+    if len(arbitrary_order_partitions) > 1:
+        process_tree = Node(Operator.Arbitrary)
+        for sub_log in create_sublogs_sequential(log, arbitrary_order_partitions):
+            process_tree.add_child(concurrency_miner(sub_log))
+        return process_tree
 
     print(f"[{datetime.now():%H:%M:%S}] Starting Interleaving partitioning")
 # split the log with an interleaving operator
