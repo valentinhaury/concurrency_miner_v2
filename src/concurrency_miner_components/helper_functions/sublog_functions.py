@@ -69,7 +69,7 @@ def create_sublogs_sequential(log, partitions):
             # new overlapping relation is old overlapping relation
             new_trace_overlapping_relations = {
                 relation
-                for relation in old_trace.get_overlapping_relations()
+                for relation in old_trace.overlapping_relations
                 if set(relation).issubset(new_trace_events)
             }
 

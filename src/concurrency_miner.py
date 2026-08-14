@@ -27,7 +27,7 @@ from concurrency_miner_components.partitioning.fall_through_partitioning import 
 def concurrency_miner(
         event_log: list[Trace]
 ):
-
+    print("-----------------------------------------------------------------------------------------------------------")
     print(f"[{datetime.now():%H:%M:%S}] Initiating Log")
 # handle empty log
     if not event_log:
@@ -75,16 +75,16 @@ def concurrency_miner(
         single_activity_pair = (single_activity, single_activity)
         if single_activity_pair in log_overlapping_relation and single_activity_pair not in log_directly_follows:
             process_tree = (Node(Operator.Multi))
-            process_tree.add_child(single_activity)
+            process_tree.add_child(Node(single_activity))
             return process_tree
         if single_activity_pair not in log_overlapping_relation and single_activity_pair in log_directly_follows:
             process_tree = Node(Operator.Loop)
-            process_tree.add_child(single_activity)
+            process_tree.add_child(Node(single_activity))
             process_tree.add_child(Node("tau"))
             return process_tree
         else:
             process_tree = Node(Operator.Loop)
-            process_tree.add_child(Node(Operator.Multi).add_child(single_activity))
+            process_tree.add_child(Node(Operator.Multi).add_child(Node(single_activity)))
             process_tree.add_child(Node("tau"))
             return process_tree
 
@@ -160,7 +160,6 @@ def concurrency_miner(
     if len(activities_once_per_trace_partitions) >  1:
         process_tree = Node(Operator.Concurrent)
         for sub_log in create_sublogs_concurrent(log, activities_once_per_trace_partitions):
-            process_tree.add_child(concurrency_miner(sub_log))
             process_tree.add_child(concurrency_miner(sub_log))
         return process_tree
 

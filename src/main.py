@@ -29,6 +29,7 @@ from src.concurrency_miner import concurrency_miner
 test_log = create_event_log_from_data_input_xes()
 
 print("-----------------------------------------------------------------------------------------------------------")
-print(str(concurrency_miner(test_log)))
+tree = concurrency_miner(test_log)
+print(str(tree))
 print("-----------------------------------------------------------------------------------------------------------")
-
+tree.print_tree()
