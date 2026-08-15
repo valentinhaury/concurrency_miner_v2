@@ -26,7 +26,7 @@ def create_arbitrary_order_partitions(traces, activities, start_activities, end_
     for partition in partitions:
         if partition.isdisjoint(start_activities) or partition.isdisjoint(end_activities):
             partitions_to_merge.append(partition)
-
+    # TODO maybe do this following part multiple times until nothing changes anymore
     connect_partitions_relation = []
     for p1, p2 in product(partitions_to_merge, partitions):
         if p1 != p2:
@@ -47,6 +47,7 @@ def create_arbitrary_order_partitions(traces, activities, start_activities, end_
         merge_partitions(next(iter(relation[0])), next(iter(relation[1])), partitions)
 
     # merge all partitions that are not direct connected in both directions
+    # TODO maybe merge them to partitions they are always connected to like with the start or end activities
     if False:
         not_direct_connected = []
         for p1, p2 in combinations(partitions, 2):
