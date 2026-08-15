@@ -72,6 +72,6 @@ def create_loop_partitions(activities, start_activities, end_activities, overlap
             activities_to_merge.add(next(iter(partition)))
 
     for activity in activities_to_merge:
-        _merge_loop_partitions(partitions[0][0], activity, partitions)
+        _merge_loop_partitions(next(iter(partitions[0])), activity, partitions)
     return partitions
 
