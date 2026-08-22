@@ -11,10 +11,12 @@ from src.concurrency_miner import concurrency_miner
 # arbitrary order: muss zusätzlich noch gecheckt werden ob jede Partition mit jeder direct connected ist?
 #                   bzw wenn sie keine start und end activity haben ,it arbitrary partition mergen
 # exclusive choice: Schnellerer Weg für vergleiche
+#                   Am Anfang für jede Aktivität berechnen mit welchen anderen sie vorkommt. -> Dict, dass immer übergeben und dann daraus auslesen. statt n^2 jedes mal (n traces) dauert es nur n*m einmal (n traces, m activities)
+#                   -> Dict oder noch einfacher eine relation (exclusive relation oder so)
 
 #TODO fall throughs
 # IMPORTANT FLOWER MODEL::: put every activity in a partition and create sublogs from that, so that all the traces are still there -> base cases / and loop will do the rest
-# Activity Concurrent fall through schneller machen
+# Activity Concurrent fall through schneller machen -> wird schneller durch exclusive choice
 
 #TODO data handling
 #       infrequent : wenn kein cut gefunden wird edges zählen in den graphen -> directly follows, overlappping und ganz seltene entfernen (ganze Traces oder nur edges?)
