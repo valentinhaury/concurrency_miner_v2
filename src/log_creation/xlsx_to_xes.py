@@ -10,8 +10,8 @@ from zoneinfo import ZoneInfo
 # EINSTELLUNGEN
 # ============================================================
 
-INPUT_FILE = "../data/beispielinput.xlsx"
-OUTPUT_FILE = "../data/exampleinput.xes"
+INPUT_FILE = "../data/file_name.xlsx"
+OUTPUT_FILE = "../data/file_name.xes"
 
 # Zeitzone der Daten
 TIMEZONE = "Europe/Berlin"
