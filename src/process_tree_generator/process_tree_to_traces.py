@@ -1,13 +1,17 @@
+import copy
+from enum import Enum
+from itertools import product, permutations
+
 from data_structures.event import Event
+from data_structures.process_tree_operator import Operator
 from src.process_tree_generator.simple_trace import SimpleTrace
-from src.data_structures.process_tree_operator import Operator
 
 
 def generate_traces(node):
 
 ## BASE CASE SINGLE ACTIVITY ------------------------------------------
 
-    if not isinstance(node.value, Operator):
+    if not isinstance(node.value, Enum):
         activity = node.value
         single_activity_trace = SimpleTrace([Event(activity)], set())
         return [single_activity_trace]
@@ -20,9 +24,7 @@ def generate_traces(node):
         return _generate_multi(node)
 
 ## EXCLUSIVE CHOICE ------------------------------------------
-
     if operator == Operator.Exclusive:
-
         result = []
 
         for child in node.children:
@@ -35,29 +37,7 @@ def generate_traces(node):
 # SEQUENCE ------------------------------------------
 
     if operator == Operator.Sequence:
-
-        result = [
-            PartialOrderTrace(
-                activities=frozenset(),
-                edges=frozenset()
-            )
-        ]
-
-        for child in node.children:
-
-            child_traces = _generate(child)
-
-            new_result = []
-
-            for left in result:
-                for right in child_traces:
-                    new_result.append(
-                        sequence(left, right)
-                    )
-
-            result = new_result
-
-        return result
+        return _generate_sequence(node)
 
 # ARBITRARY ORDER ------------------------------------------
 
@@ -91,3 +71,31 @@ def _generate_multi(node):
     double_activity_trace = SimpleTrace([Event(activity), Event(activity)], set())
     triple_activity_trace = SimpleTrace([Event(activity), Event(activity), Event(activity)], set())
     return [single_activity_trace, double_activity_trace, triple_activity_trace]
+
+def _generate_sequence(node):
+    result = []
+
+    trace_partitions = [] # liste mit listen von traces.
+    for child in node.children:
+        child_traces = generate_traces(child)
+        trace_partitions.append(child_traces)
+
+    for combination in product(*trace_partitions):
+        new_trace = SimpleTrace(set(), set())
+        for trace in combination:
+            for event in trace.events:
+                new_trace.add_event(event)
+            for strict_partial_order in trace.strict_partial_order:
+                new_trace.add_strict_partial_order(strict_partial_order)
+        remaining_events = set(new_trace.events)
+        for trace in combination:
+            old_trace_events = trace.events
+            remaining_events -= old_trace_events
+            for e1, e2 in product(old_trace_events, remaining_events):
+                new_trace.add_strict_partial_order((e1, e2))
+        new_trace.compute_closure()
+        result.append(new_trace)
+    return result
+
+
+
