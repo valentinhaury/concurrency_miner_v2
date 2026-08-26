@@ -15,9 +15,7 @@ from concurrency_miner_components.partitioning.sequence_partitioning import crea
 
 # Flower model - every activity gets its own sub-log
 def create_flower_model_partitions(activities):
-    partitions = []
-    for activity in activities:
-        partitions.append({activity})
+    partitions = [{activity} for activity in activities]
     return partitions
 
 # an activity that is in every trace gets put concurrent to the rest
@@ -35,12 +33,10 @@ def create_activity_once_per_trace_partitions(traces, activities):
     else:
         return [activities]
 
-# for every activity it trys if a split can be found if that activity is put concurrent to the rest.
-#TODO make it run task parallel
+# find an activity, if removed a split is found in the rest.
 def get_concurrent_activity_partitions(event_log, activities):
     log = copy.deepcopy(event_log)
     for activity in activities:
-        print("activity: ", activity)
         activity_set = set()
         activity_set.add(activity)
         set_without_activity = activities - activity_set

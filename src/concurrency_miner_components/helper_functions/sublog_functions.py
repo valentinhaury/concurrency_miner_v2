@@ -83,7 +83,8 @@ def create_sublogs_exclusive(log, partitions):
                     new_trace_overlapping_relations
                 )
             )
-        sublogs.append(sub_log)
+        if sub_log:
+            sublogs.append(sub_log)
     return sublogs
 
 def create_sublogs_sequential(log, partitions):

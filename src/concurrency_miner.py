@@ -39,7 +39,7 @@ def concurrency_miner(
     log_activities = set()              #contains all activities, activities are always represented by their name-string
     log_start_activities = set()        #contains all start activities
     log_end_activities = set()          #contains all end activities
-    log_overlapping_relation = set()   #contains pairs of activities that occur parallel at least once in the log
+    log_overlapping_relation = set()    #contains pairs of activities that occur parallel at least once in the log
     log_directly_follows = set()        #contains pairs of activities where the second follows directly after the first in at least one trace
     log_eventually_follows = set()      #contains the transitive closure of the directly follows relation
     log_minimum_self_distance = set()   #contains pairs of activities where the second one is a witness of the minimum self distance relationship of the first
@@ -67,8 +67,6 @@ def concurrency_miner(
     log_minimum_self_distance |= compute_minimum_self_distance_relations(log_activities, log)
     print(f"[{datetime.now():%H:%M:%S}] Checking for base cases")
 ##### BASE CASES
-    if len(log_activities) < 1:
-        return Node("tau")
 # end recursion and add a single activity node, a self_loop node and/or a multi_instance node
     if len(log_activities) < 2:
         single_activity = (next(iter(log_activities)))
@@ -86,8 +84,10 @@ def concurrency_miner(
             process_tree.add_child(Node("tau"))
             return process_tree
         else:
+            multi_node = Node(Operator.Multi)
+            multi_node.add_child(Node(single_activity))
             process_tree = Node(Operator.Loop)
-            process_tree.add_child(Node(Operator.Multi).add_child(Node(single_activity)))
+            process_tree.add_child(multi_node)
             process_tree.add_child(Node("tau"))
             return process_tree
 
@@ -167,24 +167,21 @@ def concurrency_miner(
 
     print(f"[{datetime.now():%H:%M:%S}] Starting activity_concurrent partitioning")
 #activity concurrent
-    if False:
-        activity_concurrent_partitions = get_concurrent_activity_partitions(log, log_activities)
-        if len(activity_concurrent_partitions) > 1:
-            print("Activity concurrent")
-            process_tree = Node(Operator.Concurrent)
-            for sub_log in create_sublogs_concurrent(log, activity_concurrent_partitions):
-                process_tree.add_child(concurrency_miner(sub_log))
-            return process_tree
+    activity_concurrent_partitions = get_concurrent_activity_partitions(log, log_activities)
+    if len(activity_concurrent_partitions) > 1:
+        print("Activity concurrent")
+        process_tree = Node(Operator.Concurrent)
+        for sub_log in create_sublogs_concurrent(log, activity_concurrent_partitions):
+            process_tree.add_child(concurrency_miner(sub_log))
+        return process_tree
 
     print(f"[{datetime.now():%H:%M:%S}] Starting flower model partitioning")
 # flower model
     flower_model_partitions = create_flower_model_partitions(log_activities)
     process_tree = Node(Operator.Concurrent)
     for sub_log in create_sublogs_concurrent(log, flower_model_partitions):
-        for trace in sub_log:
-            if not trace:
-                print("None")
         process_tree.add_child(concurrency_miner(sub_log))
+
     return process_tree
 
 
