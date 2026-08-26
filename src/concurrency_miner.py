@@ -169,7 +169,6 @@ def concurrency_miner(
 #activity concurrent
     activity_concurrent_partitions = get_concurrent_activity_partitions(log, log_activities)
     if len(activity_concurrent_partitions) > 1:
-        print("Activity concurrent")
         process_tree = Node(Operator.Concurrent)
         for sub_log in create_sublogs_concurrent(log, activity_concurrent_partitions):
             process_tree.add_child(concurrency_miner(sub_log))

@@ -10,18 +10,12 @@ from src.concurrency_miner import concurrency_miner
 #TODO
 # arbitrary order: muss zusätzlich noch gecheckt werden ob jede Partition mit jeder direct connected ist?
 #                   bzw wenn sie keine start und end activity haben ,it arbitrary partition mergen
-# exclusive choice: wenn (a,b) or (b,a) in log_follows oder (a,b) or (b,a) in log_overlapping
-
-#TODO fall throughs
-# IMPORTANT FLOWER MODEL::: put every activity in a partition and create sublogs from that, so that all the traces are still there -> base cases / and loop will do the rest
-# Activity Concurrent fall through schneller machen -> wird schneller durch exclusive choice
 
 #TODO data handling
 #       infrequent : wenn kein cut gefunden wird edges zählen in den graphen -> directly follows, overlappping und ganz seltene entfernen (ganze Traces oder nur edges?)
 #                       -> in wie vielen Traces kommen sie vor, zählen pro event geht nicht
 #       incompleteness : Wenn kein cut gefunden wird edges in dfg und overlapping hinzufügen
 #                       dafür werden wahrscheinlichkeiten für jede mögliche edge berechnet
-
 
 #TODO Tree to traces - parser -> Given a tree returns a Log with all possible Traces
 
