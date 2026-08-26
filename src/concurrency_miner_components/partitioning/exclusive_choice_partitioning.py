@@ -1,31 +1,22 @@
 import copy
 from itertools import combinations
 
-#    def create_exclusive_choice_partitions(event_log):
-#        log = copy.deepcopy(event_log)
-#
-#
-#        partitions = [[trace] for trace in log]
-#
-#        for t1, t2 in combinations(log, 2):
-#            if len(partitions) < 2:
-#                break
-#            if not t1.get_activities().isdisjoint(t2.get_activities()):
-#                p1 = []
-#                p2 = []
-#                for p in partitions:
-#                    if t1 in p:
-#                        p1 = p
-#                    if t2 in p:
-#                        p2 = p
-#                if p1 != p2:
-#                    partitions.remove(p1)
-#                    partitions.remove(p2)
-#                    p1.extend(p2)
-#                    partitions.append(p1)
-#        return partitions
+from concurrency_miner_components.helper_functions.partition_functions import merge_partitions
 
-def create_exclusive_choice_partitions(event_log):
+
+def create_exclusive_choice_partitions(activities, overlapping_relations, eventually_follows_relations):
+    # create partitions as sets with one activity each
+    partitions = [{activity} for activity in activities]
+    for a, b in combinations(activities, 2):
+        # merge partitions if activities are overlapping in log
+        if (a, b) in overlapping_relations or (b, a) in overlapping_relations:
+            merge_partitions(a, b, partitions)
+        # merge partitions if activities are reachable in log
+        if (a, b) in eventually_follows_relations or (b, a) in eventually_follows_relations:
+            merge_partitions(a, b, partitions)
+    return partitions
+
+def _create_exclusive_choice_partitions(event_log):
     log = copy.deepcopy(event_log)
 
     # create partitions as lists with one trace each

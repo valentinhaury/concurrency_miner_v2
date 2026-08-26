@@ -7,8 +7,9 @@ from src.data_structures.trace import Trace
 from src.data_structures.process_tree_operator import Operator
 from src.data_structures.process_tree import Node
 
-from src.concurrency_miner_components.helper_functions.sublog_functions import create_sublogs_loop, create_sublogs_sequential, \
-    create_sublogs_concurrent
+from src.concurrency_miner_components.helper_functions.sublog_functions import create_sublogs_loop, \
+    create_sublogs_sequential, \
+    create_sublogs_concurrent, create_sublogs_exclusive
 from concurrency_miner_components.helper_functions.compute_minimum_self_distance_relation import \
     compute_minimum_self_distance_relations
 
@@ -94,11 +95,11 @@ def concurrency_miner(
     print(f"[{datetime.now():%H:%M:%S}] Starting Exclusive Choice partitioning")
 ##### OPERATORS Exclusive, Sequence, Arbitrary Order, Interleaving, Concurrent, Parallel, Loop
 # split the log with an exclusive choice operator
-    exclusive_choice_partitions = create_exclusive_choice_partitions(log)
+    exclusive_choice_partitions = create_exclusive_choice_partitions(log_activities, log_overlapping_relation, log_eventually_follows)
     if len(exclusive_choice_partitions) > 1:
         process_tree = Node(Operator.Exclusive)
-        for partition in exclusive_choice_partitions:
-            process_tree.add_child(concurrency_miner(partition))
+        for sub_log in create_sublogs_exclusive(log, exclusive_choice_partitions):
+            process_tree.add_child(concurrency_miner(sub_log))
         return process_tree
 
     print(f"[{datetime.now():%H:%M:%S}] Starting Sequence partitioning")

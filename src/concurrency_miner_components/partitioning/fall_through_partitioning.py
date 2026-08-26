@@ -40,6 +40,7 @@ def create_activity_once_per_trace_partitions(traces, activities):
 def get_concurrent_activity_partitions(event_log, activities):
     log = copy.deepcopy(event_log)
     for activity in activities:
+        print("activity: ", activity)
         activity_set = set()
         activity_set.add(activity)
         set_without_activity = activities - activity_set
@@ -73,7 +74,7 @@ def _split_found(log):
 
     log_minimum_self_distance |= compute_minimum_self_distance_relations(log_activities, log)
 
-    exclusive_choice_partitions = create_exclusive_choice_partitions(log)
+    exclusive_choice_partitions = create_exclusive_choice_partitions(log_activities, log_overlapping_relation, log_eventually_follows)
     if len(exclusive_choice_partitions) > 1:
         return True
     sequence_partitions = create_sequence_partitions(log_activities, log_overlapping_relation, log_eventually_follows)

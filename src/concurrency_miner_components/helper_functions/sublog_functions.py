@@ -43,6 +43,49 @@ def create_sublogs_concurrent(log, partitions):
 
     return sublogs
 
+def create_sublogs_exclusive(log, partitions):
+    sublogs = []
+    for partition in partitions:
+        sub_log = []
+        for old_trace in log:
+
+            # new events are old events that are present in the partition
+            new_trace_events = {event for event in old_trace.events if event.get_label() in partition}
+
+            if not new_trace_events:
+                continue
+            # new transitive reduced strict partial order is old transitive reduced strict partial order
+            new_trace_transitive_reduced_strict_partial_order = {
+                relation
+                for relation in old_trace.get_transitive_reduced_strict_partial_order()
+                if set(relation).issubset(new_trace_events)
+            }
+
+            # new strict partial order is old strict partial order
+            new_trace_strict_partial_order = {
+                relation
+                for relation in old_trace.get_strict_partial_order()
+                if set(relation).issubset(new_trace_events)
+            }
+
+            # new overlapping relation is old overlapping relation
+            new_trace_overlapping_relations = {
+                relation
+                for relation in old_trace.overlapping_relations
+                if set(relation).issubset(new_trace_events)
+            }
+
+            sub_log.append(
+                Trace(
+                    new_trace_events,
+                    new_trace_transitive_reduced_strict_partial_order,
+                    new_trace_strict_partial_order,
+                    new_trace_overlapping_relations
+                )
+            )
+        sublogs.append(sub_log)
+    return sublogs
+
 def create_sublogs_sequential(log, partitions):
     sublogs = []
     for partition in partitions:
