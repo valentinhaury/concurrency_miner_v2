@@ -81,9 +81,6 @@ def _split_found(event_log):
     sequence_partitions = create_sequence_partitions(log_activities, log_overlapping_relation, log_eventually_follows)
     if len(sequence_partitions) > 1:
         return True
-    arbitrary_order_partitions = create_arbitrary_order_partitions(log, log_activities, log_start_activities, log_end_activities, log_overlapping_relation, log_eventually_follows, log_directly_follows)
-    if len(arbitrary_order_partitions) > 1:
-        return True
     interleaving_partitions = create_interleaving_partitions(log_activities, log_start_activities, log_end_activities, log_overlapping_relation, log_directly_follows, log_minimum_self_distance)
     if len(interleaving_partitions) > 1:
         return True
@@ -95,6 +92,11 @@ def _split_found(event_log):
         return True
     loop_partitions = create_loop_partitions(log_activities, log_start_activities, log_end_activities, log_overlapping_relation, log_directly_follows)
     if len(loop_partitions) > 1:
+        return True
+    arbitrary_order_partitions = create_arbitrary_order_partitions(log, log_activities, log_start_activities,
+                                                                   log_end_activities, log_overlapping_relation,
+                                                                   log_eventually_follows, log_directly_follows)
+    if len(arbitrary_order_partitions) > 1:
         return True
     return False
 

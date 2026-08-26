@@ -110,14 +110,6 @@ def concurrency_miner(
         for sub_log in create_sublogs_sequential(log, sequence_partitions):
             process_tree.add_child(concurrency_miner(sub_log))
         return process_tree
-    print(f"[{datetime.now():%H:%M:%S}] Starting Arbitrary Order partitioning")
-# split the log with an arbitrary order operator
-    arbitrary_order_partitions = create_arbitrary_order_partitions(log, log_activities, log_start_activities, log_end_activities, log_overlapping_relation, log_follows, log_directly_follows)
-    if len(arbitrary_order_partitions) > 1:
-        process_tree = Node(Operator.Arbitrary)
-        for sub_log in create_sublogs_sequential(log, arbitrary_order_partitions):
-            process_tree.add_child(concurrency_miner(sub_log))
-        return process_tree
 
     print(f"[{datetime.now():%H:%M:%S}] Starting Interleaving partitioning")
 # split the log with an interleaving operator
@@ -152,6 +144,17 @@ def concurrency_miner(
     if len(loop_partitions) > 1:
         process_tree = Node(Operator.Loop)
         for sub_log in create_sublogs_loop(log, loop_partitions):
+            process_tree.add_child(concurrency_miner(sub_log))
+        return process_tree
+
+    print(f"[{datetime.now():%H:%M:%S}] Starting Arbitrary Order partitioning")
+# split the log with an arbitrary order operator
+    arbitrary_order_partitions = create_arbitrary_order_partitions(log, log_activities, log_start_activities,
+                                                                   log_end_activities, log_overlapping_relation,
+                                                                   log_follows, log_directly_follows)
+    if len(arbitrary_order_partitions) > 1:
+        process_tree = Node(Operator.Arbitrary)
+        for sub_log in create_sublogs_sequential(log, arbitrary_order_partitions):
             process_tree.add_child(concurrency_miner(sub_log))
         return process_tree
 
