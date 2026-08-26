@@ -12,6 +12,9 @@ from concurrency_miner_components.partitioning.interleaving_partitioning import 
 from concurrency_miner_components.partitioning.loop_partitioning import create_loop_partitions
 from concurrency_miner_components.partitioning.parallel_partitioning import create_parallel_partitions
 from concurrency_miner_components.partitioning.sequence_partitioning import create_sequence_partitions
+from data_structures.event import Event
+from data_structures.trace import Trace
+
 
 # Flower model - every activity gets its own sub-log
 def create_flower_model_partitions(activities):
@@ -33,7 +36,7 @@ def create_activity_once_per_trace_partitions(traces, activities):
     else:
         return [activities]
 
-# find an activity, if removed a split is found in the rest.
+# find an activity so that without it, a split is found in the rest.
 def get_concurrent_activity_partitions(event_log, activities):
     log = copy.deepcopy(event_log)
     for activity in activities:
@@ -45,7 +48,9 @@ def get_concurrent_activity_partitions(event_log, activities):
             return [activity_set, set_without_activity]
     return []
 
-def _split_found(log):
+def _split_found(event_log):
+    log = [Trace({Event("tau")}, set(), set(), set()) if len(old_trace.get_events()) == 0 else old_trace for old_trace in event_log]
+
     # initiate log parameters
     log_activities = set()  # contains all activities, activities are always represented by their name-string
     log_start_activities = set()  # contains all start activities

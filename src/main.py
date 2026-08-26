@@ -6,6 +6,12 @@ from src.concurrency_miner import concurrency_miner
 
 #TODO Add good test cases (bigger constructs with all operators mixed)
 # correct and incorrect test cases
+# #1 generate a random process tree and generate traces from that tree randomly -> use as input
+# #2 add noise to traces: select a specific number i.e. 10% of traces randomly and change them by adding an activity, changing an activity name or change the order of two activities
+# #3 generate a large event log with
+#       1. average trace length
+#       2. number of traces
+#       3. number of activities
 
 #TODO
 # arbitrary order: muss zusätzlich noch gecheckt werden ob jede Partition mit jeder direct connected ist?
