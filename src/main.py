@@ -1,5 +1,6 @@
 from pygments.lexers import asn1
 
+from process_tree_generator.process_tree_generator import generate_process_tree
 from src.log_creation.create_event_log_from_xes import create_event_log_from_data_input_xes
 
 from src.concurrency_miner import concurrency_miner
@@ -25,11 +26,32 @@ from src.concurrency_miner import concurrency_miner
 
 #TODO Tree to traces - parser -> Given a tree returns a Log with all possible Traces
 
+activities = {
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J"
+}
 
-test_log = create_event_log_from_data_input_xes()
+tree = generate_process_tree(activities)
 
-print("-----------------------------------------------------------------------------------------------------------")
-tree = concurrency_miner(test_log)
-print(str(tree))
-print("-----------------------------------------------------------------------------------------------------------")
+print(tree)
+print()
+
 tree.print_tree()
+
+
+if False:
+    test_log = create_event_log_from_data_input_xes()
+
+    print("-----------------------------------------------------------------------------------------------------------")
+    tree = concurrency_miner(test_log)
+    print(str(tree))
+    print("-----------------------------------------------------------------------------------------------------------")
+    tree.print_tree()
