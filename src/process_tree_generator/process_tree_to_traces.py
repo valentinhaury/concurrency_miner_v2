@@ -37,12 +37,24 @@ def generate_traces(node):
 # SEQUENCE ------------------------------------------
 
     if operator == Operator.Sequence:
-        return _generate_sequence(node)
+        trace_partitions = []  # liste of list of traces.
+        for child in node.children:
+            child_traces = generate_traces(child)
+            trace_partitions.append(child_traces)
+        return _generate_sequence(trace_partitions)
 
 # ARBITRARY ORDER ------------------------------------------
 
     if operator == Operator.Arbitrary:
-        return _generate_arbitrary(node)
+        trace_partitions = []  # list of trace-partitions
+        for child in node.children:
+            child_traces = generate_traces(child)
+            trace_partitions.append(child_traces)
+        permutated_traces = [list(p) for p in permutations(trace_partitions)] # list of permutated lists of trace-partitions
+        resulting_traces = []
+        for trace_list in permutated_traces:
+            resulting_traces.extend(_generate_sequence(trace_list))
+        return resulting_traces
 
 # INTERLEAVING ------------------------------------------
 
@@ -60,7 +72,7 @@ def generate_traces(node):
             return _generate_parallel(node)
 
 # LOOP ------------------------------------------
-
+    # if partitions {a},{b},{c} return [a] [a b a] [a c a] [a b a b a] [a b a c a] [a c a b a] [a c a c a]
     if operator == Operator.Loop:
         return _generate_loop(node)
 
@@ -72,13 +84,8 @@ def _generate_multi(node):
     triple_activity_trace = SimpleTrace([Event(activity), Event(activity), Event(activity)], set())
     return [single_activity_trace, double_activity_trace, triple_activity_trace]
 
-def _generate_sequence(node):
+def _generate_sequence(trace_partitions):
     result = []
-
-    trace_partitions = [] # liste mit listen von traces.
-    for child in node.children:
-        child_traces = generate_traces(child)
-        trace_partitions.append(child_traces)
 
     for combination in product(*trace_partitions):
         new_trace = SimpleTrace(set(), set())

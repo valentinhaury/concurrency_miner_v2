@@ -50,8 +50,8 @@ if False:
 
     tree.print_tree()
 
-process_tree = Node(Operator.Sequence)
-child_node = Node(Operator.Exclusive)
+process_tree = Node(Operator.Arbitrary)
+child_node = Node(Operator.Sequence)
 child_node.add_child(Node("a"))
 child_node.add_child(Node("b"))
 process_tree.add_child(child_node)
