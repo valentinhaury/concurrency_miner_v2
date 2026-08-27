@@ -108,10 +108,9 @@ def generate_traces(node):
             result.extend(_generate_sequence(triple_loop))
         return result
 
-
 def _generate_multi(node):
     children = node.children
-    activity = children[0]
+    activity = children[0].value
     single_activity_trace = SimpleTrace([Event(activity)], set())
     double_activity_trace = SimpleTrace([Event(activity), Event(activity)], set())
     triple_activity_trace = SimpleTrace([Event(activity), Event(activity), Event(activity)], set())

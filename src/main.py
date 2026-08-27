@@ -2,8 +2,10 @@ from pygments.lexers import asn1
 
 from data_structures.process_tree import Node
 from data_structures.process_tree_operator import Operator
+from process_tree_generator.generate_special_trees import generate_tree_1
 from process_tree_generator.process_tree_generator import generate_process_tree
 from process_tree_generator.process_tree_to_traces import generate_traces
+from process_tree_generator.simple_trace_to_trace import get_trace_from_simple_trace
 from src.log_creation.create_event_log_from_xes import create_event_log_from_data_input_xes
 
 from src.concurrency_miner import concurrency_miner
@@ -27,7 +29,6 @@ from src.concurrency_miner import concurrency_miner
 #       incompleteness : Wenn kein cut gefunden wird edges in dfg und overlapping hinzufügen
 #                       dafür werden wahrscheinlichkeiten für jede mögliche edge berechnet
 
-#TODO Tree to traces - parser -> Given a tree returns a Log with all possible Traces
 
 if False:
     activities = {
@@ -35,36 +36,32 @@ if False:
         "B",
         "C",
         "D",
-        "E",
-        "F",
-        "G",
-        "H",
-        "I",
-        "J"
     }
-
+# Generate a random tree with the activities
     tree = generate_process_tree(activities)
 
-    print(tree)
-    print()
+#TODO IMPORTANT Bei Exclusive wird manchmal statt x(c,b) x(c, tau) und x(b, tau) gemacht -> siehe generate_tree_1
+#               Irgendwann wurden Arbitrary und Concurrent vertauscht
 
-    tree.print_tree()
-
-process_tree = Node(Operator.Loop)
-child_node = Node(Operator.Exclusive)
-child_node.add_child(Node("a"))
-child_node.add_child(Node("b"))
-process_tree.add_child(Node("c"))
-process_tree.add_child(child_node)
+tree = generate_tree_1()
 
 
+print(tree)
+tree.print_tree()
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-print(str(process_tree))
-
-for trace in generate_traces(process_tree):
+event_log = []
+for simple_trace in generate_traces(tree):
+    trace = get_trace_from_simple_trace(simple_trace)
+    event_log.append(trace)
     print(trace)
 
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+new_tree = concurrency_miner(event_log)
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
+print(str(new_tree))
+new_tree.print_tree()
 
 
 
