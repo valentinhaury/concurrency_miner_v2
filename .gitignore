@@ -1,5 +1,4 @@
 .venv/
-cortado-core/
 __pycache__/
 *.egg-info/
 src/data
