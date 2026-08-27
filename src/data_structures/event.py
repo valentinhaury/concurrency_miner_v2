@@ -6,7 +6,7 @@ class Event:
         self.id = uuid.uuid4()
 
     def __repr__(self):
-        return f"_{self.label}"
+        return f"{self.label}"
         return f"<Event \"{self.label}\" with id {self.id}>"
 
     def __str__(self):

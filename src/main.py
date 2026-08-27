@@ -50,18 +50,23 @@ if False:
 
     tree.print_tree()
 
-process_tree = Node(Operator.Arbitrary)
-child_node = Node(Operator.Sequence)
+process_tree = Node(Operator.Loop)
+child_node = Node(Operator.Exclusive)
 child_node.add_child(Node("a"))
 child_node.add_child(Node("b"))
-process_tree.add_child(child_node)
 process_tree.add_child(Node("c"))
+process_tree.add_child(child_node)
+
 
 
 print(str(process_tree))
 
 for trace in generate_traces(process_tree):
     print(trace)
+
+
+
+
 
 
 if False:
