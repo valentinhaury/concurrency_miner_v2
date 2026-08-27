@@ -1,8 +1,8 @@
-from pygments.lexers import asn1
+
 
 from data_structures.process_tree import Node
 from data_structures.process_tree_operator import Operator
-from process_tree_generator.generate_special_trees import generate_tree_1
+from process_tree_generator.generate_special_trees import generate_tree_1, generate_tree_2
 from process_tree_generator.process_tree_generator import generate_process_tree
 from process_tree_generator.process_tree_to_traces import generate_traces
 from process_tree_generator.simple_trace_to_trace import get_trace_from_simple_trace
@@ -41,9 +41,11 @@ if False:
     tree = generate_process_tree(activities)
 
 #TODO IMPORTANT Bei Exclusive wird manchmal statt x(c,b) x(c, tau) und x(b, tau) gemacht -> siehe generate_tree_1
-#               Irgendwann wurden Arbitrary und Concurrent vertauscht
+#               Irgendwann wurden Arbitrary und Concurrent vertauscht -> Arbitrary mit interleaving vertauscht in generate_tree_2
+#               , aber das ist schon richtig so -> Problem mit Language Uniqueness? -> funktioniert es wenn das arbitrary zuerst kommt?
 
-tree = generate_tree_1()
+
+tree = generate_tree_2()
 
 
 print(tree)
@@ -52,9 +54,11 @@ print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 event_log = []
 for simple_trace in generate_traces(tree):
+    print("simple: " + str(simple_trace))
     trace = get_trace_from_simple_trace(simple_trace)
     event_log.append(trace)
-    print(trace)
+    print(trace.get_strict_partial_order())
+    print("ovl" + str(trace.get_overlapping_events()))
 
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 new_tree = concurrency_miner(event_log)

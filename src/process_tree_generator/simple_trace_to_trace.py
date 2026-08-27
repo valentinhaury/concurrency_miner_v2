@@ -14,7 +14,7 @@ def get_trace_from_simple_trace(simple_trace):
 
     overlapping_relation = set()
     for e1, e2 in permutations(events, 2):
-        if (e1, e2) not in transitive_reduced_strict_partial_order and (e2, e1) not in transitive_reduced_strict_partial_order:
+        if (e1, e2) not in strict_partial_order and (e2, e1) not in strict_partial_order:
             overlapping_relation.add((e1, e2))
             overlapping_relation.add((e2, e1))
 
