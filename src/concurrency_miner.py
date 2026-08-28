@@ -131,11 +131,13 @@ def concurrency_miner(
 
     print(f"[{datetime.now():%H:%M:%S}] Starting Parallel partitioning")
 # split the log with a parallel operator
-    parallel_partitions = create_parallel_partitions(log_activities, log_eventually_follows)
+    parallel_partitions = create_parallel_partitions(log_activities, log_overlapping_relation, log_eventually_follows)
     if len(parallel_partitions) > 1:
         process_tree = Node(Operator.Parallel)
         for sub_log in create_sublogs_concurrent(log, parallel_partitions):
             process_tree.add_child(concurrency_miner(sub_log))
+            for trace in sub_log:
+                print("t." + str(trace))
         return process_tree
 
     print(f"[{datetime.now():%H:%M:%S}] Starting Loop partitioning")
