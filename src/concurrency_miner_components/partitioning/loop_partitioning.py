@@ -53,15 +53,15 @@ def create_loop_partitions(activities, start_activities, end_activities, overlap
         reached_by_end_count = 0
 
         # count how many start activities are reached from partition
-        for b in partition:
-            for a_start in start_activities:
+        for a_start in start_activities:
+            for b in partition:
                 if (b, a_start) in directly_follows_relations:
                     reaches_start_count += 1
                     break # important break to not count start activities double
 
         # count from how many end activities partition is reached
-        for b in partition:
-            for a_end in end_activities:
+        for a_end in end_activities:
+            for b in partition:
                 if (a_end, b) in directly_follows_relations:
                     reached_by_end_count += 1
                     break # important break to not count end activities double
@@ -73,5 +73,8 @@ def create_loop_partitions(activities, start_activities, end_activities, overlap
 
     for activity in activities_to_merge:
         _merge_loop_partitions(next(iter(partitions[0])), activity, partitions)
+
+    _print_partitions("not all end/not all start", partitions)
+
     return partitions
 

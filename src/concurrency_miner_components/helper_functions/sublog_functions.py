@@ -67,7 +67,7 @@ def create_sublogs_loop(log, loop_partitions):
     for partition in loop_partitions:
 
         sub_log = _create_partition_loop_sub_log(log, partition, partition_1_activities)
-        if sub_log or (partition & partition_1_activities):
+        if sub_log:
             sublogs.append(sub_log)
 
     return sublogs

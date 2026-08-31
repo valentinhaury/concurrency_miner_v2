@@ -30,11 +30,6 @@ from src.concurrency_miner import concurrency_miner
 #       incompleteness : Wenn kein cut gefunden wird edges in dfg und overlapping hinzufügen
 #                       dafür werden wahrscheinlichkeiten für jede mögliche edge berechnet
 
-#TODO
-# nicht gefunden loop(e, sequence(multi(a), loop(c, d, b)))
-
-
-
 activities = {
     "A",
     "B",
@@ -50,7 +45,7 @@ activities = {
 #               , aber das ist schon richtig so -> Problem mit Language Uniqueness? -> funktioniert es wenn das arbitrary zuerst kommt?
 
 
-tree = generate_tree_4()
+tree = generate_tree_2()
 
 
 print(tree)
@@ -64,7 +59,7 @@ for simple_trace in generate_traces(tree):
     event_log.append(trace)
     #print(trace.get_strict_partial_order())
     print(trace.get_transitive_reduced_strict_partial_order())
-    print("ovl" + str(trace.get_overlapping_events()))
+    #print("ovl" + str(trace.get_overlapping_events()))
 
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 new_tree = concurrency_miner(event_log)
