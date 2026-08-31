@@ -153,7 +153,7 @@ def concurrency_miner(
 # split the log with an arbitrary order operator
     arbitrary_order_partitions = create_arbitrary_order_partitions(log, log_activities, log_start_activities,
                                                                    log_end_activities, log_overlapping_relation,
-                                                                   log_follows, log_directly_follows)
+                                                                   log_follows, log_directly_follows, log_minimum_self_distance)
     if len(arbitrary_order_partitions) > 1:
         process_tree = Node(Operator.Arbitrary)
         for sub_log in create_sublogs_sequential(log, arbitrary_order_partitions):

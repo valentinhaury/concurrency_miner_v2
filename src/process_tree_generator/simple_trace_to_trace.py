@@ -9,7 +9,7 @@ def get_trace_from_simple_trace(simple_trace):
 
     transitive_reduced_strict_partial_order = set(strict_partial_order)
     for e1, e2, e3 in permutations(events, 3):
-        if (e1, e2) in transitive_reduced_strict_partial_order and (e2, e3) in transitive_reduced_strict_partial_order and (e1, e3) in transitive_reduced_strict_partial_order:
+        if (e1, e2) in strict_partial_order and (e2, e3) in strict_partial_order and (e1, e3) in transitive_reduced_strict_partial_order:
             transitive_reduced_strict_partial_order.remove((e1, e3))
 
     overlapping_relation = set()
