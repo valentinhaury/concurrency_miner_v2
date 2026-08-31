@@ -47,35 +47,27 @@ activities = {
 
 tree = generate_tree_2()
 
-
 print(tree)
 tree.print_tree()
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-event_log = []
+log_from_tree = []
 for simple_trace in generate_traces(tree):
     #print("simple: " + str(simple_trace))
     trace = get_trace_from_simple_trace(simple_trace)
-    event_log.append(trace)
+    log_from_tree.append(trace)
     #print(trace.get_strict_partial_order())
     print(trace.get_transitive_reduced_strict_partial_order())
     #print("ovl" + str(trace.get_overlapping_events()))
 
+
+log_from_xes = create_event_log_from_data_input_xes()
+
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-new_tree = concurrency_miner(event_log)
+new_tree = concurrency_miner(log_from_tree)
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
 print(str(new_tree))
 new_tree.print_tree()
 
 
-
-
-if False:
-    test_log = create_event_log_from_data_input_xes()
-
-    print("-----------------------------------------------------------------------------------------------------------")
-    tree = concurrency_miner(test_log)
-    print(str(tree))
-    print("-----------------------------------------------------------------------------------------------------------")
-    tree.print_tree()
