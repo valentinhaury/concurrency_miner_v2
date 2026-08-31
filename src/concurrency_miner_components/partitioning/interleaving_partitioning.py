@@ -17,7 +17,7 @@ def create_interleaving_partitions(activities, start_activities, end_activities,
         if (a, b) in overlapping_relations or (b, a) in overlapping_relations:
             merge_partitions(a, b, partitions)
         # merge partitions if activities are not-fully pairwise connected in log
-        if (not (a, b) in directly_follows_relations) or (not (b, a) in directly_follows_relations):
+        if (a, b) not in directly_follows_relations or (b, a) not in directly_follows_relations:
             merge_partitions(a, b, partitions)
         # merge partitions if activities are in minimum self distance relation in log
         if (a, b) in minimum_self_distance_relations or (b, a) in minimum_self_distance_relations:

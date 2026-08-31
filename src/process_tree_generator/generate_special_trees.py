@@ -54,7 +54,7 @@ def generate_tree_3():
     return tree
 
 def generate_tree_4():
-    tree = Node(Operator.Sequence)
+    tree = Node(Operator.Arbitrary)
     child1 = Node("A")
     child2 = Node("B")
     child3 = Node(Operator.Loop)

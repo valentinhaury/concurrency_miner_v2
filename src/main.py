@@ -50,7 +50,7 @@ activities = {
 #               , aber das ist schon richtig so -> Problem mit Language Uniqueness? -> funktioniert es wenn das arbitrary zuerst kommt?
 
 
-tree = generate_tree_3()
+tree = generate_tree_4()
 
 
 print(tree)
