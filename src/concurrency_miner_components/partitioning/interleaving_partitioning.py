@@ -1,11 +1,7 @@
 from itertools import combinations
 
 from src.concurrency_miner_components.helper_functions.partition_functions import merge_partitions
-from src.concurrency_miner_components.helper_functions.sublog_functions import create_sublogs_concurrent
 
-
-def get_interleaving_sublogs(log, interleaving_partitions):
-    return create_sublogs_concurrent(log, interleaving_partitions)
 
 def create_interleaving_partitions(activities, start_activities, end_activities, overlapping_relations, directly_follows_relations, minimum_self_distance_relations):
 

@@ -8,7 +8,7 @@ from src.data_structures.process_tree_operator import Operator
 from src.data_structures.process_tree import Node
 
 from src.concurrency_miner_components.helper_functions.sublog_functions import create_sublogs_loop, \
-    create_sublogs_sequential, create_sublogs_concurrent, create_sublogs_exclusive
+    create_sublogs_general, create_sublogs_exclusive
 from src.concurrency_miner_components.helper_functions.compute_minimum_self_distance_relation import \
     compute_minimum_self_distance_relations
 
@@ -107,7 +107,7 @@ def concurrency_miner(
     sequence_partitions = create_sequence_partitions(log_activities, log_overlapping_relation, log_eventually_follows)
     if len(sequence_partitions) > 1:
         process_tree = Node(Operator.Sequence)
-        for sub_log in create_sublogs_concurrent(log, sequence_partitions): #create_sublogs_sequential(log, sequence_partitions):
+        for sub_log in create_sublogs_general(log, sequence_partitions): #create_sublogs_sequential(log, sequence_partitions):
             process_tree.add_child(concurrency_miner(sub_log))
         return process_tree
 
@@ -116,7 +116,7 @@ def concurrency_miner(
     interleaving_partitions = create_interleaving_partitions(log_activities, log_start_activities, log_end_activities, log_overlapping_relation, log_directly_follows, log_minimum_self_distance)
     if len(interleaving_partitions) > 1:
         process_tree = Node(Operator.Interleaving)
-        for sub_log in create_sublogs_concurrent(log, interleaving_partitions):
+        for sub_log in create_sublogs_general(log, interleaving_partitions):
             process_tree.add_child(concurrency_miner(sub_log))
         return process_tree
 
@@ -125,7 +125,7 @@ def concurrency_miner(
     concurrent_partitions = create_concurrent_partitions(log_activities, log_start_activities, log_end_activities, log_overlapping_relation, log_directly_follows, log_minimum_self_distance)
     if len(concurrent_partitions) > 1:
         process_tree = Node(Operator.Concurrent)
-        for sub_log in create_sublogs_concurrent(log, concurrent_partitions):
+        for sub_log in create_sublogs_general(log, concurrent_partitions):
             process_tree.add_child(concurrency_miner(sub_log))
         return process_tree
 
@@ -134,7 +134,7 @@ def concurrency_miner(
     parallel_partitions = create_parallel_partitions(log_activities, log_overlapping_relation, log_eventually_follows)
     if len(parallel_partitions) > 1:
         process_tree = Node(Operator.Parallel)
-        for sub_log in create_sublogs_concurrent(log, parallel_partitions):
+        for sub_log in create_sublogs_general(log, parallel_partitions):
             process_tree.add_child(concurrency_miner(sub_log))
             for trace in sub_log:
                 print("t." + str(trace))
@@ -156,7 +156,7 @@ def concurrency_miner(
                                                                    log_follows, log_directly_follows, log_minimum_self_distance)
     if len(arbitrary_order_partitions) > 1:
         process_tree = Node(Operator.Arbitrary)
-        for sub_log in create_sublogs_sequential(log, arbitrary_order_partitions):
+        for sub_log in create_sublogs_general(log, arbitrary_order_partitions):
             process_tree.add_child(concurrency_miner(sub_log))
         return process_tree
 
@@ -166,7 +166,7 @@ def concurrency_miner(
     activities_once_per_trace_partitions = create_activity_once_per_trace_partitions(log, log_activities)
     if len(activities_once_per_trace_partitions) >  1:
         process_tree = Node(Operator.Concurrent)
-        for sub_log in create_sublogs_concurrent(log, activities_once_per_trace_partitions):
+        for sub_log in create_sublogs_general(log, activities_once_per_trace_partitions):
             process_tree.add_child(concurrency_miner(sub_log))
         return process_tree
 
@@ -175,7 +175,7 @@ def concurrency_miner(
     activity_concurrent_partitions = get_concurrent_activity_partitions(log, log_activities)
     if len(activity_concurrent_partitions) > 1:
         process_tree = Node(Operator.Concurrent)
-        for sub_log in create_sublogs_concurrent(log, activity_concurrent_partitions):
+        for sub_log in create_sublogs_general(log, activity_concurrent_partitions):
             process_tree.add_child(concurrency_miner(sub_log))
         return process_tree
 
@@ -183,7 +183,7 @@ def concurrency_miner(
 # flower model
     flower_model_partitions = create_flower_model_partitions(log_activities)
     process_tree = Node(Operator.Concurrent)
-    for sub_log in create_sublogs_concurrent(log, flower_model_partitions):
+    for sub_log in create_sublogs_general(log, flower_model_partitions):
         process_tree.add_child(concurrency_miner(sub_log))
 
     return process_tree

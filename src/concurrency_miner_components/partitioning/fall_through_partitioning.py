@@ -4,7 +4,7 @@ from itertools import permutations
 
 from concurrency_miner_components.helper_functions.compute_minimum_self_distance_relation import \
     compute_minimum_self_distance_relations
-from concurrency_miner_components.helper_functions.sublog_functions import create_sublogs_concurrent
+from concurrency_miner_components.helper_functions.sublog_functions import create_sublogs_general
 from concurrency_miner_components.partitioning.concurrent_partitioning import create_concurrent_partitions
 from concurrency_miner_components.partitioning.arbitrary_order_partitioning import create_arbitrary_order_partitions
 from concurrency_miner_components.partitioning.exclusive_choice_partitioning import create_exclusive_choice_partitions
@@ -43,7 +43,7 @@ def get_concurrent_activity_partitions(event_log, activities):
         activity_set = set()
         activity_set.add(activity)
         set_without_activity = activities - activity_set
-        sublogs = create_sublogs_concurrent(log, [activity_set, set_without_activity])
+        sublogs = create_sublogs_general(log, [activity_set, set_without_activity])
         if _split_found(sublogs[1]):
             return [activity_set, set_without_activity]
     return []

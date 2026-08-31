@@ -1,11 +1,6 @@
 from itertools import combinations, permutations, product
 
 from src.concurrency_miner_components.helper_functions.partition_functions import merge_partitions
-from src.concurrency_miner_components.helper_functions.sublog_functions import create_sublogs_sequential
-
-
-def get_arbitrary_order_sublogs(log, arbitrary_order_partitions):
-    return create_sublogs_sequential(log, arbitrary_order_partitions)
 
 def create_arbitrary_order_partitions(traces, activities, start_activities, end_activities, overlapping_relations, eventually_follows_relations, directly_follows_relations, minimum_self_distance_relations):
     # create partitions as sets with one activity each
