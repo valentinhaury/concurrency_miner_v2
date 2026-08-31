@@ -87,7 +87,7 @@ def _split_found(event_log):
     concurrent_partitions = create_concurrent_partitions(log_activities, log_start_activities, log_end_activities, log_overlapping_relation, log_directly_follows, log_minimum_self_distance)
     if len(concurrent_partitions) > 1:
         return True
-    parallel_partitions = create_parallel_partitions(log_activities, log_eventually_follows)
+    parallel_partitions = create_parallel_partitions(log_activities, log_overlapping_relation, log_eventually_follows)
     if len(parallel_partitions) > 1:
         return True
     loop_partitions = create_loop_partitions(log_activities, log_start_activities, log_end_activities, log_overlapping_relation, log_directly_follows)
@@ -95,7 +95,7 @@ def _split_found(event_log):
         return True
     arbitrary_order_partitions = create_arbitrary_order_partitions(log, log_activities, log_start_activities,
                                                                    log_end_activities, log_overlapping_relation,
-                                                                   log_eventually_follows, log_directly_follows)
+                                                                   log_eventually_follows, log_directly_follows, log_minimum_self_distance)
     if len(arbitrary_order_partitions) > 1:
         return True
     return False

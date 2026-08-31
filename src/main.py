@@ -23,6 +23,7 @@ from src.concurrency_miner import concurrency_miner
 #TODO
 # arbitrary order: muss zusätzlich noch gecheckt werden ob jede Partition mit jeder direct connected ist?
 #                   bzw wenn sie keine start und end activity haben mit arbitrary partition mergen
+#                   language uniqueness between interleaving and arbitrary
 
 #TODO data handling
 #       infrequent : wenn kein cut gefunden wird edges zählen in den graphen -> directly follows, overlappping und ganz seltene entfernen (ganze Traces oder nur edges?)
@@ -36,32 +37,25 @@ activities = {
     "C",
     "D",
     "E",
+    "F",
+    "G",
+    "H",
 }
-# Generate a random tree with the activities
-#tree = generate_process_tree(activities)
+# Generate a random tree with given activities
+tree = generate_process_tree(activities)
 
-#TODO IMPORTANT Irgendwann wurden Arbitrary und Concurrent vertauscht?? sicher?
-#               -> Arbitrary mit interleaving vertauscht in generate_tree_2
-#               , aber das ist schon richtig so -> Problem mit Language Uniqueness? -> funktioniert es wenn das arbitrary zuerst kommt?
-
-
-tree = generate_tree_2()
+# Generate specified tree
+#tree = generate_tree_2()
 
 print(tree)
 tree.print_tree()
-print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
 log_from_tree = []
 for simple_trace in generate_traces(tree):
-    #print("simple: " + str(simple_trace))
     trace = get_trace_from_simple_trace(simple_trace)
     log_from_tree.append(trace)
-    #print(trace.get_strict_partial_order())
-    print(trace.get_transitive_reduced_strict_partial_order())
-    #print("ovl" + str(trace.get_overlapping_events()))
 
-
-log_from_xes = create_event_log_from_data_input_xes()
+#log_from_xes = create_event_log_from_data_input_xes()
 
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 new_tree = concurrency_miner(log_from_tree)

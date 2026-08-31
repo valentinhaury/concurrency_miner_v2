@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3ce310f-a6cb-4654-8df9-4da22971cc3a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/concurrency_miner_components/helper_functions/sublog_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/concurrency_miner_components/helper_functions/sublog_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/concurrency_miner_components/partitioning/fall_through_partitioning.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/concurrency_miner_components/partitioning/fall_through_partitioning.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/process_tree_generator/generate_special_trees.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/process_tree_generator/generate_special_trees.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,7 +165,7 @@
       <workItem from="1787774349415" duration="82000" />
       <workItem from="1787811181101" duration="8471000" />
       <workItem from="1787897646660" duration="7148000" />
-      <workItem from="1788157796298" duration="10005000" />
+      <workItem from="1788157796298" duration="14054000" />
     </task>
     <servers />
   </component>
@@ -201,7 +201,7 @@
     <SUITE FILE_PATH="coverage/concurrency_miner_v2$xlsx_to_xes.coverage" NAME="xlsx_to_xes Coverage Results" MODIFIED="1787739361410" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/log_creation" />
     <SUITE FILE_PATH="coverage/concurrency_miner_v2$logs_from_cortado.coverage" NAME="logs_from_cortado Coverage Results" MODIFIED="1786424981468" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/log_creation" />
     <SUITE FILE_PATH="coverage/concurrency_miner_v2$detect_arbitrary_order.coverage" NAME="detect_arbitrary_order Coverage Results" MODIFIED="1786705364489" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/concurrency_miner_components/partitioning" />
-    <SUITE FILE_PATH="coverage/concurrency_miner_v2$main.coverage" NAME="main Coverage Results" MODIFIED="1788183494695" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/concurrency_miner_v2$main.coverage" NAME="main Coverage Results" MODIFIED="1788188655734" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/concurrency_miner_v2$concurrency_miner.coverage" NAME="concurrency_miner Coverage Results" MODIFIED="1786694182604" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
   </component>
 </project>
