@@ -35,16 +35,37 @@ def generate_tree_2():
     return tree
 
 def generate_tree_3():
-    tree = Node(Operator.Interleaving)
-    child1 = Node("A")
-    child2 = Node(Operator.Interleaving)
+    tree = Node(Operator.Parallel)
+    child1 = Node(Operator.Sequence)
+    child2 = Node(Operator.Parallel)
+    child1_1 = Node("A")
+    child1_2 = Node("B")
 
-    child2_1 = Node("B")
+    child1.add_child(child1_1)
+    child1.add_child(child1_2)
 
-    child2_2 = Node("C")
+    child2_1 = Node("C")
+    child2_2 = Node("D")
 
     child2.add_child(child2_1)
     child2.add_child(child2_2)
     tree.add_child(child1)
     tree.add_child(child2)
+    return tree
+
+def generate_tree_4():
+    tree = Node(Operator.Sequence)
+    child1 = Node("A")
+    child2 = Node("B")
+    child3 = Node(Operator.Loop)
+    child3_1 = Node("C")
+    child3_2 = Node("D")
+    child4 = Node("E")
+
+    tree.add_child(child1)
+    tree.add_child(child2)
+    child3.add_child(child3_1)
+    child3.add_child(child3_2)
+    tree.add_child(child3)
+    tree.add_child(child4)
     return tree

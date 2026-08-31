@@ -2,7 +2,8 @@
 
 from data_structures.process_tree import Node
 from data_structures.process_tree_operator import Operator
-from process_tree_generator.generate_special_trees import generate_tree_1, generate_tree_2, generate_tree_3
+from process_tree_generator.generate_special_trees import generate_tree_1, generate_tree_2, generate_tree_3, \
+    generate_tree_4
 from process_tree_generator.process_tree_generator import generate_process_tree
 from process_tree_generator.process_tree_to_traces import generate_traces
 from process_tree_generator.simple_trace_to_trace import get_trace_from_simple_trace
@@ -29,23 +30,27 @@ from src.concurrency_miner import concurrency_miner
 #       incompleteness : Wenn kein cut gefunden wird edges in dfg und overlapping hinzufügen
 #                       dafür werden wahrscheinlichkeiten für jede mögliche edge berechnet
 
+#TODO
+# nicht gefunden loop(e, sequence(multi(a), loop(c, d, b)))
 
-if False:
-    activities = {
-        "A",
-        "B",
-        "C",
-        "D",
-    }
+
+
+activities = {
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+}
 # Generate a random tree with the activities
-    tree = generate_process_tree(activities)
+#tree = generate_process_tree(activities)
 
 #TODO IMPORTANT Irgendwann wurden Arbitrary und Concurrent vertauscht?? sicher?
 #               -> Arbitrary mit interleaving vertauscht in generate_tree_2
 #               , aber das ist schon richtig so -> Problem mit Language Uniqueness? -> funktioniert es wenn das arbitrary zuerst kommt?
 
 
-tree = generate_tree_1()
+tree = generate_tree_3()
 
 
 print(tree)
@@ -57,7 +62,8 @@ for simple_trace in generate_traces(tree):
     #print("simple: " + str(simple_trace))
     trace = get_trace_from_simple_trace(simple_trace)
     event_log.append(trace)
-    print(trace.get_strict_partial_order())
+    #print(trace.get_strict_partial_order())
+    print(trace.get_transitive_reduced_strict_partial_order())
     print("ovl" + str(trace.get_overlapping_events()))
 
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")

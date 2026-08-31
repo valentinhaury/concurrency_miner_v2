@@ -17,7 +17,7 @@ def create_sublogs_concurrent(log, partitions):
                 if set(relation).issubset(new_trace_events)
             }
 
-            # new transitive reduced strict partial order is the transitive reduction of the old strict partial order
+            # new transitive reduced strict partial order is the transitive reduction of the new strict partial order
             new_trace_transitive_reduced_strict_partial_order = set(new_trace_strict_partial_order)
             for r in new_trace_strict_partial_order:
                 for e in new_trace_events:

@@ -107,7 +107,7 @@ def concurrency_miner(
     sequence_partitions = create_sequence_partitions(log_activities, log_overlapping_relation, log_eventually_follows)
     if len(sequence_partitions) > 1:
         process_tree = Node(Operator.Sequence)
-        for sub_log in create_sublogs_sequential(log, sequence_partitions):
+        for sub_log in create_sublogs_concurrent(log, sequence_partitions): #create_sublogs_sequential(log, sequence_partitions):
             process_tree.add_child(concurrency_miner(sub_log))
         return process_tree
 

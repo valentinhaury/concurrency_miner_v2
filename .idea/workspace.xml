@@ -29,12 +29,12 @@
     &quot;assignee&quot;: &quot;valentinhaury&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/valentinhaury/concurrency_miner_v2",
-    "accountId": "e049adfe-2001-4eb6-a12a-575edef2d72d"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/valentinhaury/concurrency_miner_v2&quot;,
+    &quot;accountId&quot;: &quot;e049adfe-2001-4eb6-a12a-575edef2d72d&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -163,7 +163,8 @@
       <workItem from="1787765422464" duration="3017000" />
       <workItem from="1787774349415" duration="82000" />
       <workItem from="1787811181101" duration="8471000" />
-      <workItem from="1787897646660" duration="4158000" />
+      <workItem from="1787897646660" duration="7148000" />
+      <workItem from="1788157796298" duration="1011000" />
     </task>
     <servers />
   </component>

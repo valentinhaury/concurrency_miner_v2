@@ -51,7 +51,7 @@ def _choose_operator():
     weights = [
         0.18,  # Exclusive
         0.20,  # Sequence
-        0.10,  # Arbitrary
+        0.00,  # Arbitrary
         0.12,  # Interleaving
         0.12,  # Concurrent
         0.10,  # Parallel
