@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e3ce310f-a6cb-4654-8df9-4da22971cc3a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/concurrency_miner_components/partitioning/fall_through_partitioning.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/concurrency_miner_components/partitioning/fall_through_partitioning.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,7 +163,8 @@
       <workItem from="1787774349415" duration="82000" />
       <workItem from="1787811181101" duration="8471000" />
       <workItem from="1787897646660" duration="7148000" />
-      <workItem from="1788157796298" duration="14054000" />
+      <workItem from="1788157796298" duration="14711000" />
+      <workItem from="1788248182126" duration="700000" />
     </task>
     <servers />
   </component>

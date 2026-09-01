@@ -67,6 +67,7 @@ def concurrency_miner(
     log_minimum_self_distance |= compute_minimum_self_distance_relations(log_activities, log)
     #print(f"[{datetime.now():%H:%M:%S}] Checking for base cases")
 ##### BASE CASES
+    #TODO put it in its own file
 # end recursion and add a single activity node, a self_loop node and/or a multi_instance node
     if len(log_activities) < 2:
         single_activity = (next(iter(log_activities)))
