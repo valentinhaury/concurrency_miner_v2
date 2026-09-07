@@ -1,6 +1,3 @@
-from itertools import permutations
-
-
 class Trace:
     def __init__(self, events, transitive_reduced_strict_partial_order, strict_partial_order, overlapping_relation):
         self.events = set(events)
@@ -77,23 +74,3 @@ class Trace:
             if not any(y == e for y, _ in self.transitive_reduced_strict_partial_order):
                 end_activities.add(e.get_label())
         return end_activities
-
-
-
-
-    #not needed right now
-    def _compute_transitive_closure(self):
-        closure = set()
-        for relation in self.transitive_reduced_strict_partial_order:
-            closure.add((relation[0], relation[1]))
-        changed = True
-        while changed:
-            changed = False
-            for e1, e2, e3 in permutations(self.events, 3):
-                relation = (e1, e3)
-                if ((e1, e2) in closure and
-                        (e2, e3) in closure and
-                        relation not in closure):
-                    closure.add(relation)
-                    changed = True
-        return closure
