@@ -24,7 +24,7 @@ def create_filtered_sublogs_sequential(log, partitions):
                 if (a, b) not in old_strict_partial_order:
                     old_trace_partitions[i], old_trace_partitions[j] = old_trace_partitions[j], old_trace_partitions[i]
 
-        partitions_assignments = best_assignment(old_trace_partitions, partitions)
+        partitions_assignments, cost = best_assignment(old_trace_partitions, partitions)
         for partition_index, assignment in enumerate(partitions_assignments):
             new_trace_events = set()
             for trace_partition_index in assignment:
@@ -104,4 +104,4 @@ def best_assignment(event_partitions, activity_partitions):
         i = start
         j -= 1
 
-    return assignment
+    return assignment, dp[n][m]
