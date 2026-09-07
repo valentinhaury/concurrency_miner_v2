@@ -2,4 +2,4 @@
 cortado-core/
 __pycache__/
 *.egg-info/
-src/data
+src/developement_utilities/data

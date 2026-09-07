@@ -1,13 +1,6 @@
-
-
-from data_structures.process_tree import Node
-from data_structures.process_tree_operator import Operator
-from process_tree_generator.generate_special_trees import generate_tree_1, generate_tree_2, generate_tree_3, \
-    generate_tree_4
-from process_tree_generator.process_tree_generator import generate_process_tree
-from process_tree_generator.process_tree_to_traces import generate_traces
-from process_tree_generator.simple_trace_to_trace import get_trace_from_simple_trace
-from src.log_creation.create_event_log_from_xes import create_event_log_from_data_input_xes
+from developement_utilities.process_tree_generator.process_tree_generator import generate_process_tree
+from developement_utilities.process_tree_generator.process_tree_to_traces import generate_traces
+from developement_utilities.process_tree_generator.simple_trace_to_trace import get_trace_from_simple_trace
 
 from src.concurrency_miner import concurrency_miner
 
