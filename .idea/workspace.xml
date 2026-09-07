@@ -5,10 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3ce310f-a6cb-4654-8df9-4da22971cc3a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/concurrency_miner_components/helper_functions/compute_transitive_closure.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/concurrency_miner.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/concurrency_miner.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/concurrency_miner_components/helper_functions/sublog_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/concurrency_miner_components/helper_functions/sublog_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/developement_utilities/log_creation/create_event_log_from_xes.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/developement_utilities/log_creation/create_event_log_from_xes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/infrequent_concurrency_miner.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/infrequent_concurrency_miner.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

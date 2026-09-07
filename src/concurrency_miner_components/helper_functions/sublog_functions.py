@@ -1,9 +1,9 @@
 from data_structures.event import Event
 from src.data_structures.trace import Trace
 
-def create_children_from_sublogs(node, sub_logs, concurrency_miner):
+def create_children_from_sublogs(node, sub_logs, concurrency_miner, filter_threshold):
     for sub_log in sub_logs:
-        node.add_child(concurrency_miner(sub_log))
+        node.add_child(concurrency_miner(sub_log, filter_threshold))
     return node
 
 def create_sublogs_general(log, partitions):

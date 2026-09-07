@@ -1,3 +1,4 @@
+from developement_utilities.log_creation.create_event_log_from_xes import create_event_log_from_data_input_xes
 from developement_utilities.process_tree_generator.process_tree_generator import generate_process_tree
 from developement_utilities.process_tree_generator.process_tree_to_traces import generate_traces
 from developement_utilities.process_tree_generator.simple_trace_to_trace import get_trace_from_simple_trace
@@ -35,23 +36,25 @@ activities = {
     "H",
 }
 # Generate a random tree with given activities
-tree = generate_process_tree(activities)
+#tree = generate_process_tree(activities)
 
 # Generate specified tree
 #tree = generate_tree_2()
 
-print(tree)
-tree.print_tree()
+if False:
+    # Print tree input
+    print(tree)
+    tree.print_tree()
 
-log_from_tree = []
-for simple_trace in generate_traces(tree):
-    trace = get_trace_from_simple_trace(simple_trace)
-    log_from_tree.append(trace)
+    log_from_tree = []
+    for simple_trace in generate_traces(tree):
+        trace = get_trace_from_simple_trace(simple_trace)
+        log_from_tree.append(trace)
 
-#log_from_xes = create_event_log_from_data_input_xes()
+log_from_xes = create_event_log_from_data_input_xes()
 
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-new_tree = concurrency_miner(log_from_tree)
+new_tree = concurrency_miner(log_from_xes, 0.1)
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
 print(str(new_tree))
