@@ -1,5 +1,4 @@
-from data_structures.trace import Trace
-
+from concurrency_miner_components.helper_functions.sublog_functions import create_new_trace_from_event_partition
 
 def create_filtered_sublogs_exclusive(log, partitions):
     sublogs = []
@@ -23,35 +22,11 @@ def create_filtered_sublogs_exclusive(log, partitions):
         # new trace events are old events in the partition
         new_trace_events = {event for event in old_trace.get_events() if event.get_label() in partitions[greatest_number_index]}
 
-        # new strict partial order is old strict partial order
-        new_trace_strict_partial_order = {
-            relation
-            for relation in old_trace.get_strict_partial_order()
-            if set(relation).issubset(new_trace_events)
-        }
+        # create new trace from old trace with the partitioned events
+        new_trace = create_new_trace_from_event_partition(new_trace_events, old_trace)
 
-        # new transitive reduced strict partial order is the transitive reduction of the new strict partial order
-        new_trace_transitive_reduced_strict_partial_order = set(new_trace_strict_partial_order)
-        for r in new_trace_strict_partial_order:
-            for e in new_trace_events:
-                if (r[0], e) in new_trace_strict_partial_order and (e, r[1]) in new_trace_strict_partial_order:
-                    new_trace_transitive_reduced_strict_partial_order.discard(r)
-
-        # new overlapping relation is old overlapping relation
-        new_trace_overlapping_relations = {
-            relation
-            for relation in old_trace.overlapping_relations
-            if set(relation).issubset(new_trace_events)
-        }
-        new_trace = Trace(
-            new_trace_events,
-            new_trace_transitive_reduced_strict_partial_order,
-            new_trace_strict_partial_order,
-            new_trace_overlapping_relations
-        )
         sublogs[greatest_number_index].append(
             new_trace
         )
 
     return sublogs
-

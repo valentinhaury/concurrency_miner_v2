@@ -1,4 +1,4 @@
-from data_structures.trace import Trace
+from concurrency_miner_components.helper_functions.sublog_functions import create_new_trace_from_event_partition
 from src.concurrency_miner_components.helper_functions.partition_functions import merge_partitions
 
 def create_filtered_sublogs_sequential(log, partitions):
@@ -27,38 +27,13 @@ def create_filtered_sublogs_sequential(log, partitions):
         partitions_assignments = best_assignment(old_trace_partitions, partitions)
         for partition_index, assignment in enumerate(partitions_assignments):
             new_trace_events = set()
-            for event_partition in assignment:
-                new_trace_events |= {event for event in event_partition if event.get_label() in partitions[partition_index]}
+            for trace_partition_index in assignment:
+                new_trace_events |= {event for event in old_trace_partitions[trace_partition_index] if event.get_label() in partitions[partition_index]}
 
-            #TODO implement get_new_trace_from_events_and_old_trace(new_trace_events, old_trace) and use everything below
+            # create new trace from old trace with the partitioned events
+            new_trace = create_new_trace_from_event_partition(new_trace_events, old_trace)
 
-            # new strict partial order is old strict partial order
-            new_trace_strict_partial_order = {
-                relation
-                for relation in old_trace.get_strict_partial_order()
-                if set(relation).issubset(new_trace_events)
-            }
-
-            # new transitive reduced strict partial order is the transitive reduction of the new strict partial order
-            new_trace_transitive_reduced_strict_partial_order = set(new_trace_strict_partial_order)
-            for r in new_trace_strict_partial_order:
-                for e in new_trace_events:
-                    if (r[0], e) in new_trace_strict_partial_order and (e, r[1]) in new_trace_strict_partial_order:
-                        new_trace_transitive_reduced_strict_partial_order.discard(r)
-
-            # new overlapping relation is old overlapping relation
-            new_trace_overlapping_relations = {
-                relation
-                for relation in old_trace.overlapping_relations
-                if set(relation).issubset(new_trace_events)
-            }
-            new_trace = Trace(
-                new_trace_events,
-                new_trace_transitive_reduced_strict_partial_order,
-                new_trace_strict_partial_order,
-                new_trace_overlapping_relations
-            )
-            #TODO Everything until here
+            # add the new trace to the correct sublog
             sublogs[partition_index].append(
                 new_trace
             )

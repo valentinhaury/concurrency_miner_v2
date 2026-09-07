@@ -6,6 +6,35 @@ def create_children_from_sublogs(node, sub_logs, concurrency_miner, filter_thres
         node.add_child(concurrency_miner(sub_log, filter_threshold))
     return node
 
+def create_new_trace_from_event_partition(new_trace_events, old_trace):
+    # new strict partial order is old strict partial order
+    new_trace_strict_partial_order = {
+        relation
+        for relation in old_trace.get_strict_partial_order()
+        if set(relation).issubset(new_trace_events)
+    }
+
+    # new transitive reduced strict partial order is the transitive reduction of the new strict partial order
+    new_trace_transitive_reduced_strict_partial_order = set(new_trace_strict_partial_order)
+    for r in new_trace_strict_partial_order:
+        for e in new_trace_events:
+            if (r[0], e) in new_trace_strict_partial_order and (e, r[1]) in new_trace_strict_partial_order:
+                new_trace_transitive_reduced_strict_partial_order.discard(r)
+
+    # new overlapping relation is old overlapping relation
+    new_trace_overlapping_relations = {
+        relation
+        for relation in old_trace.overlapping_relations
+        if set(relation).issubset(new_trace_events)
+    }
+    new_trace = Trace(
+        new_trace_events,
+        new_trace_transitive_reduced_strict_partial_order,
+        new_trace_strict_partial_order,
+        new_trace_overlapping_relations
+    )
+    return new_trace
+
 def create_sublogs_general(log, partitions):
     sublogs = []
     for partition in partitions:

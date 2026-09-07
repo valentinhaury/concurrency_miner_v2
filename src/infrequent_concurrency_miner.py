@@ -16,6 +16,7 @@ from src.concurrency_miner_components.partitioning.sequence_partitioning import 
 from src.concurrency_miner_components.single_activity_base_case import get_single_activity_node
 
 from src.infrequent_concurrency_miner_components.infrequent_exclusive_log_splitting import create_filtered_sublogs_exclusive
+from src.infrequent_concurrency_miner_components.infrequent_sequence_log_splitting import create_filtered_sublogs_sequential
 
 from src.data_structures.process_tree_operator import Operator
 from src.data_structures.event import Event
@@ -99,13 +100,13 @@ def infrequent_concurrency_miner(
     print(f"[{datetime.now():%H:%M:%S}] Starting FILTERED Exclusive Choice partitioning")
     exclusive_choice_partitions = create_exclusive_choice_partitions(log_activities, filtered_overlapping, log_eventually_follows)
     if len(exclusive_choice_partitions) > 1:
-        return create_children_from_sublogs(Node(Operator.Exclusive), create_filtered_sublogs_exclusive(log, exclusive_choice_partitions), concurrency_miner, filter_threshold) #TODO implement NEW sublog creation for infrequent
+        return create_children_from_sublogs(Node(Operator.Exclusive), create_filtered_sublogs_exclusive(log, exclusive_choice_partitions), concurrency_miner, filter_threshold)
 
 ##### split the log with a sequence operator
     print(f"[{datetime.now():%H:%M:%S}] Starting FILTERED Sequence partitioning")
     sequence_partitions = create_sequence_partitions(log_activities, filtered_overlapping, log_eventually_follows)
     if len(sequence_partitions) > 1:
-        return create_children_from_sublogs(Node(Operator.Sequence), create_sublogs_general(log, sequence_partitions), concurrency_miner, filter_threshold) #TODO implement NEW sublog creation for infrequent
+        return create_children_from_sublogs(Node(Operator.Sequence), create_filtered_sublogs_sequential(log, sequence_partitions), concurrency_miner, filter_threshold)
 
 ##### split the log with an interleaving operator
     print(f"[{datetime.now():%H:%M:%S}] Starting FILTERED Interleaving partitioning")
