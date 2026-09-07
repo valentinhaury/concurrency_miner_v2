@@ -18,6 +18,9 @@ from src.concurrency_miner import concurrency_miner
 # arbitrary order: muss zusätzlich noch gecheckt werden ob jede Partition mit jeder direct connected ist?
 #                   bzw wenn sie keine start und end activity haben mit arbitrary partition mergen
 #                   language uniqueness between interleaving and arbitrary
+#todo
+# CONCURRENT ->  overlapping AND directly-complete     //     overlapping OR directly-complete
+
 
 #TODO data handling
 #       infrequent : wenn kein cut gefunden wird edges zählen in den graphen -> directly follows, overlappping und seltene edges entfernen

@@ -2,19 +2,22 @@ from collections import Counter
 from collections.abc import Callable
 from datetime import datetime
 
-from concurrency_miner_components.helper_functions.compute_minimum_self_distance_relation import compute_minimum_self_distance_relations
-from concurrency_miner_components.helper_functions.compute_transitive_closure import compute_transitive_closure
-from concurrency_miner_components.helper_functions.sublog_functions import create_children_from_sublogs, \
-    create_sublogs_exclusive, create_sublogs_general, create_sublogs_loop
-from concurrency_miner_components.partitioning.arbitrary_order_partitioning import create_arbitrary_order_partitions
-from concurrency_miner_components.partitioning.concurrent_partitioning import create_concurrent_partitions
-from concurrency_miner_components.partitioning.exclusive_choice_partitioning import create_exclusive_choice_partitions
-from concurrency_miner_components.partitioning.interleaving_partitioning import create_interleaving_partitions
-from concurrency_miner_components.partitioning.loop_partitioning import create_loop_partitions
-from concurrency_miner_components.partitioning.parallel_partitioning import create_parallel_partitions
-from concurrency_miner_components.partitioning.sequence_partitioning import create_sequence_partitions
-from concurrency_miner_components.single_activity_base_case import get_single_activity_node
-from data_structures.process_tree_operator import Operator
+from src.concurrency_miner_components.helper_functions.compute_minimum_self_distance_relation import compute_minimum_self_distance_relations
+from src.concurrency_miner_components.helper_functions.compute_transitive_closure import compute_transitive_closure
+from src.concurrency_miner_components.helper_functions.sublog_functions import create_children_from_sublogs, \
+     create_sublogs_general, create_sublogs_loop
+from src.concurrency_miner_components.partitioning.arbitrary_order_partitioning import create_arbitrary_order_partitions
+from src.concurrency_miner_components.partitioning.concurrent_partitioning import create_concurrent_partitions
+from src.concurrency_miner_components.partitioning.exclusive_choice_partitioning import create_exclusive_choice_partitions
+from src.concurrency_miner_components.partitioning.interleaving_partitioning import create_interleaving_partitions
+from src.concurrency_miner_components.partitioning.loop_partitioning import create_loop_partitions
+from src.concurrency_miner_components.partitioning.parallel_partitioning import create_parallel_partitions
+from src.concurrency_miner_components.partitioning.sequence_partitioning import create_sequence_partitions
+from src.concurrency_miner_components.single_activity_base_case import get_single_activity_node
+
+from src.infrequent_concurrency_miner_components.infrequent_exclusive_log_splitting import create_filtered_sublogs_exclusive
+
+from src.data_structures.process_tree_operator import Operator
 from src.data_structures.event import Event
 from src.data_structures.process_tree import Node
 from src.data_structures.trace import Trace
@@ -96,7 +99,7 @@ def infrequent_concurrency_miner(
     print(f"[{datetime.now():%H:%M:%S}] Starting FILTERED Exclusive Choice partitioning")
     exclusive_choice_partitions = create_exclusive_choice_partitions(log_activities, filtered_overlapping, log_eventually_follows)
     if len(exclusive_choice_partitions) > 1:
-        return create_children_from_sublogs(Node(Operator.Exclusive), create_sublogs_exclusive(log, exclusive_choice_partitions), concurrency_miner, filter_threshold) #TODO implement NEW sublog creation for infrequent
+        return create_children_from_sublogs(Node(Operator.Exclusive), create_filtered_sublogs_exclusive(log, exclusive_choice_partitions), concurrency_miner, filter_threshold) #TODO implement NEW sublog creation for infrequent
 
 ##### split the log with a sequence operator
     print(f"[{datetime.now():%H:%M:%S}] Starting FILTERED Sequence partitioning")
