@@ -36,25 +36,26 @@ activities = {
     "H",
 }
 # Generate a random tree with given activities
-#tree = generate_process_tree(activities)
+tree = generate_process_tree(activities)
 
 # Generate specified tree
 #tree = generate_tree_2()
 
-if False:
-    # Print tree input
-    print(tree)
-    tree.print_tree()
 
-    log_from_tree = []
-    for simple_trace in generate_traces(tree):
-        trace = get_trace_from_simple_trace(simple_trace)
-        log_from_tree.append(trace)
+# Print tree input
+print(tree)
+tree.print_tree()
 
-log_from_xes = create_event_log_from_data_input_xes()
+log_from_tree = []
+for simple_trace in generate_traces(tree):
+    trace = get_trace_from_simple_trace(simple_trace)
+    log_from_tree.append(trace)
 
+#log_from_xes = create_event_log_from_data_input_xes()
+
+#0.01; 0.02; 0.03; 0.04;
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-new_tree = concurrency_miner(log_from_xes, 0.1)
+new_tree = concurrency_miner(log_from_tree)
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
 print(str(new_tree))
