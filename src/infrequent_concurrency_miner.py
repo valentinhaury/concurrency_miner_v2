@@ -61,14 +61,15 @@ def infrequent_concurrency_miner(
         log_follows |= trace.get_eventually_follows()                   # contains all pairs of activities where the second follows eventually after the first in at least one trace
 
     def filter_relation(counter):
-        max_counts = {}
+        max_counts_out = {}
+        max_counts_in = {}
         for (a, b), count in counter.items():
-            max_counts[a] = max(max_counts.get(a, 0), count)
-        filtered_relation = {
-            (a, b)
-            for (a, b), count in counter.items()
-            if count / max_counts[a] >= filter_threshold
-        }
+            max_counts_out[a] = max(max_counts_out.get(a, 0), count)
+            max_counts_in[b] = max(max_counts_in.get(b, 0), count)
+        filtered_relation = set()
+        for (a, b), count in counter.items():
+            if count / max_counts_out[a] >= filter_threshold or count / max_counts_in[b] >= filter_threshold:
+                filtered_relation.add((a, b))
         return filtered_relation
 
 ##### filter directly follows
