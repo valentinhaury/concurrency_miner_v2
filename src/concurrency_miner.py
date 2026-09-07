@@ -2,6 +2,7 @@ import copy
 from datetime import datetime
 from itertools import permutations
 
+from concurrency_miner_components.single_activity_base_case import get_single_activity_node
 from src.data_structures.event import Event
 from src.data_structures.trace import Trace
 from src.data_structures.process_tree_operator import Operator
@@ -67,30 +68,11 @@ def concurrency_miner(
     log_minimum_self_distance |= compute_minimum_self_distance_relations(log_activities, log)
     #print(f"[{datetime.now():%H:%M:%S}] Checking for base cases")
 ##### BASE CASES
-    #TODO put it in its own file
 # end recursion and add a single activity node, a self_loop node and/or a multi_instance node
     if len(log_activities) < 2:
         single_activity = (next(iter(log_activities)))
-        if not log_overlapping_relation and not log_directly_follows:
-            process_tree = Node(single_activity)
-            return process_tree
-        single_activity_pair = (single_activity, single_activity)
-        if single_activity_pair in log_overlapping_relation and single_activity_pair not in log_directly_follows:
-            process_tree = (Node(Operator.Multi))
-            process_tree.add_child(Node(single_activity))
-            return process_tree
-        if single_activity_pair not in log_overlapping_relation and single_activity_pair in log_directly_follows:
-            process_tree = Node(Operator.Loop)
-            process_tree.add_child(Node(single_activity))
-            process_tree.add_child(Node("tau"))
-            return process_tree
-        else:
-            multi_node = Node(Operator.Multi)
-            multi_node.add_child(Node(single_activity))
-            process_tree = Node(Operator.Loop)
-            process_tree.add_child(multi_node)
-            process_tree.add_child(Node("tau"))
-            return process_tree
+        # single_activity, log_overlapping_relation, log_directly_follows
+        return get_single_activity_node(single_activity, log_overlapping_relation, log_directly_follows)
 
 
     print(f"[{datetime.now():%H:%M:%S}] Starting Exclusive Choice partitioning")
