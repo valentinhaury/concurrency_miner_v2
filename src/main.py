@@ -15,11 +15,15 @@ from src.concurrency_miner import concurrency_miner
 #           3. number of activities
 
 #TODO
-# arbitrary order: muss zusätzlich noch gecheckt werden ob jede Partition mit jeder direct connected ist?
-#                   bzw wenn sie keine start und end activity haben mit arbitrary partition mergen
-#                   language uniqueness between interleaving and arbitrary
+# arbitrary order: -> merge with an always direct connected partition -> if this fails just ignore it or merge it to arbitrary -> merging with arbitrary will lead to less likely finding a split
+
 #todo
 # CONCURRENT ->  overlapping AND directly-complete     //     overlapping OR directly-complete
+
+
+# TODO infrequent
+#       1. implement sublog creation for arbitrary order
+#       2. Decide if special sublog creation for interleaving or parallel is necessary
 
 
 #TODO data handling

@@ -2,6 +2,7 @@ from collections import Counter
 from collections.abc import Callable
 from datetime import datetime
 
+from infrequent_concurrency_miner_components.infrequent_loop_log_splitting import create_filtered_sublogs_loop
 from src.concurrency_miner_components.helper_functions.compute_minimum_self_distance_relation import compute_minimum_self_distance_relations
 from src.concurrency_miner_components.helper_functions.compute_transitive_closure import compute_transitive_closure
 from src.concurrency_miner_components.helper_functions.sublog_functions import create_children_from_sublogs, \
@@ -132,7 +133,7 @@ def infrequent_concurrency_miner(
     print(f"[{datetime.now():%H:%M:%S}] Starting FILTERED Concurrent partitioning")
     concurrent_partitions = create_concurrent_partitions(log_activities, filtered_start_activities, filtered_end_activities, filtered_overlapping, filtered_directly_follows, log_minimum_self_distance)
     if len(concurrent_partitions) > 1:
-        return create_children_from_sublogs(Node(Operator.Concurrent), create_sublogs_general(log, concurrent_partitions), concurrency_miner, filter_threshold) #TODO implement NEW sublog creation for infrequent
+        return create_children_from_sublogs(Node(Operator.Concurrent), create_sublogs_general(log, concurrent_partitions), concurrency_miner, filter_threshold)
 
 ##### split the log with a parallel operator
     print(f"[{datetime.now():%H:%M:%S}] Starting FILTERED Parallel partitioning")
@@ -144,7 +145,7 @@ def infrequent_concurrency_miner(
     print(f"[{datetime.now():%H:%M:%S}] Starting FILTERED Loop partitioning")
     loop_partitions = create_loop_partitions(log_activities, filtered_start_activities, filtered_end_activities, filtered_overlapping, filtered_directly_follows)
     if len(loop_partitions) > 1:
-        return create_children_from_sublogs(Node(Operator.Loop), create_sublogs_loop(log, loop_partitions), concurrency_miner, filter_threshold) #TODO implement NEW sublog creation for infrequent
+        return create_children_from_sublogs(Node(Operator.Loop), create_filtered_sublogs_loop(log, loop_partitions), concurrency_miner, filter_threshold)
 
 ##### split the log with an arbitrary order operator
     print(f"[{datetime.now():%H:%M:%S}] Starting FILTERED Arbitrary Order partitioning")
