@@ -42,7 +42,6 @@ def infrequent_concurrency_miner(
             number_of_empty_traces += 1
 
     log = []
-    #TODO maybe this should already be at threshold / 10 ??
     if number_of_empty_traces / len(event_log) >= filter_threshold:
         log = [Trace({Event("tau")}, set(), set(), set()) if len(old_trace.get_events()) == 0 else old_trace for old_trace in event_log]
     else:

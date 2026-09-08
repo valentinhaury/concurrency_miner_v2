@@ -44,32 +44,8 @@ def create_sublogs_general(log, partitions):
             # new events are old events that are present in the partition
             new_trace_events = {event for event in old_trace.events if event.get_label() in partition}
 
-            # new strict partial order is old strict partial order
-            new_trace_strict_partial_order = {
-                relation
-                for relation in old_trace.get_strict_partial_order()
-                if set(relation).issubset(new_trace_events)
-            }
+            new_trace = create_new_trace_from_event_partition(new_trace_events, old_trace)
 
-            # new transitive reduced strict partial order is the transitive reduction of the new strict partial order
-            new_trace_transitive_reduced_strict_partial_order = set(new_trace_strict_partial_order)
-            for r in new_trace_strict_partial_order:
-                for e in new_trace_events:
-                    if (r[0], e) in new_trace_strict_partial_order and (e, r[1]) in new_trace_strict_partial_order:
-                        new_trace_transitive_reduced_strict_partial_order.discard(r)
-
-            # new overlapping relation is old overlapping relation
-            new_trace_overlapping_relations = {
-                relation
-                for relation in old_trace.overlapping_relations
-                if set(relation).issubset(new_trace_events)
-            }
-            new_trace = Trace(
-                    new_trace_events,
-                    new_trace_transitive_reduced_strict_partial_order,
-                    new_trace_strict_partial_order,
-                    new_trace_overlapping_relations
-                )
             sub_log.append(
                 new_trace
             )
@@ -150,34 +126,11 @@ def _create_partition_loop_sub_log(log, partition, partition_1_activities):
 
             # remove all events that are added to the new trace
             partition_events = partition_events - new_trace_events
-            # new transitive reduced strict partial order is old transitive reduced strict partial order
-            new_trace_transitive_reduced_strict_partial_order = {
-                relation
-                for relation in old_trace.transitive_reduced_strict_partial_order
-                if set(relation).issubset(new_trace_events)
-            }
 
-            # new strict partial order is old strict partial order
-            new_trace_strict_partial_order = {
-                relation
-                for relation in old_trace.strict_partial_order
-                if set(relation).issubset(new_trace_events)
-            }
-
-            # new overlapping relation is old overlapping relation
-            new_trace_overlapping_relations = {
-                relation
-                for relation in old_trace.overlapping_relations
-                if set(relation).issubset(new_trace_events)
-            }
+            new_trace = create_new_trace_from_event_partition(new_trace_events, old_trace)
 
             # add the new trace to the sublog
             sub_log.append(
-                Trace(
-                    new_trace_events,
-                    new_trace_transitive_reduced_strict_partial_order,
-                    new_trace_strict_partial_order,
-                    new_trace_overlapping_relations
-                )
+                new_trace
             )
     return sub_log
