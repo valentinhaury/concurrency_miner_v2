@@ -8,6 +8,27 @@ class Trace:
         self.strict_partial_order = set(strict_partial_order)
         self.overlapping_relations = set(overlapping_relation)
 
+    def __repr__(self):
+        if not self.events:
+            return "(empty-trace)"
+        trace_string = "(E{"
+        if self.events:
+            for event in self.events:
+                trace_string += str(event) + ", "
+            trace_string = trace_string[:-2]
+        trace_string += "}, A{"
+        if self.activities:
+            for activity in self.activities:
+                trace_string += str(activity) + ", "
+            trace_string = trace_string[:-2]
+        trace_string += "}, R{"
+        if self.transitive_reduced_strict_partial_order:
+            for relation in self.transitive_reduced_strict_partial_order:
+                trace_string += str(relation[0]) + ">" + str(relation[1]) + ", "
+            trace_string = trace_string[:-2]
+        trace_string += "})"
+        return trace_string
+
     def __str__(self):
         if not self.events:
             return "(empty-trace)"

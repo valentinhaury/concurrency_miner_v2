@@ -1,5 +1,54 @@
+from itertools import permutations
+
 from concurrency_miner_components.helper_functions.sublog_functions import create_new_trace_from_event_partition
 from src.concurrency_miner_components.helper_functions.partition_functions import merge_partitions
+
+def create_filtered_sublogs_arbitrary(log, partitions):
+    sublogs = []
+    for _ in partitions:
+        sub_log = []
+        sublogs.append(sub_log)
+
+    for old_trace in log:
+        old_trace_partitions = []
+        for event in old_trace.get_events():
+            old_trace_partitions.append([event])
+        for (a, b) in old_trace.get_overlapping_events():
+            merge_partitions(a, b, old_trace_partitions)
+
+        old_strict_partial_order = old_trace.get_strict_partial_order()
+        old_trace_partitions = _sort_trace_partitions(old_trace_partitions, old_strict_partial_order)
+
+        partitions_assignments = []
+        best_permutation = []
+
+        indexed_partitions = list(enumerate(partitions))
+
+        lowest_cost = float("inf")
+        for indexed_permuted_partitions in permutations(indexed_partitions):
+            permuted_partitions = []
+            for (_ , partition) in indexed_permuted_partitions:
+                permuted_partitions.append(partition)
+            new_assignments, cost = _best_assignment(old_trace_partitions, permuted_partitions)
+            if cost < lowest_cost:
+                lowest_cost = cost
+                partitions_assignments = new_assignments
+                best_permutation = indexed_permuted_partitions
+
+        for (permuted_partition_index, event_indices) in partitions_assignments:
+            partition_index = best_permutation[permuted_partition_index][0]
+            new_trace_events = set()
+
+            for event_index in event_indices:
+                for event in old_trace_partitions[event_index]:
+                    if event.get_label() in partitions[partition_index]:
+                        new_trace_events.add(event)
+
+            # create new trace from old trace with the partitioned events
+            new_trace = create_new_trace_from_event_partition(new_trace_events, old_trace)
+            sublogs[partition_index].append(new_trace)
+    return sublogs
+
 
 def create_filtered_sublogs_sequential(log, partitions):
     sublogs = []
@@ -15,93 +64,86 @@ def create_filtered_sublogs_sequential(log, partitions):
             merge_partitions(a, b, old_trace_partitions)
 
         old_strict_partial_order = old_trace.get_strict_partial_order()
-        # sort partitions
-        n = len(old_trace_partitions)
-        for i in range(n):
-            a = next(iter(old_trace_partitions[i]))
-            for j in range(i + 1, n):
-                b = next(iter(old_trace_partitions[j]))
-                if (a, b) not in old_strict_partial_order:
-                    old_trace_partitions[i], old_trace_partitions[j] = old_trace_partitions[j], old_trace_partitions[i]
+        old_trace_partitions = _sort_trace_partitions(old_trace_partitions, old_strict_partial_order)
 
-        partitions_assignments, cost = best_assignment(old_trace_partitions, partitions)
-        for partition_index, assignment in enumerate(partitions_assignments):
+        partitions_assignments, cost = _best_assignment(old_trace_partitions, partitions)
+
+        for (partition_index, assignment) in partitions_assignments:
             new_trace_events = set()
             for trace_partition_index in assignment:
-                new_trace_events |= {event for event in old_trace_partitions[trace_partition_index] if event.get_label() in partitions[partition_index]}
+                for event in old_trace_partitions[trace_partition_index]:
+                    if event.get_label() in partitions[partition_index]:
+                        new_trace_events.add(event)
 
             # create new trace from old trace with the partitioned events
             new_trace = create_new_trace_from_event_partition(new_trace_events, old_trace)
 
             # add the new trace to the correct sublog
-            sublogs[partition_index].append(
-                new_trace
-            )
+            sublogs[partition_index].append(new_trace)
 
     return sublogs
 
-def best_assignment(event_partitions, activity_partitions):
-    n = len(event_partitions)
-    m = len(activity_partitions)
+def _sort_trace_partitions(old_trace_partitions, old_strict_partial_order):
+    # sort partitions
+    n = len(old_trace_partitions)
+    changed = True
+    while changed:
+        changed = False
+        for i in range(n):
+            a = next(iter(old_trace_partitions[i]))
+            for j in range(i + 1, n):
+                b = next(iter(old_trace_partitions[j]))
+                if (b, a) in old_strict_partial_order:
+                    old_trace_partitions[i], old_trace_partitions[j] = (old_trace_partitions[j],
+                                                                        old_trace_partitions[i])
+                    changed = True
+    return old_trace_partitions
+
+def _best_assignment(event_partitions, activity_partitions):
 
     # cost of an event_partition if assigned to a specific activity_partition
-    def cost(event_partition, activity_partition):
+    def _cost(event_partition, activity_partition):
         return sum(event.get_label() not in activity_partition for event in event_partition)
 
-    costs = []
-    for i in range(n):
-        row = []
-        for j in range(m):
-            row.append(cost(event_partitions[i], activity_partitions[j]))
-        costs.append(row)
+    possible_assignments = _possible_assignments(0, len(activity_partitions)-1, 0, len(event_partitions)-1)
 
-    # dp[i][j]:
-    # minimale Kosten für die ersten i Eventpartitionen
-    # und die ersten j Aktivitätspartitionen
-    dp = [[float("inf")] * (m + 1) for _ in range(n + 1)]
+    # calculate the cost for every possible assignment
+    cost_list = []
+    for assignment in possible_assignments:
+        cost = 0
+        for (activity_partition_index, event_partition_indices) in assignment:
+            for event_partition_index in event_partition_indices:
+                cost += _cost(event_partitions[event_partition_index], activity_partitions[activity_partition_index])
+        cost_list.append(cost)
 
-    # parent[i][j] speichert, wie viele Eventpartitionen
-    # der j-ten Aktivität zugeordnet wurden
-    parent = [[None] * (m + 1) for _ in range(n + 1)]
+    index_of_lowest_cost = cost_list.index(min(cost_list))
+    assignment_with_lowest_cost = possible_assignments[index_of_lowest_cost]
+    lowest_cost = cost_list[index_of_lowest_cost]
 
-    # Keine Events -> beliebig viele leere Aktivitäten
-    for j in range(m + 1):
-        dp[0][j] = 0
+    return assignment_with_lowest_cost, lowest_cost
 
-    for j in range(1, m + 1):
-        for i in range(n + 1):
 
-            # k = Anzahl der Eventpartitionen,
-            # die Aktivität j-1 bekommt
-            for k in range(i + 1):
+def _possible_assignments(l, m, k, n):
+    possible_assignments = []
+    if l == m:  # end recursion when only one activity-partition is left -> assign all leftover element-partitions to that activity-partition
+        assigned_elements = []
+        for i in range(k, n + 1):
+            assigned_elements.append(i)
+        possible_assignments.insert(0, [(l, assigned_elements)])
+    else:
+        for j in range(n, k - 2, -1):
+            assigned_elements = []
+            # for the last run add the option where activity-partition m gets no event-partitions
+            if j < k:
+                for assignment_list in _possible_assignments(l + 1, m, k, n):
+                    assignment_list.insert(0, (l, assigned_elements))
+                    possible_assignments.append(assignment_list)
+            # join the possible assignments to activity-partition m with the possible assignments for the rest of the activity-partitions recursively
+            else:
+                for i in range(k, j + 1):
+                    assigned_elements.append(i)
+                for assignment_list in _possible_assignments(l + 1, m, j + 1, n):
+                    assignment_list.insert(0, (l, assigned_elements))
+                    possible_assignments.append(assignment_list)
 
-                start = i - k
-
-                current_cost = sum(
-                    costs[x][j - 1]
-                    for x in range(start, i)
-                )
-
-                candidate = dp[start][j - 1] + current_cost
-
-                if candidate < dp[i][j]:
-                    dp[i][j] = candidate
-                    parent[i][j] = k
-
-    # Zuordnung rekonstruieren
-    assignment = [[] for _ in range(m)]
-
-    i = n
-    j = m
-
-    while j > 0:
-        k = parent[i][j]
-
-        start = i - k
-
-        assignment[j - 1] = list(range(start, i))
-
-        i = start
-        j -= 1
-
-    return assignment, dp[n][m]
+    return possible_assignments

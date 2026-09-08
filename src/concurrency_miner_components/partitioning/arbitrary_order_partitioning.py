@@ -64,11 +64,6 @@ def create_arbitrary_order_partitions(traces, activities, start_activities, end_
 
     _merge_partitions_to_an_always_direct_connected_partition(not_connected_to_start_or_end_partitions)
 
-    print("--------------after no end no start------------------")
-    for partition in partitions:
-        print(str(partition))
-    print("------------------stop-------------------------------")
-
     # merge all partitions that are not direct connected in both directions
     not_direct_connected_partitions = []
     for p1, p2 in combinations(partitions, 2):
@@ -84,11 +79,6 @@ def create_arbitrary_order_partitions(traces, activities, start_activities, end_
             not_direct_connected_partitions.append(p2)
 
     _merge_partitions_to_an_always_direct_connected_partition(not_direct_connected_partitions)
-
-    print("--------------after not direct connected------------------")
-    for partition in partitions:
-        print(str(partition))
-    print("-----------------------stop-------------------------------")
 
     # merge partitions if partitions are pairwise reachable in one trace
     for trace in traces:
