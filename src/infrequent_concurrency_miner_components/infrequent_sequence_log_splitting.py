@@ -59,7 +59,7 @@ def create_filtered_sublogs_sequential(log, partitions):
     for old_trace in log:
         old_trace_partitions = []
         for event in old_trace.get_events():
-            old_trace_partitions.append([event])
+            old_trace_partitions.append({event})
         for (a, b) in old_trace.get_overlapping_events():
             merge_partitions(a, b, old_trace_partitions)
 

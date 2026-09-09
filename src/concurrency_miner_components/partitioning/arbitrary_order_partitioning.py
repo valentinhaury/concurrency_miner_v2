@@ -20,8 +20,6 @@ def create_arbitrary_order_partitions(traces, activities, start_activities, end_
         if (a, b) in minimum_self_distance_relations or (b, a) in minimum_self_distance_relations:
             merge_partitions(a, b, partitions)
 
-    # TODO maybe do this following part multiple times until nothing changes anymore -> what to do with partitions that cant be merged that way
-
     def _connect_partitions_to_an_always_direct_connected_partition(this_partition):
         for candidate_partition in partitions:
             if not this_partition.isdisjoint(candidate_partition):
@@ -47,14 +45,14 @@ def create_arbitrary_order_partitions(traces, activities, start_activities, end_
         while changed:
             changed = False
             merged_partitions = []
-            print("try to merge: ", str(partitions_to_merge), " to: ", str(partitions))
             for p in partitions_to_merge:
                 if _connect_partitions_to_an_always_direct_connected_partition(p):
                     changed = True
                     merged_partitions.append(p)
             for merged_partition in merged_partitions:
                 partitions_to_merge.remove(merged_partition)
-        print("leftover: ", str(partitions_to_merge))
+
+    # TODO -> what to do with partitions that cant be merged that way
 
     # merge all partitions that either have no start or no end activities to a partition they are always connected to
     not_connected_to_start_or_end_partitions = []
