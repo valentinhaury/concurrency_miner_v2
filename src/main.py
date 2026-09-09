@@ -26,17 +26,6 @@ from src.concurrency_miner import concurrency_miner
 # Fallthroughs concurrent or interleaving depending if that activity is overlapping with any other activity
 
 
-#TODO infrequent
-# DONE  1. implement sublog creation for arbitrary order
-#       2. Decide if special sublog creation for interleaving or parallel is necessary
-
-
-#TODO data handling
-#       infrequent : wenn kein cut gefunden wird edges zählen in den graphen -> directly follows, overlappping und seltene edges entfernen
-#                       -> log splitting anpassen
-# ----  incompleteness : Wenn kein cut gefunden wird edges in dfg und overlapping hinzufügen
-#                       dafür werden wahrscheinlichkeiten für jede mögliche edge berechnet
-
 activities = {
     "A",
     "B",
