@@ -20,6 +20,11 @@ from src.concurrency_miner import concurrency_miner
 #todo
 # CONCURRENT ->  overlapping AND directly-complete     //     overlapping OR directly-complete
 
+#TODO empty traces vor oder nach dem split finding ersetzen?
+
+#TODO
+# Fallthroughs concurrent or interleaving depending if that activity is overlapping with any other activity
+
 
 #TODO infrequent
 # DONE  1. implement sublog creation for arbitrary order
@@ -62,10 +67,9 @@ log_from_xes = create_event_log_from_data_input_xes()
 
 #0.01; 0.02; 0.03; 0.04;
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-new_tree = concurrency_miner(log_from_xes, 0.3)
+new_tree = concurrency_miner(log_from_xes)
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
 print(str(new_tree))
 new_tree.print_tree()
-
 
