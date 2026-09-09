@@ -21,15 +21,15 @@ from src.concurrency_miner import concurrency_miner
 # CONCURRENT ->  overlapping AND directly-complete     //     overlapping OR directly-complete
 
 
-# TODO infrequent
-#       1. implement sublog creation for arbitrary order
+#TODO infrequent
+# DONE  1. implement sublog creation for arbitrary order
 #       2. Decide if special sublog creation for interleaving or parallel is necessary
 
 
 #TODO data handling
 #       infrequent : wenn kein cut gefunden wird edges zählen in den graphen -> directly follows, overlappping und seltene edges entfernen
 #                       -> log splitting anpassen
-#       incompleteness : Wenn kein cut gefunden wird edges in dfg und overlapping hinzufügen
+# ----  incompleteness : Wenn kein cut gefunden wird edges in dfg und overlapping hinzufügen
 #                       dafür werden wahrscheinlichkeiten für jede mögliche edge berechnet
 
 activities = {
@@ -48,21 +48,21 @@ tree = generate_process_tree(activities)
 # Generate specified tree
 #tree = generate_tree_2()
 
+if False:
+    # Print tree input
+    print(tree)
+    tree.print_tree()
 
-# Print tree input
-print(tree)
-tree.print_tree()
+    log_from_tree = []
+    for simple_trace in generate_traces(tree):
+        trace = get_trace_from_simple_trace(simple_trace)
+        log_from_tree.append(trace)
 
-log_from_tree = []
-for simple_trace in generate_traces(tree):
-    trace = get_trace_from_simple_trace(simple_trace)
-    log_from_tree.append(trace)
-
-#log_from_xes = create_event_log_from_data_input_xes()
+log_from_xes = create_event_log_from_data_input_xes()
 
 #0.01; 0.02; 0.03; 0.04;
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-new_tree = concurrency_miner(log_from_tree)
+new_tree = concurrency_miner(log_from_xes, 0.3)
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
 print(str(new_tree))
