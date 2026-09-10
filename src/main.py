@@ -1,7 +1,11 @@
+from data_structures.event import Event
+from data_structures.trace import Trace
 from developement_utilities.log_creation.create_event_log_from_xes import create_event_log_from_data_input_xes
+from developement_utilities.process_tree_generator.generate_special_trees import generate_tree_2
 from developement_utilities.process_tree_generator.process_tree_generator import generate_process_tree
 from developement_utilities.process_tree_generator.process_tree_to_traces import generate_traces
 from developement_utilities.process_tree_generator.simple_trace_to_trace import get_trace_from_simple_trace
+from evaluation_tools.tree_fitness import get_fitness_score
 
 from src.concurrency_miner import concurrency_miner
 
@@ -37,28 +41,46 @@ activities = {
     "H",
 }
 # Generate a random tree with given activities
-tree = generate_process_tree(activities)
+#tree = generate_process_tree(activities)
 
 # Generate specified tree
-#tree = generate_tree_2()
+tree = generate_tree_2()
 
-if False:
-    # Print tree input
-    print(tree)
-    tree.print_tree()
 
-    log_from_tree = []
-    for simple_trace in generate_traces(tree):
-        trace = get_trace_from_simple_trace(simple_trace)
-        log_from_tree.append(trace)
+# Print tree input
+print(tree)
+tree.print_tree()
 
-log_from_xes = create_event_log_from_data_input_xes()
+log_from_tree = []
+for simple_trace in generate_traces(tree):
+    trace = get_trace_from_simple_trace(simple_trace)
+    log_from_tree.append(trace)
+    print(str(trace))
 
-#0.01; 0.02; 0.03; 0.04;
+
+
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-new_tree = concurrency_miner(log_from_xes)
+new_tree = concurrency_miner(log_from_tree)
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
 print(str(new_tree))
 new_tree.print_tree()
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+a1 = Event("A")
+t1 = Trace({a1},set(),set(),set())
+#log_from_tree.append(t1)
+fitness_score = get_fitness_score(log_from_tree, new_tree)
+print("FITNESS SCORE: " + str(fitness_score))
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+
+if False:
+    log_from_xes = create_event_log_from_data_input_xes()
+
+    #0.01; 0.02; 0.03; 0.04;
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    new_tree = concurrency_miner(log_from_xes)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+    print(str(new_tree))
+    new_tree.print_tree()
 
