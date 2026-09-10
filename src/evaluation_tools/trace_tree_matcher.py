@@ -75,16 +75,14 @@ class TraceTreeMatcher:
                 "MultiInstance child must be an activity."
             )
 
-        # tau als MultiInstance-Child würde ich nicht erlauben
         if child.value == "tau":
             raise ValueError(
                 "MultiInstance child cannot be tau."
             )
 
-        # Falls "beliebig viele" auch 0 Instanzen bedeutet,
-        # kann dieser Fall ebenfalls True sein.
+        # At least one event
         if len(events) == 0:
-            return True
+            return False
 
         # Alle Events müssen dieselbe Activity sein
         if not all(
