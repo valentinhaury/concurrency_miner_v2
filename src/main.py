@@ -5,6 +5,7 @@ from developement_utilities.process_tree_generator.generate_special_trees import
 from developement_utilities.process_tree_generator.process_tree_generator import generate_process_tree
 from developement_utilities.process_tree_generator.process_tree_to_traces import generate_traces
 from developement_utilities.process_tree_generator.simple_trace_to_trace import get_trace_from_simple_trace
+from evaluation_tools.trace_tree_precision import TraceTreePrecision
 from evaluation_tools.tree_fitness import get_fitness_score
 
 from src.concurrency_miner import concurrency_miner
@@ -70,6 +71,9 @@ t1 = Trace({a1},set(),set(),set())
 #log_from_tree.append(t1)
 fitness_score = get_fitness_score(log_from_tree, new_tree)
 print("FITNESS SCORE: " + str(fitness_score))
+precision_measure = TraceTreePrecision(log_from_tree[0])
+precision_score = precision_measure.calculate_log_precision(new_tree, log_from_tree)
+print("PRECISION SCORE: " + str(precision_score))
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
 
