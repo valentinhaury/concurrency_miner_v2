@@ -7,6 +7,8 @@ class Trace:
         self.transitive_reduced_strict_partial_order = set(transitive_reduced_strict_partial_order)
         self.strict_partial_order = set(strict_partial_order)
         self.overlapping_relations = set(overlapping_relation)
+        for (e1, e2) in self.overlapping_relations:
+            self.overlapping_relations.add((e2, e1))
 
     def __repr__(self):
         if not self.events:
