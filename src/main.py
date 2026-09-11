@@ -1,11 +1,10 @@
-from data_structures.event import Event
-from data_structures.trace import Trace
+
 from developement_utilities.log_creation.create_event_log_from_xes import create_event_log_from_data_input_xes
 from developement_utilities.process_tree_generator.generate_special_trees import generate_tree_2
 from developement_utilities.process_tree_generator.process_tree_generator import generate_process_tree
 from developement_utilities.process_tree_generator.process_tree_to_traces import generate_traces
 from developement_utilities.process_tree_generator.simple_trace_to_trace import get_trace_from_simple_trace
-from evaluation_tools.trace_tree_precision import TraceTreePrecision
+from evaluation_tools.trace_tree_precision import EscapingEdgesPrecision
 from evaluation_tools.tree_fitness import get_fitness_score
 
 from src.concurrency_miner import concurrency_miner
@@ -51,7 +50,7 @@ tree = generate_tree_2()
 # Print tree input
 print(tree)
 tree.print_tree()
-
+tree = generate_tree_2()
 log_from_tree = []
 for simple_trace in generate_traces(tree):
     trace = get_trace_from_simple_trace(simple_trace)
@@ -66,15 +65,20 @@ print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 print(str(new_tree))
 new_tree.print_tree()
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-a1 = Event("A")
-t1 = Trace({a1},set(),set(),set())
-#log_from_tree.append(t1)
 fitness_score = get_fitness_score(log_from_tree, new_tree)
 print("FITNESS SCORE: " + str(fitness_score))
-precision_measure = TraceTreePrecision(log_from_tree[0])
-precision_score = precision_measure.calculate_log_precision(new_tree, log_from_tree)
-print("PRECISION SCORE: " + str(precision_score))
+
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+evaluator = EscapingEdgesPrecision(
+    log=log_from_tree,
+    process_tree=tree,
+)
+
+precision = evaluator.precision()
+
+print("Precision:", precision)
+
 
 
 if False:

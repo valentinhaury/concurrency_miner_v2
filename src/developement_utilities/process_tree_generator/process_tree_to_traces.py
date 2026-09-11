@@ -3,9 +3,9 @@ import uuid
 from enum import Enum
 from itertools import product, permutations
 
-from data_structures.event import Event
-from data_structures.process_tree_operator import Operator
-from developement_utilities.process_tree_generator.simple_trace import SimpleTrace
+from src.data_structures.event import Event
+from src.data_structures.process_tree_operator import Operator
+from src.developement_utilities.process_tree_generator.simple_trace import SimpleTrace
 
 
 def generate_traces(node):

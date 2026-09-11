@@ -27,6 +27,9 @@ class Node:
             value = str(self.value)
         return value
 
+    def is_leaf(self):
+        return len(self.children) == 0
+
     def print_tree(self, prefix="", is_last=True):
         if isinstance(self.value, Enum):
             value = self.value.value
