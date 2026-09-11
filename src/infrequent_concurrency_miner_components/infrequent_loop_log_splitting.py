@@ -1,6 +1,6 @@
 from concurrency_miner_components.helper_functions.sublog_functions import create_new_trace_from_event_partition
-from data_structures.event import Event
-from data_structures.trace import Trace
+from src.data_structures.event import Event
+from src.data_structures.trace import Trace
 
 
 def create_filtered_sublogs_loop(log, partitions):
