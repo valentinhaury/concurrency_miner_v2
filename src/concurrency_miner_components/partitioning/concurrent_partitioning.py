@@ -9,15 +9,10 @@ def create_concurrent_partitions(activities, start_activities, end_activities, o
 
     for a, b in combinations(activities, 2):
         # merge partitions if activities are never overlapping in log
-        #if (a, b) not in overlapping_relations and (b, a) not in overlapping_relations:
-        #    merge_partitions(a, b, partitions)
+        if (a, b) not in overlapping_relations and (b, a) not in overlapping_relations:
+            merge_partitions(a, b, partitions)
         # merge partitions if activities are not-fully pairwise connected in log
-        #if  (a, b) not in directly_follows_relations or (b, a) not in directly_follows_relations:
-        #    merge_partitions(a, b, partitions)
-
-        # only one of the above needs to be False to not merge the partitions #TODO decide which version to use
-        if ((a, b) not in directly_follows_relations or (b, a) not in directly_follows_relations) and (
-                (a, b) not in overlapping_relations and (b, a) not in overlapping_relations):
+        if  (a, b) not in directly_follows_relations or (b, a) not in directly_follows_relations:
             merge_partitions(a, b, partitions)
 
         # merge partitions if activities are in minimum self distance relation in log

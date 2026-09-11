@@ -1,4 +1,4 @@
-from data_structures.event import Event
+from src.data_structures.event import Event
 from src.data_structures.trace import Trace
 
 def create_children_from_sublogs(node, sub_logs, concurrency_miner, filter_threshold):

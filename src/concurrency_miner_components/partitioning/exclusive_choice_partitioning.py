@@ -1,7 +1,7 @@
 import copy
 from itertools import combinations
 
-from concurrency_miner_components.helper_functions.partition_functions import merge_partitions
+from src.concurrency_miner_components.helper_functions.partition_functions import merge_partitions
 
 
 def create_exclusive_choice_partitions(activities, overlapping_relations, eventually_follows_relations):
