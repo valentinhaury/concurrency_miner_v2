@@ -12,8 +12,8 @@ from concurrency_miner_components.partitioning.interleaving_partitioning import 
 from concurrency_miner_components.partitioning.loop_partitioning import create_loop_partitions
 from concurrency_miner_components.partitioning.parallel_partitioning import create_parallel_partitions
 from concurrency_miner_components.partitioning.sequence_partitioning import create_sequence_partitions
-from data_structures.event import Event
-from data_structures.trace import Trace
+from src.data_structures.event import Event
+from src.data_structures.trace import Trace
 
 
 # Flower model - every activity gets its own sub-log

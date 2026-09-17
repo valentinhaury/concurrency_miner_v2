@@ -2,7 +2,7 @@ from itertools import combinations, permutations, product
 
 from src.concurrency_miner_components.helper_functions.partition_functions import merge_partitions
 
-def create_arbitrary_order_partitions(traces, activities, start_activities, end_activities, overlapping_relations, eventually_follows_relations, directly_follows_relations, minimum_self_distance_relations):
+def create_arbitrary_order_partitions(traces, activities, start_activities, end_activities, overlapping_relations, follows_relations, directly_follows_relations, minimum_self_distance_relations):
     # create partitions as sets with one activity each
     partitions = [{activity} for activity in activities]
 
@@ -13,47 +13,70 @@ def create_arbitrary_order_partitions(traces, activities, start_activities, end_
 
     #for a, b in combinations(activities, 2):
     # merge partitions if activities are not-fully pairwise reachable in log
-        if (a, b) not in eventually_follows_relations or (b, a) not in eventually_follows_relations:
+        if (a, b) not in follows_relations or (b, a) not in follows_relations:
             merge_partitions(a, b, partitions)
 
     # merge partitions if activities are in minimum self distance relationship
         if (a, b) in minimum_self_distance_relations or (b, a) in minimum_self_distance_relations:
             merge_partitions(a, b, partitions)
 
+    def _connect_partitions_to_an_always_direct_connected_partition(this_partition):
+        for candidate_partition in partitions:
+            if not this_partition.isdisjoint(candidate_partition):
+                continue
+            always_direct_connected = True
+            for t in traces:
+                trace_directly_follows = t.get_directly_follows()
+                trace_direct_connected = False
+                for act1, act2 in product(this_partition, candidate_partition):
+                    if (act1, act2) in trace_directly_follows or (act2, act1) in trace_directly_follows:
+                        trace_direct_connected = True
+                        break
+                if not trace_direct_connected:
+                    always_direct_connected = False
+                    break
+            if always_direct_connected:
+                merge_partitions(next(iter(this_partition)), next(iter(candidate_partition)), partitions)
+                return True
+        return False
+
+    def _merge_partitions_to_an_always_direct_connected_partition(partitions_to_merge):
+        changed = True
+        while changed:
+            changed = False
+            merged_partitions = []
+            for p in partitions_to_merge:
+                if _connect_partitions_to_an_always_direct_connected_partition(p):
+                    changed = True
+                    merged_partitions.append(p)
+            for merged_partition in merged_partitions:
+                partitions_to_merge.remove(merged_partition)
+
+    # TODO -> what to do with partitions that cant be merged that way
+
     # merge all partitions that either have no start or no end activities to a partition they are always connected to
-    partitions_to_merge = []
+    not_connected_to_start_or_end_partitions = []
     for partition in partitions:
         if partition.isdisjoint(start_activities) or partition.isdisjoint(end_activities):
-            partitions_to_merge.append(partition)
-    connect_partitions_relation = []
-    for p1, p2 in product(partitions_to_merge, partitions):
-        if p1 != p2:
-            if _always_direct_connected(p1, p2, traces):
-                connect_partitions_relation.append((p1, p2))
-                partitions_to_merge.remove(p1)
-    for relation in connect_partitions_relation:
-        merge_partitions(next(iter(relation[0])), next(iter(relation[1])), partitions)
+            not_connected_to_start_or_end_partitions.append(partition)
 
-    # TODO merge the rest with an arbitrary partition
+    _merge_partitions_to_an_always_direct_connected_partition(not_connected_to_start_or_end_partitions)
 
     # merge all partitions that are not direct connected in both directions
-    # TODO maybe merge them to partitions they are always connected to like with the start or end activities
-    # TODO merge the rest with an arbitrary partition
-    if False:
-        not_direct_connected = []
-        for p1, p2 in combinations(partitions, 2):
-                p1_p2 = False
-                p2_p1 = False
-                for a, b in product(p1, p2):
-                    if (a, b) in directly_follows_relations:
-                        p1_p2 = True
-                    if (b, a) in directly_follows_relations:
-                        p2_p1 = True
-                if not p1_p2 or not p2_p1:
-                    not_direct_connected.append((p1, p2))
+    not_direct_connected_partitions = []
+    for p1, p2 in combinations(partitions, 2):
+        p1_p2 = False
+        p2_p1 = False
+        for a, b in product(p1, p2):
+            if (a, b) in directly_follows_relations:
+                p1_p2 = True
+            if (b, a) in directly_follows_relations:
+                p2_p1 = True
+        if not p1_p2 or not p2_p1:
+            not_direct_connected_partitions.append(p1)
+            not_direct_connected_partitions.append(p2)
 
-        for relation in not_direct_connected:
-            merge_partitions(next(iter(relation[0])), next(iter(relation[1])), partitions)
+    _merge_partitions_to_an_always_direct_connected_partition(not_direct_connected_partitions)
 
     # merge partitions if partitions are pairwise reachable in one trace
     for trace in traces:
@@ -67,17 +90,3 @@ def create_arbitrary_order_partitions(traces, activities, start_activities, end_
                     break
 
     return partitions
-
-def _always_direct_connected(p1, p2, traces):
-    always_direct_connected = True
-    for trace in traces:
-        trace_directly_follows = trace.get_directly_follows()
-        trace_direct_connected = False
-        for a1, a2 in product(p1, p2):
-            if (a1, a2) in trace_directly_follows or (a2, a1) in trace_directly_follows:
-                trace_direct_connected = True
-                break
-        if not trace_direct_connected:
-            always_direct_connected = False
-            break
-    return always_direct_connected

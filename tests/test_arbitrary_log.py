@@ -1,5 +1,5 @@
-from log_creation.create_variants_from_event_log import get_variants_from_event_log
-from src.log_creation.create_traces_from_variants import create_traces_from_variants
+from developement_utilities.log_creation.create_variants_from_event_log import get_variants_from_event_log
+from developement_utilities.log_creation.create_traces_from_variants import create_traces_from_variants
 from pm4py.objects.log.importer.xes import importer as xes_importer
 
 

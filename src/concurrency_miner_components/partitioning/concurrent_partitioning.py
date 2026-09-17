@@ -14,6 +14,7 @@ def create_concurrent_partitions(activities, start_activities, end_activities, o
         # merge partitions if activities are not-fully pairwise connected in log
         if  (a, b) not in directly_follows_relations or (b, a) not in directly_follows_relations:
             merge_partitions(a, b, partitions)
+
         # merge partitions if activities are in minimum self distance relation in log
         if (a, b) in minimum_self_distance_relations or (b, a) in minimum_self_distance_relations:
             merge_partitions(a, b, partitions)
