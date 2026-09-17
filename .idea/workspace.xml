@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3ce310f-a6cb-4654-8df9-4da22971cc3a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/infrequent_concurrency_miner.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/concurrency_miner_components/partitioning/arbitrary_order_partitioning.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/concurrency_miner_components/partitioning/arbitrary_order_partitioning.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -167,7 +167,8 @@
       <workItem from="1788157796298" duration="14711000" />
       <workItem from="1788248182126" duration="2700000" />
       <workItem from="1788262676860" duration="2756000" />
-      <workItem from="1788686322303" duration="942000" />
+      <workItem from="1788686322303" duration="1661000" />
+      <workItem from="1789623968787" duration="777000" />
     </task>
     <servers />
   </component>
