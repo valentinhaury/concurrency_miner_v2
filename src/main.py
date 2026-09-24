@@ -5,8 +5,8 @@ from src.data_structures.process_tree_operator import Operator
 from src.data_structures.trace import Trace
 from src.data_structures.event import Event
 from developement_utilities.log_creation.create_event_log_from_xes import create_event_log_from_data_input_xes
-from developement_utilities.process_tree_generator.generate_special_trees import generate_tree_2, generate_tree_3, \
-    generate_tree_1, generate_test_tree_test_log_for_precision, generate_tree_4
+from developement_utilities.process_tree_generator.generate_special_trees import generate_tree_3, \
+    generate_tree_1, generate_test_tree_test_log_for_precision, generate_tree_4, generate_tree_example_1
 from developement_utilities.process_tree_generator.process_tree_generator import generate_process_tree
 from developement_utilities.process_tree_generator.process_tree_to_traces import generate_traces
 from developement_utilities.process_tree_generator.simple_trace_to_trace import get_trace_from_simple_trace
@@ -47,10 +47,10 @@ activities = {
     "E"
 }
 # Generate a random tree with given activities
-tree = generate_process_tree(activities)
+#tree = generate_process_tree(activities)
 
 # Generate specified tree
-#tree = generate_tree_4()
+tree = generate_tree_example_1()
 
 # Print tree input
 print(tree)
@@ -59,7 +59,7 @@ log_from_tree = []
 for simple_trace in generate_traces(tree):
     trace = get_trace_from_simple_trace(simple_trace)
     log_from_tree.append(trace)
-    #print(str(trace))
+    print(str(trace))
 
 print("Number of traces: ", len(log_from_tree))
 
@@ -89,18 +89,18 @@ if False:
 
 #event_log, new_model = generate_test_tree_test_log_for_precision()
 
-print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-fitness_score = get_fitness_score(event_log, new_model)
-print("FITNESS SCORE: " + str(fitness_score))
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    fitness_score = get_fitness_score(event_log, new_model)
+    print("FITNESS SCORE: " + str(fitness_score))
 
-print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-evaluator = EscapingEdgesPrecision(
-    log=event_log,
-    process_tree=new_model,
-)
+    evaluator = EscapingEdgesPrecision(
+        log=event_log,
+        process_tree=new_model,
+    )
 
-precision = evaluator.precision()
+    precision = evaluator.precision()
 
-print("Precision:", precision)
-print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print("Precision:", precision)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
