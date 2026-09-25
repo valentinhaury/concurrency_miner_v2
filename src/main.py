@@ -1,10 +1,12 @@
 import copy
 
+from data_structures.trace import Trace
 from src.data_structures.process_tree import Node
 from src.data_structures.process_tree_operator import Operator
 from src.data_structures.trace import Trace
 from src.data_structures.event import Event
-from developement_utilities.log_creation.create_event_log_from_xes import create_event_log_from_data_input_xes
+from developement_utilities.log_creation.create_event_log_from_xes import create_event_log_from_data_input_xes, \
+    get_2012_full_event_log, get_2012_w_event_log, get_2017_full_event_log, get_2017_w_event_log
 from developement_utilities.process_tree_generator.generate_special_trees import generate_tree_3, \
     generate_tree_1, generate_test_tree_test_log_for_precision, generate_tree_4, generate_tree_example_1
 from developement_utilities.process_tree_generator.process_tree_generator import generate_process_tree
@@ -31,24 +33,18 @@ from src.concurrency_miner import concurrency_miner
 
 #TODO
 # Fallthroughs concurrent or interleaving depending if that activity is overlapping with any other activity
-if False:
-    print(type(node.value) is Operator)
-    print(type(node.value).__module__)
-    print(Operator.__module__)
-    print(type(node.value).__qualname__)
-    print(Operator.__qualname__)
 
-#if False:
-activities = {
-    "A",
-    "B",
-    "C",
-    "D",
-    "E"
-}
-# Generate a random tree with given activities
-#tree = generate_process_tree(activities)
 if False:
+    activities = {
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+    }
+    # Generate a random tree with given activities
+    tree = generate_process_tree(activities)
+
     # Generate specified tree
     tree = generate_tree_example_1()
 
@@ -72,37 +68,18 @@ if False:
     new_model = new_tree
     event_log = log_from_tree
 
+#get_2012_full_event_log()
+#get_2012_w_event_log()
+#get_2017_full_event_log()
+#get_2017_w_event_log()
 
-log_from_xes = create_event_log_from_data_input_xes()
+log_from_xes = get_2012_w_event_log()
 
-#0.01; 0.02; 0.03; 0.04;
+# W2017 0.1 threshold finds a loop ### W2012 0.2 ###
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-new_tree = concurrency_miner(copy.deepcopy(log_from_xes), 0.01)
+new_tree = concurrency_miner(copy.deepcopy(log_from_xes))
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
 print(str(new_tree))
 new_tree.print_tree()
 
-if False:
-
-    new_model = new_tree
-    event_log = log_from_xes
-
-
-#event_log, new_model = generate_test_tree_test_log_for_precision()
-
-    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    fitness_score = get_fitness_score(event_log, new_model)
-    print("FITNESS SCORE: " + str(fitness_score))
-
-    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
-    evaluator = EscapingEdgesPrecision(
-        log=event_log,
-        process_tree=new_model,
-    )
-
-    precision = evaluator.precision()
-
-    print("Precision:", precision)
-    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")

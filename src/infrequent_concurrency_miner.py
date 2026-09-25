@@ -24,13 +24,17 @@ from src.data_structures.event import Event
 from src.data_structures.process_tree import Node
 from src.data_structures.trace import Trace
 
+from src.developement_utilities.logger import get_logger
+
+logger = get_logger(__name__)
+
 def infrequent_concurrency_miner(
         event_log: list[Trace],
         concurrency_miner: Callable[[list[Trace], int], Node],
         filter_threshold: float = 0,
 
 ):
-    print("INFREQUENT-----------------------------------------------------------------------------------------------------------")
+    logger.info("***Starting Infrequent Concurrency Miner***")
 
     ##### handle empty log
     if not event_log:
@@ -116,45 +120,45 @@ def infrequent_concurrency_miner(
 
 ##### CORE OPERATORS Exclusive, Sequence, Arbitrary Order, Interleaving, Concurrent, Parallel, Loop
 ##### split the log with an exclusive choice operator
-    print(f"[{datetime.now():%H:%M:%S}] Starting FILTERED Exclusive Choice partitioning")
     exclusive_choice_partitions = create_exclusive_choice_partitions(log_activities, filtered_overlapping, log_eventually_follows)
     if len(exclusive_choice_partitions) > 1:
+        logger.info("Found FILTERED Exclusive Choice split, Partitions: %s", exclusive_choice_partitions)
         return create_children_from_sublogs(Node(Operator.Exclusive), create_filtered_sublogs_exclusive(log, exclusive_choice_partitions), concurrency_miner, filter_threshold)
 
 ##### split the log with a sequence operator
-    print(f"[{datetime.now():%H:%M:%S}] Starting FILTERED Sequence partitioning")
     sequence_partitions = create_sequence_partitions(log_activities, filtered_overlapping, log_eventually_follows)
     if len(sequence_partitions) > 1:
+        logger.info("Found FILTERED Sequence split, Partitions: %s", sequence_partitions)
         return create_children_from_sublogs(Node(Operator.Sequence), create_filtered_sublogs_sequential(log, sequence_partitions), concurrency_miner, filter_threshold)
 
 ##### split the log with an interleaving operator
-    print(f"[{datetime.now():%H:%M:%S}] Starting FILTERED Interleaving partitioning")
     interleaving_partitions = create_interleaving_partitions(log_activities, filtered_start_activities, filtered_end_activities, filtered_overlapping, filtered_directly_follows, log_minimum_self_distance)
     if len(interleaving_partitions) > 1:
-        return create_children_from_sublogs(Node(Operator.Interleaving), create_sublogs_general(log, interleaving_partitions), concurrency_miner, filter_threshold) #TODO implement NEW sublog creation for infrequent
+        logger.info("Found FILTERED Interleaving split, Partitions: %s", interleaving_partitions)
+        return create_children_from_sublogs(Node(Operator.Interleaving), create_sublogs_general(log, interleaving_partitions), concurrency_miner, filter_threshold)
 
 ##### split the log with a concurrent operator
-    print(f"[{datetime.now():%H:%M:%S}] Starting FILTERED Concurrent partitioning")
     concurrent_partitions = create_concurrent_partitions(log_activities, filtered_start_activities, filtered_end_activities, filtered_overlapping, filtered_directly_follows, log_minimum_self_distance)
     if len(concurrent_partitions) > 1:
+        logger.info("Found FILTERED Concurrent split, Partitions: %s", concurrent_partitions)
         return create_children_from_sublogs(Node(Operator.Concurrent), create_sublogs_general(log, concurrent_partitions), concurrency_miner, filter_threshold)
 
 ##### split the log with a parallel operator
-    print(f"[{datetime.now():%H:%M:%S}] Starting FILTERED Parallel partitioning")
     parallel_partitions = create_parallel_partitions(log_activities, filtered_overlapping, log_eventually_follows)
     if len(parallel_partitions) > 1:
-        return create_children_from_sublogs(Node(Operator.Parallel), create_sublogs_general(log, parallel_partitions), concurrency_miner, filter_threshold) #TODO implement NEW sublog creation for infrequent
+        logger.info("Found FILTERED Parallel split, Partitions: %s", parallel_partitions)
+        return create_children_from_sublogs(Node(Operator.Parallel), create_sublogs_general(log, parallel_partitions), concurrency_miner, filter_threshold)
 
 ##### split the log with a loop operator
-    print(f"[{datetime.now():%H:%M:%S}] Starting FILTERED Loop partitioning")
     loop_partitions = create_loop_partitions(log_activities, filtered_start_activities, filtered_end_activities, filtered_overlapping, filtered_directly_follows)
     if len(loop_partitions) > 1:
+        logger.info("Found FILTERED Loop split, Partitions: %s", loop_partitions)
         return create_children_from_sublogs(Node(Operator.Loop), create_filtered_sublogs_loop(log, loop_partitions), concurrency_miner, filter_threshold)
 
 ##### split the log with an arbitrary order operator
-    print(f"[{datetime.now():%H:%M:%S}] Starting FILTERED Arbitrary Order partitioning")
     arbitrary_order_partitions = create_arbitrary_order_partitions(log, log_activities, filtered_start_activities, filtered_end_activities, filtered_overlapping, log_follows, filtered_directly_follows, log_minimum_self_distance)
     if len(arbitrary_order_partitions) > 1:
-        return create_children_from_sublogs(Node(Operator.Arbitrary), create_sublogs_general(log, arbitrary_order_partitions), concurrency_miner, filter_threshold) #TODO implement NEW sublog creation for infrequent
+        logger.info("Found FILTERED Arbitrary Order split, Partitions: %s", arbitrary_order_partitions)
+        return create_children_from_sublogs(Node(Operator.Arbitrary), create_sublogs_general(log, arbitrary_order_partitions), concurrency_miner, filter_threshold)
 
     return False
