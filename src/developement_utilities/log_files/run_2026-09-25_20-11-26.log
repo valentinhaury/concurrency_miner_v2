@@ -1,0 +1,81 @@
+2026-09-25 20:12:01 | INFO | developement_utilities.log_creation.create_event_log_from_xes | ***Log imported***
+2026-09-25 20:12:01 | INFO | developement_utilities.log_creation.create_event_log_from_xes | BPI_Challenge_2017
+2026-09-25 20:12:17 | INFO | developement_utilities.log_creation.create_event_log_from_xes | ***Variants created***
+2026-09-25 20:12:25 | INFO | developement_utilities.log_creation.create_event_log_from_xes | ***Traces Created from Variants***
+2026-09-25 20:12:42 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:12:53 | INFO | src.concurrency_miner | ----activities in the log: {'A_Pending', 'W_Call incomplete files', 'O_Created', 'A_Submitted', 'A_Validating', 'O_Returned', 'O_Refused', 'A_Cancelled', 'O_Accepted', 'A_Create Application', 'A_Denied', 'O_Cancelled', 'A_Accepted', 'O_Create Offer', 'W_Handle leads', 'W_Call after offers', 'A_Incomplete', 'W_Assess potential fraud', 'O_Sent (online only)', 'A_Concept', 'O_Sent (mail and online)', 'W_Validate application', 'W_Complete application', 'A_Complete'}
+2026-09-25 20:12:53 | INFO | src.concurrency_miner | Found Sequence split, Partitions: [{'A_Create Application'}, {'A_Submitted'}, {'A_Pending', 'W_Call incomplete files', 'O_Created', 'A_Incomplete', 'O_Returned', 'A_Validating', 'W_Assess potential fraud', 'O_Sent (online only)', 'O_Refused', 'A_Cancelled', 'A_Concept', 'O_Accepted', 'O_Sent (mail and online)', 'A_Denied', 'O_Cancelled', 'A_Accepted', 'O_Create Offer', 'W_Handle leads', 'W_Validate application', 'W_Complete application', 'A_Complete', 'W_Call after offers'}]
+2026-09-25 20:12:59 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:13:00 | INFO | src.concurrency_miner | ----activities in the log: {'A_Create Application'}
+2026-09-25 20:13:00 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:13:01 | INFO | src.concurrency_miner | ----activities in the log: {'tau', 'A_Submitted'}
+2026-09-25 20:13:01 | INFO | src.concurrency_miner | Found Exclusive Choice split, Partitions: [{'tau'}, {'A_Submitted'}]
+2026-09-25 20:13:01 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:13:01 | INFO | src.concurrency_miner | ----activities in the log: {'tau'}
+2026-09-25 20:13:01 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:13:02 | INFO | src.concurrency_miner | ----activities in the log: {'A_Submitted'}
+2026-09-25 20:13:02 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:13:10 | INFO | src.concurrency_miner | ----activities in the log: {'A_Pending', 'W_Call incomplete files', 'O_Created', 'A_Validating', 'O_Returned', 'O_Refused', 'A_Cancelled', 'O_Accepted', 'A_Denied', 'O_Cancelled', 'A_Accepted', 'O_Create Offer', 'W_Handle leads', 'W_Call after offers', 'A_Incomplete', 'W_Assess potential fraud', 'O_Sent (online only)', 'A_Concept', 'O_Sent (mail and online)', 'W_Complete application', 'W_Validate application', 'A_Complete'}
+2026-09-25 20:13:17 | INFO | infrequent_concurrency_miner | ***Starting Infrequent Concurrency Miner***
+2026-09-25 20:13:33 | INFO | src.concurrency_miner | ***Starting Fall Through***
+2026-09-25 20:13:33 | INFO | src.concurrency_miner | Found activities_once_per_trace split, Partitions: [{'O_Created'}, {'A_Pending', 'W_Call incomplete files', 'A_Incomplete', 'A_Validating', 'O_Returned', 'W_Assess potential fraud', 'O_Sent (online only)', 'O_Refused', 'A_Cancelled', 'A_Concept', 'O_Accepted', 'O_Sent (mail and online)', 'A_Denied', 'O_Cancelled', 'A_Accepted', 'O_Create Offer', 'W_Handle leads', 'W_Complete application', 'W_Validate application', 'A_Complete', 'W_Call after offers'}]
+2026-09-25 20:13:38 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:13:39 | INFO | src.concurrency_miner | ----activities in the log: {'O_Created'}
+2026-09-25 20:13:39 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:13:46 | INFO | src.concurrency_miner | ----activities in the log: {'A_Pending', 'W_Call incomplete files', 'A_Validating', 'O_Returned', 'O_Refused', 'A_Cancelled', 'O_Accepted', 'A_Denied', 'O_Cancelled', 'A_Accepted', 'O_Create Offer', 'W_Handle leads', 'W_Call after offers', 'A_Incomplete', 'W_Assess potential fraud', 'O_Sent (online only)', 'A_Concept', 'O_Sent (mail and online)', 'W_Complete application', 'W_Validate application', 'A_Complete'}
+2026-09-25 20:13:51 | INFO | infrequent_concurrency_miner | ***Starting Infrequent Concurrency Miner***
+2026-09-25 20:14:04 | INFO | src.concurrency_miner | ***Starting Fall Through***
+2026-09-25 20:14:04 | INFO | src.concurrency_miner | Found activities_once_per_trace split, Partitions: [{'O_Create Offer'}, {'A_Pending', 'W_Call incomplete files', 'A_Incomplete', 'A_Validating', 'O_Returned', 'W_Assess potential fraud', 'O_Sent (online only)', 'O_Refused', 'A_Cancelled', 'A_Concept', 'O_Accepted', 'O_Sent (mail and online)', 'A_Denied', 'O_Cancelled', 'A_Accepted', 'W_Handle leads', 'W_Complete application', 'W_Validate application', 'A_Complete', 'W_Call after offers'}]
+2026-09-25 20:14:08 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:14:09 | INFO | src.concurrency_miner | ----activities in the log: {'O_Create Offer'}
+2026-09-25 20:14:09 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:14:15 | INFO | src.concurrency_miner | ----activities in the log: {'A_Pending', 'W_Call incomplete files', 'A_Incomplete', 'A_Validating', 'O_Returned', 'W_Assess potential fraud', 'O_Sent (online only)', 'O_Refused', 'A_Concept', 'A_Cancelled', 'O_Accepted', 'O_Sent (mail and online)', 'A_Denied', 'O_Cancelled', 'A_Accepted', 'W_Complete application', 'W_Validate application', 'W_Handle leads', 'A_Complete', 'W_Call after offers'}
+2026-09-25 20:14:19 | INFO | infrequent_concurrency_miner | ***Starting Infrequent Concurrency Miner***
+2026-09-25 20:14:29 | INFO | src.concurrency_miner | ***Starting Fall Through***
+2026-09-25 20:14:29 | INFO | src.concurrency_miner | Found activities_once_per_trace split, Partitions: [{'A_Accepted'}, {'A_Pending', 'W_Call incomplete files', 'A_Incomplete', 'A_Validating', 'O_Returned', 'W_Assess potential fraud', 'O_Sent (online only)', 'O_Refused', 'A_Concept', 'A_Cancelled', 'O_Accepted', 'O_Sent (mail and online)', 'A_Denied', 'O_Cancelled', 'W_Complete application', 'W_Validate application', 'W_Handle leads', 'A_Complete', 'W_Call after offers'}]
+2026-09-25 20:14:36 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:14:36 | INFO | src.concurrency_miner | ----activities in the log: {'A_Accepted'}
+2026-09-25 20:14:36 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:14:42 | INFO | src.concurrency_miner | ----activities in the log: {'A_Pending', 'W_Call incomplete files', 'A_Incomplete', 'A_Validating', 'O_Returned', 'W_Assess potential fraud', 'O_Sent (online only)', 'O_Refused', 'A_Concept', 'A_Cancelled', 'O_Accepted', 'O_Sent (mail and online)', 'A_Denied', 'O_Cancelled', 'W_Complete application', 'W_Validate application', 'W_Handle leads', 'A_Complete', 'W_Call after offers'}
+2026-09-25 20:14:45 | INFO | infrequent_concurrency_miner | ***Starting Infrequent Concurrency Miner***
+2026-09-25 20:14:53 | INFO | src.concurrency_miner | ***Starting Fall Through***
+2026-09-25 20:14:53 | INFO | src.concurrency_miner | Found activities_once_per_trace split, Partitions: [{'A_Concept'}, {'A_Pending', 'W_Call incomplete files', 'A_Incomplete', 'A_Validating', 'O_Returned', 'W_Assess potential fraud', 'O_Sent (online only)', 'O_Refused', 'A_Cancelled', 'O_Accepted', 'O_Sent (mail and online)', 'A_Denied', 'O_Cancelled', 'W_Complete application', 'W_Validate application', 'W_Handle leads', 'A_Complete', 'W_Call after offers'}]
+2026-09-25 20:14:56 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:14:56 | INFO | src.concurrency_miner | ----activities in the log: {'A_Concept'}
+2026-09-25 20:14:56 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:15:01 | INFO | src.concurrency_miner | ----activities in the log: {'A_Pending', 'W_Call incomplete files', 'A_Incomplete', 'O_Returned', 'A_Validating', 'W_Assess potential fraud', 'O_Sent (online only)', 'O_Refused', 'A_Cancelled', 'O_Accepted', 'O_Sent (mail and online)', 'A_Denied', 'O_Cancelled', 'W_Validate application', 'W_Complete application', 'W_Handle leads', 'A_Complete', 'W_Call after offers'}
+2026-09-25 20:15:03 | INFO | infrequent_concurrency_miner | ***Starting Infrequent Concurrency Miner***
+2026-09-25 20:15:10 | INFO | src.concurrency_miner | ***Starting Fall Through***
+2026-09-25 20:17:52 | INFO | src.concurrency_miner | Starting flower model partitioning
+2026-09-25 20:18:03 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:18:04 | INFO | src.concurrency_miner | ----activities in the log: {'A_Pending', 'tau'}
+2026-09-25 20:18:04 | INFO | src.concurrency_miner | Found Exclusive Choice split, Partitions: [{'A_Pending'}, {'tau'}]
+2026-09-25 20:18:04 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:18:04 | INFO | src.concurrency_miner | ----activities in the log: {'A_Pending'}
+2026-09-25 20:18:04 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:18:04 | INFO | src.concurrency_miner | ----activities in the log: {'tau'}
+2026-09-25 20:18:04 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:18:05 | INFO | src.concurrency_miner | ----activities in the log: {'tau', 'W_Call incomplete files'}
+2026-09-25 20:18:05 | INFO | src.concurrency_miner | Found Exclusive Choice split, Partitions: [{'tau'}, {'W_Call incomplete files'}]
+2026-09-25 20:18:05 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:18:06 | INFO | src.concurrency_miner | ----activities in the log: {'tau'}
+2026-09-25 20:18:06 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:18:06 | INFO | src.concurrency_miner | ----activities in the log: {'W_Call incomplete files'}
+2026-09-25 20:18:06 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:18:07 | INFO | src.concurrency_miner | ----activities in the log: {'tau', 'A_Incomplete'}
+2026-09-25 20:18:07 | INFO | src.concurrency_miner | Found Exclusive Choice split, Partitions: [{'tau'}, {'A_Incomplete'}]
+2026-09-25 20:18:07 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:18:07 | INFO | src.concurrency_miner | ----activities in the log: {'tau'}
+2026-09-25 20:18:07 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:18:08 | INFO | src.concurrency_miner | ----activities in the log: {'A_Incomplete'}
+2026-09-25 20:18:08 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:18:09 | INFO | src.concurrency_miner | ----activities in the log: {'tau', 'O_Returned'}
+2026-09-25 20:18:09 | INFO | src.concurrency_miner | Found Exclusive Choice split, Partitions: [{'tau'}, {'O_Returned'}]
+2026-09-25 20:18:09 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:18:09 | INFO | src.concurrency_miner | ----activities in the log: {'tau'}
+2026-09-25 20:18:09 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:18:09 | INFO | src.concurrency_miner | ----activities in the log: {'O_Returned'}
+2026-09-25 20:18:09 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 20:18:10 | INFO | src.concurrency_miner | ----activities in the log: {'tau', 'A_Validating'}
+2026-09-25 20:18:10 | INFO | src.concurrency_miner | Found Exclusive Choice split, Partitions: [{'tau'}, {'A_Validating'}]
+2026-09-25 20:18:11 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***

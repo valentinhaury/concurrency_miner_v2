@@ -30,7 +30,7 @@ def concurrency_miner(
     if not 0 <= filter_threshold <= 1:
         raise ValueError("filter_threshold must be between 0 and 1")
 
-    logger.info("***Starting Concurrency Miner***")
+    logger.info("---***Starting Concurrency Miner***")
     print(f"[{datetime.now():%H:%M:%S}]---function called concurrency miner--")
 ##### handle empty log
     if not event_log:

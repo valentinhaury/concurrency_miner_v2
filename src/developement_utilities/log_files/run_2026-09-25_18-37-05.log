@@ -1,0 +1,21 @@
+2026-09-25 18:37:10 | INFO | developement_utilities.log_creation.create_event_log_from_xes | ***Log imported***
+2026-09-25 18:37:10 | INFO | developement_utilities.log_creation.create_event_log_from_xes | BPI_Challenge_2012
+2026-09-25 18:37:19 | INFO | developement_utilities.log_creation.create_event_log_from_xes | ***Variants created***
+2026-09-25 18:37:23 | INFO | developement_utilities.log_creation.create_event_log_from_xes | ***Traces Created from Variants***
+2026-09-25 18:37:30 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 18:37:34 | INFO | src.concurrency_miner | ----activities in the log: {'A_SUBMITTED', 'W_Nabellen offertes', 'A_ACCEPTED', 'A_PARTLYSUBMITTED', 'O_DECLINED', 'A_DECLINED', 'W_Completeren aanvraag', 'A_ACTIVATED', 'O_CANCELLED', 'O_SELECTED', 'A_REGISTERED', 'A_CANCELLED', 'W_Nabellen incomplete dossiers', 'O_SENT_BACK', 'O_SENT', 'O_CREATED', 'A_FINALIZED', 'A_APPROVED', 'W_Afhandelen leads', 'W_Beoordelen fraude', 'O_ACCEPTED', 'A_PREACCEPTED', 'W_Valideren aanvraag'}
+2026-09-25 18:37:34 | INFO | src.concurrency_miner | Found Sequence split, Partitions: [{'A_SUBMITTED'}, {'A_PARTLYSUBMITTED'}, {'A_CANCELLED', 'W_Nabellen incomplete dossiers', 'W_Nabellen offertes', 'O_SENT_BACK', 'A_ACCEPTED', 'O_SENT', 'O_DECLINED', 'O_CREATED', 'A_DECLINED', 'A_FINALIZED', 'A_APPROVED', 'W_Afhandelen leads', 'W_Beoordelen fraude', 'O_ACCEPTED', 'W_Completeren aanvraag', 'A_ACTIVATED', 'A_PREACCEPTED', 'W_Valideren aanvraag', 'O_CANCELLED', 'O_SELECTED', 'A_REGISTERED'}]
+2026-09-25 18:37:39 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 18:37:39 | INFO | src.concurrency_miner | ----activities in the log: {'A_SUBMITTED'}
+2026-09-25 18:37:39 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 18:37:40 | INFO | src.concurrency_miner | ----activities in the log: {'A_PARTLYSUBMITTED'}
+2026-09-25 18:37:40 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 18:37:43 | INFO | src.concurrency_miner | ----activities in the log: {'W_Nabellen offertes', 'A_ACCEPTED', 'O_DECLINED', 'A_DECLINED', 'A_ACTIVATED', 'W_Completeren aanvraag', 'O_CANCELLED', 'O_SELECTED', 'A_REGISTERED', 'A_CANCELLED', 'W_Nabellen incomplete dossiers', 'O_SENT_BACK', 'O_SENT', 'O_CREATED', 'A_FINALIZED', 'A_APPROVED', 'W_Afhandelen leads', 'W_Beoordelen fraude', 'O_ACCEPTED', 'A_PREACCEPTED', 'W_Valideren aanvraag'}
+2026-09-25 18:37:45 | INFO | infrequent_concurrency_miner | ***Starting Infrequent Concurrency Miner***
+2026-09-25 18:37:48 | INFO | infrequent_concurrency_miner | Found FILTERED Exclusive Choice split, Partitions: [{'W_Beoordelen fraude'}, {'A_CANCELLED', 'W_Nabellen incomplete dossiers', 'W_Nabellen offertes', 'O_SENT_BACK', 'A_ACCEPTED', 'O_SENT', 'O_DECLINED', 'O_CREATED', 'A_DECLINED', 'A_FINALIZED', 'A_APPROVED', 'W_Afhandelen leads', 'O_ACCEPTED', 'A_ACTIVATED', 'W_Completeren aanvraag', 'A_PREACCEPTED', 'W_Valideren aanvraag', 'O_CANCELLED', 'O_SELECTED', 'A_REGISTERED'}]
+2026-09-25 18:37:52 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 18:37:52 | INFO | src.concurrency_miner | ----activities in the log: {'W_Beoordelen fraude'}
+2026-09-25 18:37:52 | INFO | src.concurrency_miner | ---***Starting Concurrency Miner***
+2026-09-25 18:37:56 | INFO | src.concurrency_miner | ----activities in the log: {'A_CANCELLED', 'W_Nabellen incomplete dossiers', 'W_Nabellen offertes', 'O_SENT_BACK', 'A_ACCEPTED', 'O_SENT', 'O_DECLINED', 'O_CREATED', 'A_DECLINED', 'A_FINALIZED', 'A_APPROVED', 'W_Afhandelen leads', 'O_ACCEPTED', 'A_ACTIVATED', 'W_Completeren aanvraag', 'A_PREACCEPTED', 'W_Valideren aanvraag', 'O_CANCELLED', 'O_SELECTED', 'A_REGISTERED'}
+2026-09-25 18:37:58 | INFO | infrequent_concurrency_miner | ***Starting Infrequent Concurrency Miner***
+2026-09-25 18:38:03 | INFO | src.concurrency_miner | ***Starting Fall Through***

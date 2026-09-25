@@ -17,6 +17,10 @@ from evaluation_tools.tree_fitness import get_fitness_score
 
 from src.concurrency_miner import concurrency_miner
 
+from src.developement_utilities.logger import get_logger
+
+logger = get_logger(__name__)
+
 #TODO Add good test cases (bigger constructs with all operators mixed)
 # correct and incorrect test cases
 # DONE  #1 generate a random process tree and generate traces from that tree randomly -> use as input
@@ -73,13 +77,15 @@ if False:
 #get_2017_full_event_log()
 #get_2017_w_event_log()
 
-log_from_xes = get_2012_w_event_log()
+log_from_xes = get_2017_full_event_log()
 
 # W2017 0.1 threshold finds a loop ### W2012 0.2 ###
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-new_tree = concurrency_miner(copy.deepcopy(log_from_xes))
+new_tree = concurrency_miner(copy.deepcopy(log_from_xes), 0.3)
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
 print(str(new_tree))
 new_tree.print_tree()
+
+logger.info("TREE: " + str(new_tree))
 
