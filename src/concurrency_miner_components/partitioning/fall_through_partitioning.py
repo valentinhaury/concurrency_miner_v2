@@ -75,6 +75,7 @@ def _split_found(event_log):
 
     log_minimum_self_distance |= compute_minimum_self_distance_relations(log_activities, log)
 
+    #if False:
     exclusive_choice_partitions = create_exclusive_choice_partitions(log_activities, log_overlapping_relation, log_eventually_follows)
     if len(exclusive_choice_partitions) > 1:
         return True

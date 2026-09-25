@@ -48,40 +48,42 @@ activities = {
 }
 # Generate a random tree with given activities
 #tree = generate_process_tree(activities)
+if False:
+    # Generate specified tree
+    tree = generate_tree_example_1()
 
-# Generate specified tree
-tree = generate_tree_example_1()
+    # Print tree input
+    print(tree)
+    tree.print_tree()
+    log_from_tree = []
+    for simple_trace in generate_traces(tree):
+        trace = get_trace_from_simple_trace(simple_trace)
+        log_from_tree.append(trace)
+        print(str(trace))
 
-# Print tree input
-print(tree)
-tree.print_tree()
-log_from_tree = []
-for simple_trace in generate_traces(tree):
-    trace = get_trace_from_simple_trace(simple_trace)
-    log_from_tree.append(trace)
-    print(str(trace))
+    print("Number of traces: ", len(log_from_tree))
 
-print("Number of traces: ", len(log_from_tree))
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    new_tree = concurrency_miner(copy.deepcopy(log_from_tree))
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print(str(new_tree))
+    new_tree.print_tree()
 
+    new_model = new_tree
+    event_log = log_from_tree
+
+
+log_from_xes = create_event_log_from_data_input_xes()
+
+#0.01; 0.02; 0.03; 0.04;
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-new_tree = concurrency_miner(copy.deepcopy(log_from_tree))
+new_tree = concurrency_miner(copy.deepcopy(log_from_xes), 0.01)
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
 print(str(new_tree))
 new_tree.print_tree()
 
-new_model = new_tree
-event_log = log_from_tree
-
 if False:
-    log_from_xes = create_event_log_from_data_input_xes()
-
-    #0.01; 0.02; 0.03; 0.04;
-    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    new_tree = concurrency_miner(copy.deepcopy(log_from_xes))
-    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
-    print(str(new_tree))
-    new_tree.print_tree()
 
     new_model = new_tree
     event_log = log_from_xes

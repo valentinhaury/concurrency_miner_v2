@@ -66,23 +66,27 @@ def infrequent_concurrency_miner(
         counter_directly_follows.update(trace.get_directly_follows())
         log_follows |= trace.get_eventually_follows()                   # contains all pairs of activities where the second follows eventually after the first in at least one trace
 
-    def filter_relation(counter, threshold):
+    def filter_relations(counter_df, counter_ovl, threshold):
         max_counts_out = {}
         max_counts_in = {}
-        for (a, b), count in counter.items():
+        for (a, b), count in counter_df.items():
             max_counts_out[a] = max(max_counts_out.get(a, 0), count)
             max_counts_in[b] = max(max_counts_in.get(b, 0), count)
-        filtered_relation = set()
-        for (a, b), count in counter.items():
+        for (a, b), count in counter_ovl.items():
+            max_counts_out[a] = max(max_counts_out.get(a, 0), count)
+            max_counts_in[b] = max(max_counts_in.get(b, 0), count)
+        filtered_df = set()
+        filtered_ovl = set()
+        for (a, b), count in counter_df.items():
             if count / max_counts_out[a] >= threshold or count / max_counts_in[b] >= threshold:
-                filtered_relation.add((a, b))
-        return filtered_relation
+                filtered_df.add((a, b))
+        for (a, b), count in counter_ovl.items():
+            if count / max_counts_out[a] >= threshold or count / max_counts_in[b] >= threshold:
+                filtered_ovl.add((a, b))
+        return filtered_df, filtered_ovl
 
-##### filter directly follows
-    filtered_directly_follows = filter_relation(counter_directly_follows, filter_threshold)
-
-##### filter overlapping
-    filtered_overlapping = filter_relation(counter_overlapping, filter_threshold)
+##### filter directly follows and filter overlapping
+    filtered_directly_follows, filtered_overlapping = filter_relations(counter_directly_follows,counter_overlapping, filter_threshold)
 
     def filter_activities(counter, threshold):
         max_count = 0
