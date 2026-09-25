@@ -4,3 +4,4 @@ __pycache__/
 *.egg-info/
 src/developement_utilities/data
 .idea/workspace.xml
+.log
