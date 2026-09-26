@@ -49,13 +49,13 @@ def _choose_operator():
     ]
 
     weights = [
-        0.26,  # Exclusive
-        0.24,  # Sequence
-        0.10,  # Arbitrary
-        0.08,  # Interleaving
-        0.08,  # Concurrent
-        0.16,  # Parallel
-        0.08,  # Loop
+        0.20,  # Exclusive
+        0.18,  # Sequence
+        0.14,  # Arbitrary
+        0.12,  # Interleaving
+        0.14,  # Concurrent
+        0.10,  # Parallel
+        0.12,  # Loop
     ]
 
     return random.choices(

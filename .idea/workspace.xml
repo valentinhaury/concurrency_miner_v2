@@ -5,16 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3ce310f-a6cb-4654-8df9-4da22971cc3a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/scalability_evaluation/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/scalability_evaluation/generate_scalable_log.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/scalability_evaluation/scalability_evaluation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/scalability_evaluation/traces_with_timeout.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/concurrency_miner.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/concurrency_miner.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/developement_utilities/logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/developement_utilities/logger.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/developement_utilities/process_tree_generator/process_tree_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/developement_utilities/process_tree_generator/process_tree_generator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
