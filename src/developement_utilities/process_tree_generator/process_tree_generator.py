@@ -16,7 +16,7 @@ def _generate_subtree(activities):
     #base case -> returns a single activity or wrapped in multi instance
     if n == 1:
         activity = activities[0]
-        if random.random() < 0.15:
+        if random.random() < 0.1:
             node = Node(Operator.Multi)
             node.add_child(Node(activity))
             return node
@@ -49,12 +49,12 @@ def _choose_operator():
     ]
 
     weights = [
-        0.22,  # Exclusive
+        0.26,  # Exclusive
         0.24,  # Sequence
-        0.12,  # Arbitrary
-        0.12,  # Interleaving
-        0.12,  # Concurrent
-        0.10,  # Parallel
+        0.10,  # Arbitrary
+        0.08,  # Interleaving
+        0.08,  # Concurrent
+        0.16,  # Parallel
         0.08,  # Loop
     ]
 
